@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MauiViewer</string>
+    <string name="ping_button">Ping</string>
+</resources>

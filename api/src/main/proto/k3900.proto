@@ -1,0 +1,686 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+package k3900;
+
+//
+// Probe geometry
+//
+
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+enum TransducerType {
+  UNKNOWN_TRANSDUCERTYPE = 0;
+  TRANSMIT = 1;
+  RECEIVE = 2;
+}
+
+message TransducerElement {
+  Vector3 position = 1; // in millimeters
+  Vector3 normal = 2; // unit vector
+  TransducerType type = 3; // possibly redundant (tell based on pin assignments?)
+  uint32 pin_positive = 4;
+  uint32 pin_negative = 5;
+  float sensitivity0 = 6; // on-axis sensitivity
+  float sensitivity45 = 7; // 45° off-axis sensitivity
+}
+
+enum TransducerArrayType {
+  UNKNOWN_TRANSDUCERARRAYTYPE = 0;
+  MAUI_ARRAY_TYPE_BULK = 1;
+}
+
+message TransducerArray {
+  repeated TransducerElement elements = 1;
+  string serial_number = 2;
+  TransducerArrayType type = 3;
+}
+
+message Probe {
+  string maui_copyright_string = 1;
+  repeated TransducerArray arrays = 2;
+  string serial_number = 3;
+  float center_frequency = 4; // probe's central (best) frequency, expressed in MHz
+}
+
+
+//
+// Frame definition
+//
+
+enum SampleGainCorrectionType {
+  UNKNOWN_SAMPLEGAINCORRECTIONTYPE = 0;
+  PER_SAMPLE_MULTIPLICATION = 1;
+  LINEAR_RESCALING = 2;
+  EXPONENTIAL_RESCALING = 3;
+}
+
+message FrameMetadata {
+  Probe probe = 1; // probe geometry and other metadata
+  repeated float sample_gain_correction = 2; // with PER_SAMPLE_MULTIPLICATION, number_of_samples values
+  SampleGainCorrectionType sample_gain_correction_type = 3;
+  float transmit_power = 4;
+  float transmit_frequency = 5; // frequency actually used, expressed in MHz
+  float master_gain = 6; // gain on the analog front-end
+  uint32 number_of_samples = 7;
+  uint32 sampling_frequency = 8; // expressed in Hz, usually 25MHz
+  string machine_serial = 9; // serial number of the machine which produced the data
+  uint64 study_number = 10; // sequentially increasing number within a machine, starting at 1
+  uint32 frame_number = 11; // sequentially increasing number within a study, starting at 0
+  uint64 patient_number = 12; // Zero indicates this is not supplied. Multiple studies per patient possible.
+}
+
+message Samples {
+  bytes data = 1; // 16-bit signed ints [little endian format]
+} //.raw dump containing data for each combination of transmitter and receiver within a frame
+
+//
+// On-disk file format:
+// FrameMetadata serialized into basefilename_f.pbf
+// and a dump of samples arrays into basefilename_f.raw
+//
+// where f is frame number
+// .raw dump contains Samples, first all receivers for transmitter 0 then all receivers for transmitter 1 etc.
+//
+
+//
+// Over-the-wire uses these messages as is, which are expected to be under 64K with current and near-future hardware.
+//
+
+message TransferFrameResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+// old implementation which is need for old data captures
+message RxElements
+{
+    repeated Vector3 loc = 1;
+}
+
+// Messages used for Data Capture
+
+message RawFrameMetadata
+{
+    int32 n_samples_per_ping = 1;
+    int32 n_pings = 2;
+    int32 n_rxs = 3;
+    int32 n_rx_channels = 4;
+    double sample_rate = 5; // samples/sec
+    int32 sample_size = 6; // size in bytes
+    float acoustic_power = 7;
+    float tx_freq = 8;
+    float master_gain = 9;
+    repeated int32 rxs = 10;
+    int32 pp_level = 11;
+    float fps = 12;
+}
+
+enum FilterOrder
+{
+    SECOND = 0;
+    FOURTH = 1;
+    SIXTH  = 2;
+    EIGHT = 3;
+}
+
+message Filter
+{
+    bool bypass = 1;
+    FilterOrder order_sel = 2;
+    double freq_sel = 3; // MHz
+    int32 type_sel = 4;
+}
+
+enum BFInterp
+{
+    TRUNCATED = 0;
+    NEAREST = 1;
+    LINEAR = 2;
+    CUBIC = 3;
+}
+
+message ProbeElement
+{
+    Vector3 loc = 1;
+    Vector3 normal = 2;
+}
+
+message ProbeInfo
+{
+    string name = 1; // serial number or other identifier
+    repeated ProbeElement rxs = 2;
+    repeated ProbeElement txs = 3;
+    repeated ProbeElement rx_elems = 4; // all rx locations(in case RX FPGA down) 
+}
+
+message BeamformParameters
+{
+    int32 image_width = 1;
+    int32 image_height = 2;
+    uint32 bpp = 3;
+    Vector3 mmpp = 4; // millimeters per pixel
+    Vector3 origin = 5; // mm
+    Filter bpf = 6;
+    double sos = 7; // mm/sec
+    BFInterp interp = 8;
+    double osample_offset = 9;
+    repeated float tgc = 10;
+    float agc_offset = 18;
+    bool flip_x = 11;
+    bool flip_y = 12;
+    int32 tx_apts = 13;
+    int32 rx_apts = 14;
+    ProbeInfo probe = 15;
+    repeated bool tx_masks = 16;
+    repeated bool rx_masks = 17;
+}
+
+message PostProcessingParameters
+{
+    float contrast = 1;
+    float brightness = 2;
+    float gamma = 3;
+    float edge_filter = 4;
+    float gaussian_filter = 5;
+    repeated Measurements measurements = 6;
+    bool manualgrayscale = 7;
+    string compression = 8;
+    int32 favg = 9;
+}
+
+message RawCaptureMetadata
+{
+    int32 n_frames = 1;
+    RawFrameMetadata frame_metadata = 2;
+    BeamformParameters bf_params = 3;
+    PostProcessingParameters post_processing = 4;
+    int32 single_rx = 5;
+}
+
+message Ping 
+{
+    bytes samples = 1;
+    int32 n_rx = 2;
+    int32 ping = 3;
+    int32 frame = 4;
+}
+
+message ResponseMsg
+{
+    string msg = 1;
+    int32 code = 2;
+}
+
+message ImageFormat
+{
+    bool raw = 1;         // uncompressed (direct from beamformer)
+    int32 bpp = 2;        // bits per pixel for image
+    bool apply_gamma = 3; // server will apply gamma
+    bool apply_bnc = 4;   // server will apply brightness and contrast
+    bool apply_tgc = 5;   // server will apply TGCs
+}
+
+// Upload and Download messages for datasets
+message UploadStatusResponse {
+    int32 code = 1;
+    int32 value = 2;
+}
+
+message DownloadRequest {
+}
+
+message PingDownloadDataRequest {
+    int32 rx = 1;
+    int32 n_frames = 2;
+    int32 frame_start = 3;
+}
+
+message FloatRequest {
+    float value = 1;
+}
+
+// gRPC service definition
+//
+// FrameMetadata must be sent before any of the Samples messages
+// Samples should be ordered by pings:
+// first send Samples for all receivers of transmitter 0,
+// then all Samples for receivers of transmitter 1 etc.
+service Beamformer {
+    rpc TransferFrameMetadata (FrameMetadata) returns (TransferFrameResponse) {}
+    rpc TransferSamples (stream Samples) returns (TransferFrameResponse) {}
+
+    rpc GetSystemState (SystemStateRequest) returns (SystemState) {}
+
+    rpc SetBeamformerParameters (BeamformerParametersRequest) returns (BeamformerParametersResponse) {}
+    rpc GetMasterControl(MasterControlRequest) returns (ResponseMsg) {}
+    rpc ReleaseMasterControl(MasterReleaseRequest) returns (ResponseMsg) {}
+    rpc SendBeamformedImageStream (ImageRequest) returns (stream ImageChunk) {}
+    rpc StartSampleUpload (RawCaptureMetadata) returns (UploadStatusResponse) {}
+    rpc UploadPingData (stream Ping) returns (ResponseMsg) {}
+    rpc StartSampleDownload (DownloadRequest) returns (RawCaptureMetadata) {}
+    rpc DownloadPingData (PingDownloadDataRequest) returns (stream Ping) {}
+    rpc RequestImageFormat (ImageFormat) returns (ResponseMsg) {}
+    rpc PingServer (BlankRequest) returns (ResponseMsg) {}
+    rpc GetSessionID (IDRequest) returns (IDMsg) {}
+    rpc GetMachineID (IDRequest) returns (IDMsg) {}
+    rpc SystemShutdown (ShutdownRequest) returns (ResponseMsg) {}
+    rpc StartMeasurement (MeasurementRequest) returns (ResponseMsg) {}
+    rpc StopMeasurement (MeasurementRequest) returns (ResponseMsg) {}
+    rpc CaptureMeasurementMark (MeasurementRequest) returns (ResponseMsg) {}
+    rpc CancelMeasurement (MeasurementRequest) returns (ResponseMsg) {}
+    rpc DeleteMeasurement (EditMeasurementRequest) returns (ResponseMsg) {}
+    rpc EditMeasurement (EditMeasurementRequest) returns (ResponseMsg) {}
+    rpc HighlightMeasurement (EditMeasurementRequest) returns (ResponseMsg) {}
+    rpc SendCursorMovement (CursorMoveRequest) returns (ResponseMsg) {}
+    rpc SwapMeasurementPoints(MeasurementRequest) returns (ResponseMsg) {}
+    rpc GetMeasurements(MeasurementRequest) returns (Measurements) {}
+    rpc GetMeasurementFrames(FrameRequest) returns (FrameMsg) {}
+    rpc SetFrame(FrameMsg) returns (ResponseMsg) {}
+    rpc GetExams(PatientRequest) returns (stream Exam) {}
+    rpc MoveExams(PatientRequest) returns (ResponseMsg) {}
+    rpc DeletePatient(PatientRequest) returns (ResponseMsg) {}
+    rpc GetPatients(QueryRequest) returns (stream Patient) {}
+    rpc BeginExam(ExamRequest) returns (ResponseMsg) {}
+    rpc EndExam(ExamRequest) returns (ResponseMsg) {}
+    rpc MoveExam(ExamRequest) returns (ResponseMsg) {}
+    rpc DeleteExam(ExamRequest) returns (ResponseMsg) {}
+    rpc Save(SaveRequest) returns (ResponseMsg) {}
+    rpc GetProgress(ProgressRequest) returns (Progress) {}
+    rpc GetExamStores(ExamStoresRequest) returns (stream ExamStore) {}
+    rpc GetExamStoresTypes(ExamStoresTypeRequest) returns (ExamStoresTypes) {}
+    rpc DeleteExamStoresType(ExamStoresRequest) returns (ResponseMsg) {}
+    rpc LoadExamFile(ExamFileRequest) returns (ResponseMsg) {}
+    rpc DeleteExamFile(ExamFileRequest) returns (ResponseMsg) {}
+    rpc GetMediaFile(MediaFileRequest) returns (stream MediaFile) {}
+    rpc UpdateMediaState(MediaUpdateRequest) returns (ResponseMsg) {}
+    rpc GetDiagnosticTests(DiagnosticTestsRequest) returns (DiagnosticTestList) {}
+    rpc PerformDiagnosticTest(DiagnosticRequest) returns (ResponseMsg) {}
+    rpc AbortDiagnosticTest(BlankRequest) returns (ResponseMsg) {}
+    rpc ClearErrors(ClearErrorsRequest) returns (ResponseMsg) {}
+    rpc GetFilterList(BlankRequest) returns (FilterList) {}
+    rpc SelectFilter(FilterRequest) returns (ResponseMsg) {}
+    rpc GetProbeList(BlankRequest) returns (ProbeList) {}
+    rpc SelectProbe(ProbeRequest) returns (ResponseMsg) {}
+    rpc GetCompressionTypeList(BlankRequest) returns (StringList) {}
+    rpc SelectCompressionType(NameRequest) returns (ResponseMsg) {}
+    rpc ChangeTxMask(MaskMsg) returns (ResponseMsg) {}
+    rpc ChangeRxMask(MaskMsg) returns (ResponseMsg) {}
+    rpc GetTxMask(BlankRequest) returns (stream MaskMsg) {}
+    rpc GetRxMask(BlankRequest) returns (stream MaskMsg) {}
+    rpc UserLogin(Credentials) returns (ResponseMsg) {}
+    rpc UserLogout(BlankRequest) returns (ResponseMsg) {}
+    rpc ExternalStorageInfo(BlankRequest) returns (ExternalStorageMsg) {}
+    rpc MountExternalStorage(StorageRequest) returns (ResponseMsg) {}
+    rpc UnmountExternalStorage(BlankRequest) returns (ResponseMsg) {}
+    rpc GetAbout(BlankRequest) returns (AboutMsg) {}
+    rpc SendVersionInfo(VersionInfo) returns (ResponseMsg) {}
+}
+
+message AboutMsg {
+    string text = 1;
+}
+
+message VersionInfo {
+    string name = 1;
+    string version = 2;
+}
+
+message Credentials {
+    string username = 1;
+    string password = 2;
+}
+
+message ExternalStorageMsg {
+    string mount = 1;
+    repeated string usb_drives = 2;
+}
+
+message StorageRequest {
+    string name = 1;
+    Credentials credentials = 2;
+    bool auto_connect = 3;
+}
+
+message MaskMsg {
+    bool on = 1;
+    int32 element = 2;
+} 
+
+message BlankRequest {
+}
+
+message ProbeList {
+    repeated string names = 1;
+}
+
+message StringList {
+    repeated string names = 1;
+}
+
+message NameRequest {
+    string name = 1;
+}
+
+message ProbeRequest {
+    string name = 1;
+}
+
+message FilterRequest {
+    int32 index = 1;
+}
+
+message ClearErrorsRequest {
+}
+
+message DiagnosticTestsRequest {
+}
+
+message MediaFileRequest {
+}
+
+enum MediaControlType {
+    PLAY = 0;
+    PAUSE = 1;
+}
+
+message MediaUpdateRequest {
+    bool exit = 1;
+    MediaControlType state = 2;
+}
+
+message MediaFile {
+    bool video = 1;
+    bool still = 2;
+    string name = 3;
+    int64 duration = 4;
+    bytes data = 5;
+}
+
+enum ProgressType {
+    MEDIA = 0;
+    DIAGNOSTICS = 1;
+}
+
+message ProgressRequest {
+    ProgressType type = 1;
+}
+
+message Progress {
+    float percent_complete = 1;
+    string msg = 2;
+    int32 code = 3;
+}
+
+message DiagnosticTestList {
+    repeated string test = 1;
+}
+
+message DiagnosticRequest {
+    string test = 1;
+}
+
+enum FileType {
+    STILL = 0;
+    VIDEO = 1;
+    DATASET = 2;
+}
+
+message ExamStore {
+    string name = 1;
+    bytes thumbnail = 2;
+}
+
+message SaveRequest {
+    FileType type = 1;
+    uint32 start_frame = 2;
+    uint32 n_frames = 3;
+    string name = 4;
+}
+
+message QueryRequest {
+    string pattern = 1;
+}
+
+message PatientRequest {
+    string patient_id = 1;
+}
+
+message Patient {
+    string id = 1;
+    string first = 2;
+    string last = 3;
+    string birth = 4;
+    string sex = 5;
+}
+
+message ExamStoresRequest {
+    Exam exam = 1;
+    string patient_id = 2;
+    FileType type = 3;
+}
+
+message ExamStoresTypeRequest {
+    Exam exam = 1;
+    string patient_id = 2;
+}
+
+message ExamStoresTypes {
+    bool stills = 1;
+    bool videos = 2;
+    bool datasets = 3;
+}
+
+message ExamFileRequest {
+    FileType type = 1;
+    string name = 2;
+    string patient_id = 3;
+    Exam exam = 4;
+} 
+
+message Exam {
+    string name = 1;
+    string date = 2;
+    string comments = 3;
+    string url = 4;
+}
+
+message ExamRequest {
+    Patient patient = 1;
+    Exam exam = 2;
+}
+
+message FrameMsg {
+    repeated uint32 frames = 1;
+}
+
+message FilterList {
+    repeated string filter = 1;
+}
+
+message Pixel {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message FrameRequest {}
+message MeasurementRequest {}
+message EditMeasurementRequest {
+    int32 idx = 1;
+}
+message CursorMoveRequest {
+    Pixel delta = 1;
+}
+message ShutdownRequest {}
+message MasterControlRequest {}
+message MasterReleaseRequest {
+    string uuid = 1;
+}
+
+message IDMsg {
+  uint32 value = 1;
+}
+
+message IDRequest {
+  bool next = 1;
+}
+
+message SystemStateRequest {
+}
+
+message ImageRequest {
+  uint64 time = 1;
+  uint64 chunk_size = 2; //in bytes
+}
+
+message Measurement {
+    Pixel p1 = 1;
+    Pixel p2 = 2;
+    float length = 3;
+}
+
+message Measurements {
+    repeated Measurement measurements = 1;
+    uint32 frame = 2;
+}
+
+message MediaRequest {
+    bool active = 1;
+    MediaControlType state = 2;
+}
+
+message FpgaStatus {
+  string id = 1;
+  string version = 2;
+  float temp = 3;
+  float vccint = 4;
+  float vccaux = 5;
+  float vccbram = 6;
+  repeated string errors = 7;
+}
+
+message SystemStatus {
+  string name = 1;
+  repeated string errors = 2;
+}
+
+message Fan
+{
+    int32 speed = 1;
+    int32 duty_cycle = 2;
+}
+
+message FanController
+{
+    int32 device_id = 1;
+    int32 company_id = 2;
+    int32 revision = 3;
+    repeated Fan fans = 4;
+}
+
+message ImageChunk {
+  uint64 time = 1;
+  uint32 width = 2;
+  uint32 height = 3;
+  uint32 depth = 4;
+  float x_position = 5;
+  float y_position = 6;
+  float z_position = 7;
+  float x_spacing = 8;
+  float y_spacing = 9;
+  float z_spacing = 10;
+  float scale = 11;
+  uint32 current_frame = 12;
+  uint32 pb_size = 13;
+  uint32 pb_buffer_size = 14;
+  uint32 pb_start = 15;
+  ImageFormat image_format = 16;
+  repeated Measurement measurements = 17;
+  Pixel meas_pos = 18;
+  Pixel meas_mark_pos = 19;  
+  int32 meas_highlight = 20;
+  bytes pixels = 21;
+}
+
+message SystemState
+{
+  ImageChunk image = 1;
+  float contrast = 2;
+  float brightness = 3;
+  float gamma = 4;
+  float acoustic_power = 5;
+  float tx_freq = 6;
+  float master_gain = 7;
+  string probe_name = 8;
+  float sos = 9; //meters per second
+  float edge_filter = 10;
+  float gaussian_filter = 11;
+  repeated float tgc = 12;
+  bool run = 13;
+  bool playback = 14;
+  float focus = 15;
+  int32 tx_apts = 16;
+  int32 rx_apts = 17;
+  int32 smoothing = 18;
+  bool system_error = 19;
+  string patient_id = 20;
+  string exam_name = 21;
+  float agc_offset = 22;
+  string frame_persistence = 23;
+  int32 ping_persistence = 24;
+  int32 fps = 25;
+  int32 pps = 26;
+  float zoom = 27;
+  MediaRequest media = 28;
+  //bool rx_read_sync_fail = 29;
+  int32 filter_select = 29;
+  //DeviceStatus ilc_status = 30;
+  //repeated DeviceStatus rx_status = 31;
+  repeated google.protobuf.Any device_status = 30;
+  bool auto_contrast = 31; 
+}
+//
+// General parameter messages
+//
+
+message BeamformerParameter {
+  string name = 1;
+  google.protobuf.Any value = 2;
+}
+
+message BeamformerParametersRequest {
+  repeated BeamformerParameter parameters = 1;
+  string uuid = 2;
+}
+
+message BeamformerParametersResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+//
+// Specific parameter messages
+//
+message FloatParam {
+  float value = 1;
+  bool absolute = 2;
+}
+
+message IntParam {
+  sint32 value = 1;
+  bool absolute = 2;
+}
+
+message ToggleParam {
+}
+
+message FloatArrayParam {
+  int32 index = 1;
+  float value = 2;
+  bool absolute = 3;
+}
