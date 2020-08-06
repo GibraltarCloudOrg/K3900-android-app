@@ -1,5 +1,6 @@
 package com.example.mauiviewer;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -7,7 +8,10 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
@@ -19,6 +23,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
@@ -31,6 +36,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Nonnull;
 
+import k3900.K3900;
+
 import static android.net.wifi.p2p.WifiP2pManager.BUSY;
 import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_DISCOVERY_STARTED;
 import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_DISCOVERY_STOPPED;
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     IntentFilter mIntentFilter;
     WifiP2pManager mP2pManager;
     WifiP2pManager.Channel mP2pChannel;
+    //WifiManager mWifiManager;
     Button mPingButton;
     BroadcastReceiver mP2pReceiver;
     public static final String TAG = "Maui-viewer";
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean mConnectionInProgress = false;
     Boolean mDiscovery = false;
     MainActivity mTheOne = this;
+    Boolean mAvailableOccurred = false;
     Boolean mDiscoverRequestComplete = false;
     Boolean mDiscoverPeersComplete = false;
     Boolean mConnectionStartRequest = false;
@@ -59,13 +68,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate called");
         setContentView(R.layout.activity_main);
 
         mP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        /*mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (mWifiManager != null) {
+            if (!mWifiManager.isWifiEnabled()) {
+                Log.d(TAG, "Enable Wifi");
+                mWifiManager.setWifiEnabled(true);
+            }
+        }*/
 
         if (mP2pManager != null) {
             mP2pChannel = mP2pManager.initialize(this, getMainLooper(), null);
+        } else {
+            Log.d(TAG, "null p2p pointer");
         }
 
         mP2pReceiver = new WifiDirectBroadcastReceiver(mP2pManager,mP2pChannel,this);
@@ -88,8 +106,15 @@ public class MainActivity extends AppCompatActivity {
         mPingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mBackend.ping();
-                Log.d(TAG, mBackend.ping());
+                try {
+                    String result = mBackend.ping();
+                    Log.d(TAG, result);
+                    K3900.SystemState state = mBackend.getSystemState();
+                    Log.d(TAG, state.getProbeName());
+                }
+                catch (LostCommunicationException le) {
+                    Log.d(TAG, le.getMessage());
+                }
             }
         });
 
@@ -138,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Fine location permission is not granted!");
                 finish();
             }
-                //break;
         }
     }
 
@@ -146,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPeersAvailable(WifiP2pDeviceList peerList) {
 
-
+            Log.d(TAG, "onPeersAvailable?");
             List<WifiP2pDevice> p2pPeers = new ArrayList<>(peerList.getDeviceList());
             //p2pPeers.addAll(peerList.getDeviceList());
             try {
@@ -196,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case WifiP2pDevice.AVAILABLE:
                     msg += "mAvailable";
+                    mAvailableOccurred = true;
                     break;
                 case WifiP2pDevice.UNAVAILABLE:
                     msg += "mUnavailable";
@@ -207,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (device.deviceName.compareTo("DIRECT-K3900") == 0) {
                 device_found = true;
-                if (device.status ==  WifiP2pDevice.AVAILABLE) {
+                if (device.status ==  WifiP2pDevice.AVAILABLE && !mConnected) {
                     if (!mConnectionInProgress) {
                         WifiP2pConfig config = new WifiP2pConfig();
                         config.deviceAddress = device.deviceAddress;
@@ -218,6 +243,14 @@ public class MainActivity extends AppCompatActivity {
                         while (!mConnectionStartRequest) {
                             SystemClock.sleep(1000);
                         }
+                    }
+                }
+                else if (device.status ==  WifiP2pDevice.CONNECTED && !mAvailableOccurred) {
+                    if (!mConnectionInProgress) {
+                        this.mP2pManager.requestConnectionInfo(this.mP2pChannel, this.connectionInfoListener);
+                        while(!this.mConnectionInfoRequest)
+                            SystemClock.sleep(500);
+                        mAvailableOccurred = true;
                     }
                 }
             }
@@ -247,15 +280,32 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    WifiP2pManager.ActionListener actionDiscoverStop = new WifiP2pManager.ActionListener() {
+        @Override
+        public void onSuccess() {
+            Log.d(TAG, "DISCOVERY SHOULD BE STOPPED");
+        }
+
+        @Override
+        public void onFailure(int i) {
+            if (i == BUSY) {
+                Log.d(TAG, "Discovery Busy");
+            }
+            else {
+                Log.d(TAG, "Discovery Error");
+            }
+        }
+    };
+
     WifiP2pManager.DiscoveryStateListener discoveryStateListener = new WifiP2pManager.DiscoveryStateListener() {
         @Override
         public void onDiscoveryStateAvailable(int state) {
 
             if (state == WIFI_P2P_DISCOVERY_STARTED) {
+                Log.d(TAG, "Discovery started");
                 mDiscovery = true;
-            }
-            else if (state == WIFI_P2P_DISCOVERY_STOPPED) {
-                Log.d(TAG, "discovery stopped");
+            } else if (state == WIFI_P2P_DISCOVERY_STOPPED) {
+                Log.d(TAG, "Discovery stopped");
                 mDiscovery = false;
             }
             mDiscoverRequestComplete = true;
@@ -269,9 +319,8 @@ public class MainActivity extends AppCompatActivity {
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
 
             final InetAddress groupOwnerAddress = info.groupOwnerAddress;
-            //Log.d(TAG, "Address = " + groupOwnerAddress);
-            if (info.groupFormed){
 
+            if (info.groupFormed){
                 if (!mConnected) {
                     mConnected = true;
                     mRelativeLayout.setBackgroundColor(Color.GREEN);
@@ -300,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "Resume");
         registerReceiver(mP2pReceiver, mIntentFilter);
+        //mP2pManager.cancelConnect(mP2pChannel, actionConnectListener);
     }
 
     @Override
@@ -325,9 +375,18 @@ public class MainActivity extends AppCompatActivity {
             this.activityReference = new WeakReference<>(activity);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         public void run() {
 
             MainActivity activity = activityReference.get();
+            long nextTime = 0;
+            K3900.ImageRequest.Builder imageRequest;
+
+
+
+            //Log.d(TAG, "Stop peer discovery");
+            //activity.mP2pManager.stopPeerDiscovery(mP2pChannel, actionDiscoverStop);
+            //SystemClock.sleep(5000);
 
             while (true) {
 
@@ -353,9 +412,10 @@ public class MainActivity extends AppCompatActivity {
                     while(!activity.mDiscoverRequestComplete)
                         SystemClock.sleep(500);
 
-                    if (!activity.mDiscovery) {
+                    if (!activity.mDiscovery || !mConnected) {
                         //mDiscoveryInProgress = true;
                         activity.mDiscoverPeersComplete = false;
+                        Log.d(TAG, "activate PEER Listener");
                         activity.mP2pManager.discoverPeers(mP2pChannel, actionPeerListener);
                         while(!activity.mDiscoverPeersComplete)
                             SystemClock.sleep(500);
@@ -365,10 +425,30 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else {
-                    activity.mConnectionInfoRequest = false;
+                    imageRequest = K3900.ImageRequest.newBuilder().setTime(nextTime);
+                    try {
+                        Image img = mBackend.getImage(imageRequest);
+                        //Bitmap bmap = BitmapFactory.decodeByteArray(img.getData(), 0, img.getData().length);
+                        Bitmap bmap = BitmapFactory.decodeByteArray(img.getData(), 0, img.getData().length);
+                        ImageView image = (ImageView) findViewById(R.id.bfImageView);
+                        image.setImageBitmap(bmap);
+
+                        if (img.getTime() == Long.MAX_VALUE) {
+                            nextTime = 1;
+                        } else {
+                            nextTime = img.getTime() + 1;
+                        }
+                    } catch (LostCommunicationException le) {
+                        Log.d(TAG, le.getCause().getMessage());
+                        Log.d(TAG, le.getMessage());
+                    } catch (ImageNotAvailableException ie) {
+                        Log.d(TAG, ie.getMessage());
+                    }
+
+                    /*activity.mConnectionInfoRequest = false;
                     activity.mP2pManager.requestConnectionInfo(activity.mP2pChannel, activityReference.get().connectionInfoListener);
                     while(!activity.mConnectionInfoRequest)
-                        SystemClock.sleep(500);
+                        SystemClock.sleep(500);*/
 
                 }
                 SystemClock.sleep(500);

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MauiViewer</string>
     <string name="ping_button">Ping</string>
+    <string name="image_desc">Ultrasound Image</string>
 </resources>
