@@ -8,15 +8,18 @@
 
     <ImageView
         android:id="@+id/bfImageView"
-        android:layout_width="711dp"
-        android:layout_height="573dp"
+        android:layout_width="512px"
+        android:layout_height="512px"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="#FFFFFF"
         android:contentDescription="@string/image_desc"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:color/background_dark"
-        tools:srcCompat="@android:color/background_dark" />
+        tools:srcCompat="@android:color/background_dark"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/pingButton"

@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.io.ByteArrayInputStream;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -427,17 +428,42 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     imageRequest = K3900.ImageRequest.newBuilder().setTime(nextTime);
                     try {
-                        Image img = mBackend.getImage(imageRequest);
-                        //Bitmap bmap = BitmapFactory.decodeByteArray(img.getData(), 0, img.getData().length);
-                        Bitmap bmap = BitmapFactory.decodeByteArray(img.getData(), 0, img.getData().length);
-                        ImageView image = (ImageView) findViewById(R.id.bfImageView);
-                        image.setImageBitmap(bmap);
+                        //Image img = mBackend.getImage(imageRequest);
+                        final ImageView image = (ImageView) findViewById(R.id.bfImageView);
+                        int size = 512*512;
 
-                        if (img.getTime() == Long.MAX_VALUE) {
+                        byte[] byteArray = new byte[size];
+                        for (int i = 0; i < size; i++) {
+                            byteArray[i] = (byte)(i%256);
+                        }
+                        int[] color = new int[size];
+                        for (int i = 0; i < size; i++) {
+                            int b = ((int)byteArray[i])&0xff;
+                            //color[i] = 0xFF000000 | (((int)byteArray[i])&0xff << 16) | (byteArray[i] << 8) | (byteArray[i]);
+                            color[i] = 0xFF000000 | (b << 16) | (b << 8) | b;
+                        }
+                        final Bitmap bmap = Bitmap.createBitmap(color, 512, 512, Bitmap.Config.ARGB_8888);
+                                //ByteArrayInputStream isBm = new ByteArrayInputStream(byteArray);
+                        //Bitmap bm = BitmapFactory.decodeStream(isBm, null, null);
+                        //Bitmap bmap = BitmapFactory.decodeByteArray(img.getData(), 0, img.getData().length);
+                        //Bitmap bmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                        image.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                image.setImageBitmap(bmap);
+                            }
+                        });
+                        //ImageView image = (ImageView) findViewById(R.id.bfImageView);
+                        //image.setImageBitmap(Bitmap.createScaledBitmap(bmap, image.getWidth(), image.getHeight(), false));
+                        //size = image.getMaxHeight()*image.getMaxWidth();
+                        //Log.d(TAG, "size = (" + image.getWidth() + ", " + image.getHeight() + ")");
+
+                        /*if (img.getTime() == Long.MAX_VALUE) {
                             nextTime = 1;
                         } else {
                             nextTime = img.getTime() + 1;
-                        }
+                        }*/
                     } catch (LostCommunicationException le) {
                         Log.d(TAG, le.getCause().getMessage());
                         Log.d(TAG, le.getMessage());
