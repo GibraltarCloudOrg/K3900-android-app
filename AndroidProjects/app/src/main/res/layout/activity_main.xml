@@ -278,6 +278,12 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="numberDecimal" />
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="setSaveButtonHidden"
+                    android:text="Element Masking Save Button" />
             </LinearLayout>
 
         </TableRow>
