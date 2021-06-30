@@ -425,7 +425,6 @@ class DecrementFramePersistence implements BackEndElement {
 class SetElementMasking implements BackEndElement{
     private int mIndex;
     private boolean mMask;
-    private ElementButton mButton;
     private boolean mSaveButtonHidden;
     private Switch mLeftSwitch;
     private Switch mCenterSwitch;
@@ -459,15 +458,7 @@ class SetElementMasking implements BackEndElement{
         mIndex=index;
     }
 
-    public void setSaveButtonHidden(boolean hidden){
-        mSaveButtonHidden=hidden;
-    }
-
-    public boolean getSaveButtonHidden(){
-        return mSaveButtonHidden;
-    }
-
-    public void checkSwitches(){
+   /* public void checkSwitches(){
         boolean group1=true;
         boolean group2=true;
         boolean group3=true;
@@ -499,7 +490,7 @@ class SetElementMasking implements BackEndElement{
         mElementButtonList1=elementButtonList1;
         mElementButtonList2=elementButtonList2;
         mElementButtonList3=elementButtonList3;
-    }
+    }*/
 }
 
 class SetTxElementMasking extends SetElementMasking{
@@ -557,13 +548,14 @@ class SetTxSwitchListener implements BackEndElement{
         return mSwitch.isChecked();
     }
 
-    public void setSaveButtonHidden(boolean hidden){
+    /*public void setSaveButtonHidden(boolean hidden){
         mSaveButtonHidden=hidden;
     }
 
     public boolean getSaveButtonHidden(){
         return mSaveButtonHidden;
     }
+    */
 }
 
 class SetRxSwitchListener implements BackEndElement{
@@ -597,23 +589,17 @@ class SetRxSwitchListener implements BackEndElement{
         return mElementButtonList;
     }
 
-    public void setButtonsEnabled(ElementButtonList elementButtonList, boolean enabled){
-        for(int i=0;i<elementButtonList.size();i++){
-            elementButtonList.get(i).setEnabled(enabled);
-        }
-    }
-
     public boolean getIsChecked(){
         return mSwitch.isChecked();
     }
 
-    public void setSaveButtonHidden(boolean hidden){
+    /*public void setSaveButtonHidden(boolean hidden){
         mSaveButtonHidden=hidden;
     }
 
     public boolean getSaveButtonHidden(){
         return mSaveButtonHidden;
-    }
+    }*/
 }
 
 class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
@@ -743,52 +729,38 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
 
     @Override
     public boolean visit(SetTxElementMasking element){
-        //element.getButton().alternate();
-        //element.checkSwitches();
         element.setMask(!element.getMask());
-        if(element.getSaveButtonHidden()) {
-            mBackend.onChangeTxMask(element.getIndex(), element.getMask());
-        }
+        mBackend.onChangeTxMask(element.getIndex(), element.getMask());
         //element.checkSwitches();
-        return false;
+        return true;
     }
 
     @Override
     public boolean visit(SetRxElementMasking element){
-        //element.getButton().alternate();
-        //element.checkSwitches();
         element.setMask(!element.getMask());
-        if(element.getSaveButtonHidden()) {
         mBackend.onChangeRxMask(element.getIndex(), element.getMask());
-        }
         //element.checkSwitches();
-        return false;
+        return true;
     }
 
     @Override
     public boolean visit(SetTxSwitchListener element){
         //element.setButtonsEnabled(element.getElementButtonList(),element.getIsChecked());
-        if(element.getSaveButtonHidden()) {
-            for (int i = 0; i < element.getElementButtonList().size(); i++) {
-                //mBackend.onChangeTxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getElementButtonList().get(i).getEnabled());
-                mBackend.onChangeTxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getSwitch().isChecked());
-            }
-            //return mBackend.onChangeTxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(), element.getElementButtonList().get(element.getElementButtonList().size() - 1).getEnabled());
-            return mBackend.onChangeTxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(),element.getSwitch().isChecked());
+        for (int i = 0; i < element.getElementButtonList().size(); i++) {
+            //mBackend.onChangeTxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getElementButtonList().get(i).getEnabled());
+            mBackend.onChangeTxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getSwitch().isChecked());
         }
-        return false;
+        //return mBackend.onChangeTxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(), element.getElementButtonList().get(element.getElementButtonList().size() - 1).getEnabled());
+        return mBackend.onChangeTxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(),element.getSwitch().isChecked());
     }
 
     public boolean visit(SetRxSwitchListener element){
         //element.setButtonsEnabled(element.getElementButtonList(),element.getIsChecked());
-        if(element.getSaveButtonHidden()) {
-            for (int i = 0; i < element.getElementButtonList().size(); i++) {
-                mBackend.onChangeRxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getSwitch().isChecked());
-            }
-            //return mBackend.onChangeRxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(), element.getElementButtonList().get(element.getElementButtonList().size() - 1).getEnabled());
-            return mBackend.onChangeRxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(),element.getSwitch().isChecked());
+        for (int i = 0; i < element.getElementButtonList().size(); i++) {
+            mBackend.onChangeRxMask(element.getElementButtonList().get(i).getButtonNumber(), element.getSwitch().isChecked());
         }
-        return false;
+        //return mBackend.onChangeRxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(), element.getElementButtonList().get(element.getElementButtonList().size() - 1).getEnabled());
+        return mBackend.onChangeRxMask(element.getElementButtonList().get((element.getElementButtonList().size()) - 1).getButtonNumber(),element.getSwitch().isChecked());
     }
 }
 

@@ -27,6 +27,7 @@ public class EngineeringMenuDialog {
     int mLastClickId = -1;
     EngineeringImagingDialog mEngineeringImagingDialog = null;
     EngineeringDialog mEngineeringDialog = null;
+    EngineeringSettingsDialog mEngineeringSettingsDialog=null;
 
     public EngineeringMenuDialog(Context context) {
         mContext = context;
@@ -36,6 +37,7 @@ public class EngineeringMenuDialog {
         setUpListeners();
         mDialog.getWindow().setGravity(Gravity.RIGHT);
         mDialog.show();
+        mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
     }
 
     private void setUpWidgets() {
@@ -48,19 +50,26 @@ public class EngineeringMenuDialog {
                 mLastClickId = position;
                 String selectedString = engineeringMenuListView.getAdapter().getItem(position).toString();
                 //if (null == mEngineeringDialog)
-                    mEngineeringDialog = new EngineeringDialog(mContext);
+                    //mEngineeringDialog = new EngineeringDialog(mContext);
+                    //mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
                 //String test = mContext.getResources().getString(R.string.general);
                 if (selectedString.equals(mContext.getResources().getString(R.string.general)))
-                    mEngineeringDialog.showGeneralPage();
+                    //mEngineeringDialog.showGeneralPage();
+                    mEngineeringSettingsDialog.showDialog(mContext,0);
+                //mEngineeringSettingsDialog.show(mContext,0);
                 else if (selectedString.equals(mContext.getResources().getString(R.string.element_masking))) {
                     //mEngineeringDialog.showElementMaskingPage();
-                    mEngineeringDialog.close();
+                    //mEngineeringDialog.close();
+                    /*
                     Toast.makeText(mContext, "Loading... please wait", Toast.LENGTH_SHORT).show();
                     ViewDialog alert = new ViewDialog(mContext);
-                    alert.showDialog(mContext);
+                    alert.showDialog(mContext);*/
+                    mEngineeringSettingsDialog.showDialog(mContext, 1);
                 }
                 else if (selectedString.equals(mContext.getResources().getString(R.string.configure_presets)))
-                    mEngineeringDialog.showPresetsPage();
+                    //mEngineeringDialog.showPresetsPage();
+                    mEngineeringSettingsDialog.showDialog(mContext,2);
+                //mEngineering.show(mContext, 2);
                 else if (selectedString.equals(mContext.getResources().getString(R.string.imaging))) {
                     mEngineeringDialog.close();
                     //mDialog.dismiss();
@@ -115,5 +124,8 @@ public class EngineeringMenuDialog {
             mEngineeringImagingDialog.checkRealtimeStates();
         if (null != mEngineeringDialog)
             mEngineeringDialog.checkRealtimeStates();
+        if(null!=mEngineeringSettingsDialog){
+            mEngineeringSettingsDialog.checkRealtimeStates();
+        }
     }
 }

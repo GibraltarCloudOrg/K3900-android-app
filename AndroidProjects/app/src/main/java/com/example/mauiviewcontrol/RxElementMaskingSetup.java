@@ -1,6 +1,7 @@
 package com.example.mauiviewcontrol;
 
 import android.content.Context;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Switch;
 
@@ -15,7 +16,7 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
     }
 
     @Override
-    public void setButtonOnClickListener(ElementButton button, Context context, Switch leftSwitch, Switch centerSwitch, Switch rightSwitch){
+    public void setButtonOnClickListener(ElementButton button, Context context){
         //button.alternate();
         if(sSaveButtonHidden) {
             final ArrayList<Boolean> rx=mBackend.onGetRxMask();
@@ -27,20 +28,31 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
             BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
             SetRxElementMasking setRxElementMasking = new SetRxElementMasking();
             mSetRxElementMaskingArrayList.add(setRxElementMasking);
-            setRxElementMasking.setSaveButtonHidden(sSaveButtonHidden);
+            //setRxElementMasking.setSaveButtonHidden(sSaveButtonHidden);
             setRxElementMasking.setIndex(button.getButtonNumber());
             setRxElementMasking.setMask(rxButtonStatus.get(button.getButtonNumber()));
-            setRxElementMasking.setSwitches(leftSwitch, centerSwitch, rightSwitch);
-            setRxElementMasking.setElementButtonLists(elementButtonList1, elementButtonList2, elementButtonList3);
+            //setRxElementMasking.setSwitches(leftSwitch, centerSwitch, rightSwitch);
+            //setRxElementMasking.setElementButtonLists(elementButtonList1, elementButtonList2, elementButtonList3);
             WidgetUtility.setUpListener(context, button, null, setRxElementMasking, backEndElementSendingMessageVisitor, false, "", false, "rx changed: " + setRxElementMasking.getIndex(), false);
         }
     }
 
     @Override
     public void run(){
-        completeSetup();
+        Looper.prepare();
+        ((MainActivity)mContext).runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                completeSetup();
+            }
+        });
         if(!sSaveButtonHidden) {
             setData();
+            while(isRunning){
+
+            }
+            checkSwitches();
         }
     }
 
@@ -70,12 +82,17 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
 
     @Override
     public void setSwitchListener(Context context, ElementButtonList elementButtonList, Switch selectAllSwitch, int switchGroup){
-        BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
-        SetRxSwitchListener setRxSwitchListener=new SetRxSwitchListener();
-        setRxSwitchListener.setElementButtonList(elementButtonList);
-        setRxSwitchListener.setSwitch(selectAllSwitch);
-        setRxSwitchListener.setSaveButtonHidden(sSaveButtonHidden);
-        WidgetUtility.setUpListener(context, selectAllSwitch, switchGroup, mSetRxElementMaskingArrayList, null, setRxSwitchListener, backEndElementSendingMessageVisitor, false, "", false, "rx switch ", false);
+        if(!sSaveButtonHidden){
+            super.setSwitchListener(context, elementButtonList, selectAllSwitch, switchGroup);
+        }
+        else {
+            BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
+            SetRxSwitchListener setRxSwitchListener = new SetRxSwitchListener();
+            setRxSwitchListener.setElementButtonList(elementButtonList);
+            setRxSwitchListener.setSwitch(selectAllSwitch);
+            //setRxSwitchListener.setSaveButtonHidden(sSaveButtonHidden);
+            WidgetUtility.setUpListener(context, selectAllSwitch, switchGroup, mSetRxElementMaskingArrayList, null, setRxSwitchListener, backEndElementSendingMessageVisitor, false, "", false, "rx switch ", false);
+        }
     }
 
     public void printRxData(){

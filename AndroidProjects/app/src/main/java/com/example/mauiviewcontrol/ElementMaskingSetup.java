@@ -27,7 +27,7 @@ public  class ElementMaskingSetup implements Runnable {
     protected boolean mInitializationCompleted;
     protected static boolean sSaveButtonHidden=true;
     private View mView;
-    private Context mContext;
+    protected Context mContext;
     protected Switch mLeftSwitch;
     protected Switch mCenterSwitch;
     protected Switch mRightSwitch;
@@ -35,7 +35,6 @@ public  class ElementMaskingSetup implements Runnable {
 
     public ElementMaskingSetup(String name, View view, Context context, Switch leftSwitch, Switch centerSwitch, Switch rightSwitch){
         mName = name;
-        SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);
         //SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         mView=view;
         mContext=context;
@@ -84,35 +83,24 @@ public  class ElementMaskingSetup implements Runnable {
             button.setWidth(120);
             button.setHeight(80);
 
-            setButtonOnClickListener(button, mContext, mLeftSwitch, mCenterSwitch, mRightSwitch);
-
-           /* button.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    button.alternate();
-                    checkSwitches(leftSwitch, centerSwitch, rightSwitch);
-
-                    if(sSaveButtonHidden){
-                        //if(isTx) {
-                            mBackend.onChangeTxMask(index, button.getEnabled());
-                            //BeamformerClient.getBeamformerClientSingletonInstance().onChangeTxMask(index, button.getEnabled());
-
-                        else{
-                            mBackend.onChangeRxMask(index, button.getEnabled());
-                            //BeamformerClient.getBeamformerClientSingletonInstance().onChangeRxMask(index, button.getEnabled());
-                        }
-                        //ArrayList<Boolean>  txStatus = mBackend.onGetTxMask();
-                        //ArrayList<Boolean>  rxStatus = mBackend.onGetRxMask();
+            if(sSaveButtonHidden) {
+                setButtonOnClickListener(button, mContext);
+            }
+            else{
+                button.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        button.alternate();
+                        checkSwitches();
                     }
-                }
-            });*/
-            //button.setEnabled(buttonStatus.get(index));
+                });
+            }
             tableRow.addView(button,120,80);
         }
         tableLayout.addView(tableRow,2000,80);
     }
 
-    protected void setButtonOnClickListener(ElementButton button, Context context, Switch leftSwitch, Switch centerSwitch, Switch RightSwitch){
+    protected void setButtonOnClickListener(ElementButton button, Context context){
     }
 
     private void setButtonsEnabled(ElementButtonList elementButtonList, boolean enabled){
@@ -123,37 +111,13 @@ public  class ElementMaskingSetup implements Runnable {
     }
 
     protected void setSwitchListener(Context context, ElementButtonList elementButtonList, Switch selectAllSwitch, int switchGroup){
-        int groupNumber=elementButtonList.groupNumber();
-        /*Switch txSwitch;
-        if(groupNumber==1) {
-            txSwitch = (Switch) view.findViewById(R.id.txSwitch1);
-        }
-        else if(groupNumber==2){
-            txSwitch=(Switch) view.findViewById(R.id.txSwitch2);
-        }
-        else{
-            txSwitch = (Switch) view.findViewById(R.id.txSwitch3);
-        }*/
-
-        /*selectAllSwitch.setOnClickListener(new View.OnClickListener(){
+        selectAllSwitch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 boolean isChecked=selectAllSwitch.isChecked();
-                selectAllSwitch.setChecked(isChecked);
-                if(selectAllSwitch.isChecked()){
-                    setButtonsEnabled(elementButtonList, true);
-                }
-                else{
-                    setButtonsEnabled(elementButtonList, false);
-                }
-                if(sSaveButtonHidden){
-
-                        for (int i = 0; i < elementButtonList.size(); i++) {
-                            mBackend.onChangeTxMask(elementButtonList.get(i).getButtonNumber(), elementButtonList.get(i).getEnabled());
-                        }
-                }
+                setButtonsEnabled(elementButtonList, isChecked);
             }
-        });*/
+        });
     }
 
     public void completeSetup(){
@@ -294,4 +258,8 @@ public  class ElementMaskingSetup implements Runnable {
     }
 
     public void setData(){}
+
+    public static void setSaveButtonHidden(boolean saveButtonHidden){
+        sSaveButtonHidden=saveButtonHidden;
+    }
 }

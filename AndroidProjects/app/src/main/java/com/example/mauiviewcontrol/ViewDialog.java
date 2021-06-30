@@ -1,6 +1,5 @@
 package com.example.mauiviewcontrol;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -32,7 +31,7 @@ public class ViewDialog extends Dialog{
         mDialog=new Dialog(context);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setCancelable(false);
-        mDialog.setContentView(R.layout.tab_layout);
+        mDialog.setContentView(R.layout.engineering_settings_tab_layout);
         mDialog.getWindow().setLayout(2300, 1500);
 
 
@@ -64,8 +63,8 @@ public class ViewDialog extends Dialog{
             @Override
             public void onClick(View v){
                 DataSaver save=new DataSaver(txSetup, rxSetup);
-                Thread tSave=new Thread(save);
-                tSave.start();
+                //Thread tSave=new Thread(save);
+                //tSave.start();
             }
         });
 

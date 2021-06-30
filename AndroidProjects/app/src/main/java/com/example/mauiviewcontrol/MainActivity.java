@@ -606,6 +606,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         });
     }
 
+    public void setSaveButtonHidden(View view){
+        ElementMaskingSetup.setSaveButtonHidden(!ElementMaskingSetup.sSaveButtonHidden);
+    }
+
     private void setUpProbePage() {
         /*TabLayout testTabLayout = findViewById(R.id.testTabLayout);
         testTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -793,9 +797,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void showElementMaskingDialog(View view){
-        Toast.makeText(getApplicationContext(),"Loading... please wait", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"Loading... please wait", Toast.LENGTH_SHORT).show();
         EngineeringSettingsDialog engineeringSettingsDialog=new EngineeringSettingsDialog(getApplicationContext());
-        engineeringSettingsDialog.showDialog(getApplicationContext());
+        engineeringSettingsDialog.showDialog(getApplicationContext(), 0);
     }
 
     public void showMainWindowWithUnitTestingMode(View view) {

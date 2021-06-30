@@ -1,7 +1,10 @@
 package com.example.mauiviewcontrol;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Switch;
 
@@ -16,7 +19,7 @@ public class TxElementMaskingSetup extends ElementMaskingSetup{
     }
 
     @Override
-    public void setButtonOnClickListener(ElementButton button, Context context, Switch leftSwitch, Switch centerSwitch, Switch rightSwitch){
+    public void setButtonOnClickListener(ElementButton button, Context context){
         //button.alternate();
         if(sSaveButtonHidden) {
             final ArrayList<Boolean> tx=mBackend.onGetTxMask();
@@ -29,18 +32,29 @@ public class TxElementMaskingSetup extends ElementMaskingSetup{
             mSetTxElementMasking.add(setTxElementMasking);
             setTxElementMasking.setIndex(button.getButtonNumber());
             setTxElementMasking.setMask(txButtonStatus.get(button.getButtonNumber()));
-            setTxElementMasking.setSaveButtonHidden(sSaveButtonHidden);
-            setTxElementMasking.setSwitches(leftSwitch, centerSwitch, rightSwitch);
-            setTxElementMasking.setElementButtonLists(elementButtonList1,elementButtonList2,elementButtonList3);
+            //setTxElementMasking.setSaveButtonHidden(sSaveButtonHidden);
+            //setTxElementMasking.setSwitches(leftSwitch, centerSwitch, rightSwitch);
+            //setTxElementMasking.setElementButtonLists(elementButtonList1,elementButtonList2,elementButtonList3);
             WidgetUtility.setUpListener(context, button, null, setTxElementMasking, backEndElementSendingMessageVisitor, false, "", false, "tx changed: " + setTxElementMasking.getIndex(), false);
         }
     }
 
     @Override
     public void run(){
-        completeSetup();
+        Looper.prepare();
+        ((MainActivity)mContext).runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                completeSetup();
+            }
+        });
         if(!sSaveButtonHidden) {
             setData();
+            while(isRunning){
+
+            }
+            checkSwitches();
         }
     }
 
@@ -71,12 +85,17 @@ public class TxElementMaskingSetup extends ElementMaskingSetup{
 
     @Override
     public void setSwitchListener(Context context, ElementButtonList elementButtonList, Switch selectAllSwitch, int switchGroup){
-        BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
-        SetTxSwitchListener setTxSwitchListener=new SetTxSwitchListener();
-        setTxSwitchListener.setElementButtonList(elementButtonList);
-        setTxSwitchListener.setSwitch(selectAllSwitch);
-        setTxSwitchListener.setSaveButtonHidden(sSaveButtonHidden);
-        WidgetUtility.setUpListener(context, selectAllSwitch, switchGroup, mSetTxElementMasking, null, setTxSwitchListener, backEndElementSendingMessageVisitor, false, "", false, "tx switch ", false);
+        if(!sSaveButtonHidden){
+            super.setSwitchListener(context, elementButtonList, selectAllSwitch, switchGroup);
+        }
+        else {
+            BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
+            SetTxSwitchListener setTxSwitchListener = new SetTxSwitchListener();
+            setTxSwitchListener.setElementButtonList(elementButtonList);
+            setTxSwitchListener.setSwitch(selectAllSwitch);
+            //setTxSwitchListener.setSaveButtonHidden(sSaveButtonHidden);
+            WidgetUtility.setUpListener(context, selectAllSwitch, switchGroup, mSetTxElementMasking, null, setTxSwitchListener, backEndElementSendingMessageVisitor, false, "", false, "tx switch ", false);
+        }
     }
 
     public void printTxData(){

@@ -2,18 +2,18 @@ package com.example.mauiviewcontrol;
 
 import java.util.ArrayList;
 
-public class ElementDataSaver implements Runnable{
+public class ElementDataSaver /*implements Runnable*/{
     private ElementMaskingSetup txElementSetup;
     private ElementMaskingSetup rxElementSetup;
     private SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
 
     public ElementDataSaver(ElementMaskingSetup tx, ElementMaskingSetup rx){
-        SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);
+        //SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         txElementSetup=tx;
         rxElementSetup=rx;
     }
 
-    public void run(){
+    public void save(){
         ArrayList<Boolean> txStatus=txElementSetup.getSetButtonStatus();
         ArrayList<Boolean> rxStatus=rxElementSetup.getSetButtonStatus();
 
