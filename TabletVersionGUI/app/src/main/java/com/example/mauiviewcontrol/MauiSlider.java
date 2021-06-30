@@ -62,6 +62,38 @@ public class MauiSlider extends SeekBar {
         );
     }
 
+    static public void setUpSliderListener(Context context, TextView textView, BackEndSliderElement element, BackEndSliderElementSendingMessageVisitor visitor, boolean showToast, String title, float min, float max, float step, SeekBar seekBar) {
+        if (null == seekBar)
+            return;
+        seekBar.setMin((int)min);
+        seekBar.setMax((int) ((max - min) / step));
+        seekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener()
+                {
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        float value = min + (seekBar.getProgress() * step);
+                        element.setValue(value);
+                        boolean result = (showToast ? (MauiToastMessage.displayToastMessage(context, element.accept(visitor), title + element.getRuntimeSubText() + ": " + value, Toast.LENGTH_SHORT)) : element.accept(visitor));
+                        WidgetUtility.updateBeamformerParameterTextView(textView, title, value, result);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                    {
+                        float value = min + (seekBar.getProgress() * step);
+                        element.setValue(value);
+                        boolean result = element.accept(visitor);
+                        WidgetUtility.updateBeamformerParameterTextView(textView, title, value, result);
+                    }
+                }
+        );
+    }
+
     public static void waitFor(int seconds) {
         seconds = seconds < 0 ? 0 : seconds;
         while (--seconds >= 0) {

@@ -26,7 +26,7 @@ public class ActionButtonsImagingDialog {
     private SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
     private WifiDirectDeviceList mWifiDirectDeviceList = WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance();
     private final Context mContext;
-    TouchDialog mDialog = null;
+    private TouchDialog mDialog = null;
     private BackEndSliderElementSendingMessageVisitor mBackEndSliderElementSendingMessageVisitor = null;
     private boolean readyForCheckRealtimeStates = false;
     private ImageView mPreviousImageView = null;
@@ -57,6 +57,14 @@ public class ActionButtonsImagingDialog {
         updateConnectionStatus();
         startTimers();
         readyForCheckRealtimeStates = true;
+    }
+
+    public TextView getBeamformerParameterValueLowerTextView() {
+        return mDialog.findViewById(R.id.beamformerParameterValueLowerTextView);
+    }
+
+    public TextView getBeamformerParameterValueTextView() {
+        return mDialog.findViewById(R.id.beamformerParameterValueTextView);
     }
 
     private void includeBeamformerControllerFloatingActionButtonsView() {
@@ -195,9 +203,6 @@ public class ActionButtonsImagingDialog {
         WidgetUtility.setUpPowerImageView(mDialog.findViewById(R.id.powerImageView), mContext);
         WidgetUtility.setUpCleanScreenButton(mDialog.findViewById(R.id.cleanScreenButton), mContext);
         WidgetUtility.setUpDisconnectServerButton(mDialog.findViewById(R.id.disconnectServerButton), mContext);
-        SpeedOfSoundView.setUpDecreaseFocusButtonListener(mDialog, mContext, mDialog.findViewById(R.id.decreaseFocusFloatingActionButton));
-        SpeedOfSoundView.setUpIncreaseFocusButtonListener(mDialog, mContext, mDialog.findViewById(R.id.increaseFocusFloatingActionButton));
-        SpeedOfSoundView.setUpToggleSosButtonListener(mDialog, mContext, mDialog.findViewById(R.id.toggleSosFloatingActionButton));
         WidgetUtility.setUpMauiLogoImageViewListener(mDialog.findViewById(R.id.mauiLogoImageView), mContext, mDialog);
     }
 
@@ -251,17 +256,17 @@ public class ActionButtonsImagingDialog {
     private void checkRequestMessageButtonsStates() {
         mDialog.findViewById(R.id.imagePositionHomeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
         mDialog.findViewById(R.id.imagePositionCenterButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.playPauseImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.stepBackwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.stepForwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.livePlaybackButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.runFreezeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        int livePlaybackButtonVisible = !mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;
-        mDialog.findViewById(R.id.livePlaybackButton).setVisibility(livePlaybackButtonVisible);
-        int runFreezeButtonVisible = mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;
-        mDialog.findViewById(R.id.runFreezeButton).setVisibility(runFreezeButtonVisible);
-        int playPauseImageResource = mBackend.paused() ? R.drawable.right_arrow : R.drawable.pause_bars;
-        ((ImageButton)mDialog.findViewById(R.id.playPauseImageButton)).setImageResource(playPauseImageResource);
+        //mDialog.findViewById(R.id.playPauseImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        //mDialog.findViewById(R.id.stepBackwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        //mDialog.findViewById(R.id.stepForwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        //mDialog.findViewById(R.id.livePlaybackButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        //mDialog.findViewById(R.id.runFreezeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        //int livePlaybackButtonVisible = !mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;
+        //mDialog.findViewById(R.id.livePlaybackButton).setVisibility(livePlaybackButtonVisible);
+        //int runFreezeButtonVisible = mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;
+        //mDialog.findViewById(R.id.runFreezeButton).setVisibility(runFreezeButtonVisible);
+        //int playPauseImageResource = mBackend.paused() ? R.drawable.right_arrow : R.drawable.pause_bars;
+        //((ImageButton)mDialog.findViewById(R.id.playPauseImageButton)).setImageResource(playPauseImageResource);
     }
 
     private void updateImagingWidgets() {

@@ -1,7 +1,8 @@
 package com.example.mauiviewcontrol;
 
 public class ParameterLimits {
-    public static final float FloatValueStep = 0.001f;
+    public static final float FloatValueStep = 0.0001f;
+    //public static final float FloatValueStep = 0.001f;
     public static final float MinContrast = 0.0f;
     public static final float MaxContrast = 1.0f;
     public static final float MinAutoBrightness = 0.0f;

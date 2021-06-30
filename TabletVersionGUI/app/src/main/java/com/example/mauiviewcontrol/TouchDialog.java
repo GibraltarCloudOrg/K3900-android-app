@@ -19,12 +19,25 @@ public class TouchDialog extends Dialog {
     }
 
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        return TouchEvent.onTouchEvent(motionEvent, mScaleGestureDetector);
+        if (0 != mOffset)
+            return TouchEvent.onTouchEvent(motionEvent, mScaleGestureDetector, mOffset, mScale);
+        else
+            return TouchEvent.onTouchEvent(motionEvent, mScaleGestureDetector);
     }
 
     public void setTgcSliderArray(ArrayList<MauiSlider> tgcSeekBars) {
         TouchEvent.setTgcSliderArray(tgcSeekBars);
     }
 
+    public void setOffset(float offset) {
+        mOffset = offset;
+    }
+
+    public void setScale(float scale) {
+        mScale = scale;
+    }
+
     private ScaleGestureDetector mScaleGestureDetector;
+    private float mOffset = 0;
+    private float mScale = 1;
 }

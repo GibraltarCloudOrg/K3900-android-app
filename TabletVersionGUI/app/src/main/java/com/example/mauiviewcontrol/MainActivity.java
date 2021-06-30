@@ -118,7 +118,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     private PatientsDialog mPatientDialog = null;
     private EngineeringMenuDialog mEngineeringMenuDialog = null;
     private SystemsDialog mSystemsDialog = null;
+    private TgcView mTgcView = null;
     private SpeedOfSoundView mSpeedOfSoundView = null;
+    private GainView mGainView = null;
+    private FiltersView mFiltersView = null;
+    private ContrastView mContrastView = null;
     private boolean mDebugMode = false;
     //private MauiSlider mMauiSlider1 = null;
 
@@ -602,6 +606,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         });
     }
 
+    public void setSaveButtonHidden(View view){
+        ElementMaskingSetup.setSaveButtonHidden(!ElementMaskingSetup.sSaveButtonHidden);
+    }
+
     private void setUpProbePage() {
         /*TabLayout testTabLayout = findViewById(R.id.testTabLayout);
         testTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -778,7 +786,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void showFloatingActionButtonsImagingDialog(View view) {
-        mBackend.setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);
+        //mBackend.setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);
         mActionButtonsImagingDialog = new ActionButtonsImagingDialog(this, mEnableDisplay, mDebugMode);
         //SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
         //showSelectMauiServerDialog(null);
@@ -789,14 +797,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void showElementMaskingDialog(View view){
-        //Toast.makeText(MainActivity.this,"Loading... please wait1", Toast.LENGTH_LONG).show();
-        EngineeringSettingsDialog engineeringSettingsDialog=new EngineeringSettingsDialog(this);
-        engineeringSettingsDialog.showDialog(this, 0);
-    }
-
-    public void showImagePositionDialog(View view){
-        ImagePositionDialog imagePositionDialog=new ImagePositionDialog(this);
-        imagePositionDialog.showDialog();
+        //Toast.makeText(getApplicationContext(),"Loading... please wait", Toast.LENGTH_SHORT).show();
+        EngineeringSettingsDialog engineeringSettingsDialog=new EngineeringSettingsDialog(getApplicationContext());
+        engineeringSettingsDialog.showDialog(getApplicationContext(), 0);
     }
 
     public void showMainWindowWithUnitTestingMode(View view) {
@@ -885,8 +888,24 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         mBackend.onDlcChanged(0);
     }
 
+    public void onTgc(View view) {
+        mTgcView = new TgcView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
+    }
+
     public void onSpeedOfSound(View view) {
         mSpeedOfSoundView = new SpeedOfSoundView(this);
+    }
+
+    public void onGain(View view) {
+        mGainView = new GainView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
+    }
+
+    public void onFilters(View view) {
+        mFiltersView = new FiltersView(this);
+    }
+
+    public void onContrast(View view) {
+        mContrastView = new ContrastView(this);
     }
 
     public void onPinch2Zoom(View view) {
@@ -1706,10 +1725,20 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                                 mSystemsDialog.checkRealtimeStates();
                             if (null != mMainImagingDialog)
                                 mMainImagingDialog.checkRealtimeStates();
+                            if (null != mActionButtonsImagingDialog)
+                                mActionButtonsImagingDialog.checkRealtimeStates();
                             if (null != mMeasureImagingDialog)
                                 mMeasureImagingDialog.checkRealtimeStates();
+                            if (null != mTgcView)
+                                mTgcView.checkRealtimeStates();
                             if (null != mSpeedOfSoundView)
                                 mSpeedOfSoundView.checkRealtimeStates();
+                            if (null != mGainView)
+                                mGainView.checkRealtimeStates();
+                            if (null != mFiltersView)
+                                mFiltersView.checkRealtimeStates();
+                            if (null != mContrastView)
+                                mContrastView.checkRealtimeStates();
                             //updateDisplayWidgets();
                             ImageStreamer imageStreamer = ImageStreamer.getImageStreamerSingletonInstance();
                             //if (null == mEngineeringMenuDialog || null == imageStreamer.getImageView() || !mEngineeringMenuDialog.isEngineeringImagingDialogVisible())
@@ -1752,9 +1781,5 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                 }
             }).start();
         }
-    }
-
-    public void setSaveButtonHidden(View view){
-        ElementMaskingSetup.setSaveButtonHidden(!ElementMaskingSetup.sSaveButtonHidden);
     }
 }

@@ -41,6 +41,10 @@ public class TouchEvent {
     }
 
     static public boolean onTouchEvent(MotionEvent motionEvent, ScaleGestureDetector scaleGestureDetector) {
+        return onTouchEvent(motionEvent, scaleGestureDetector, 0, 1);
+    }
+
+    static public boolean onTouchEvent(MotionEvent motionEvent, ScaleGestureDetector scaleGestureDetector, float offset, float scale) {
         scaleGestureDetector.onTouchEvent(motionEvent);
 
         final int action = MotionEventCompat.getActionMasked(motionEvent);
@@ -75,12 +79,13 @@ public class TouchEvent {
                 mPosX += dx;
                 mPosY += dy;
 
-                if (sfImagingMinXPosition < x && sfImagingMaxXPosition > x) {
+                float relativeX = offset + scale * x;
+                if (sfImagingMinXPosition < relativeX && sfImagingMaxXPosition > relativeX) {
                     boolean result = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().onPan((int) dx / 10, -(int) dy / 10);
                     WidgetUtility.updateBeamformerParameterTextView(mBeamformerParameterValueTextView, "move", "(" + String.format("%.4f", dx / 10) + ", " + String.format("%.4f", dy / 10) + ")", result);
                 }
-                else if (sfTgcMinXPosition < x && sfTgcMaxXPosition > x && sfTgcMinYPosition < y && sfTgcMaxYPosition > y)
-                    updateTgcValue(x, y);
+                else if (sfTgcMinXPosition < relativeX && sfTgcMaxXPosition > relativeX && sfTgcMinYPosition < y && sfTgcMaxYPosition > y)
+                    updateTgcValue(relativeX, y);
                 //mBackend.onTouchUpdate((int)dx / 100, (int)dy / 100);
 
                 //invalidate();
@@ -137,7 +142,9 @@ public class TouchEvent {
             int width = (sfTgcMaxYPosition - sfTgcMinYPosition) / 9;
             int index = (int)((yPosition - sfTgcMinYPosition) / width);
             MauiSlider.setCurrentMauiSliderPosition(mTgcSeekBars.get(index), value, ParameterLimits.MinTgc, ParameterLimits.MaxTgc, ParameterLimits.FloatValueStep);
-            SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().onTgcChanged(index, value);
+            boolean result = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().onTgcChanged(index, value);
+            String title = "tgc " + (index + 1) + ": ";
+            WidgetUtility.updateBeamformerParameterTextView(mBeamformerParameterValueTextView, title, value, result);
         }
         catch (Exception e) {
             Log.d(TAG, LocalDateTime.now() + " : " + "setTgcValue() failed.");
