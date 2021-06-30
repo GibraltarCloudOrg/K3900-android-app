@@ -460,13 +460,17 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <Space
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/nextControlerPageButton"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:onClick="showFloatingActionButtonsImagingDialog"
+                    android:text="Next" />
 
                 <Button
                     android:id="@+id/exitAllControllersViewButton"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="50dp"
                     android:backgroundTint="@android:color/holo_green_light"
                     android:text="Exit" />
