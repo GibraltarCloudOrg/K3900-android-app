@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="@color/black"
+    android:foregroundTint="@color/white"
+    android:outlineAmbientShadowColor="@color/white"
+    android:outlineSpotShadowColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="620dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/verticalMeasurementNumberLabelsTextView"
+                    android:layout_width="18dp"
+                    android:layout_height="614dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp" />
+
+                    <ImageView
+                        android:id="@+id/verticalRulerImageView"
+                        android:layout_width="14dp"
+                        android:layout_height="614dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imagingBackgroundImageView"
+                    android:layout_width="618dp"
+                    android:layout_height="618dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/text_minus_image_background" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="14dp"
+                    android:layout_height="wrap_content" />
+
+                <SeekBar
+                    android:id="@+id/cineLoopSeekBar"
+                    android:layout_width="652dp"
+                    android:layout_height="12dp"
+                    android:max="10"
+                    android:progress="7"
+                    android:progressDrawable="@layout/progress_seekbar"
+                    android:thumb="@drawable/black_thumb" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/unitNameOfRulersTextView"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="18sp" />
+
+        <Space
+            android:layout_width="2dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/horizontalMeasurementNumberLabelsTextView"
+                android:layout_width="614dp"
+                android:layout_height="18dp"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/horizontalRulerImageView"
+                android:layout_width="614dp"
+                android:layout_height="12dp"
+                android:scaleType="fitXY" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <ImageView
+                android:id="@+id/imagingImageView"
+                android:layout_width="614dp"
+                android:layout_height="614dp"
+                android:background="@color/black"
+                android:backgroundTint="@color/black" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+        <RelativeLayout
+            android:id="@+id/shakaRelativeLayout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/shaka_transparent"
+            android:backgroundTint="@color/white"
+            android:backgroundTintMode="multiply"></RelativeLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

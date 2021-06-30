@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/engineeringViewTopConstraintLayout"
+    android:layout_width="1000dp"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <FrameLayout
+        android:layout_width="1002dp"
+        android:layout_height="580dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/systemsTabLayout"
+                android:layout_width="998dp"
+                android:layout_height="50dp"
+                android:background="@color/black"
+                app:tabIndicator="@android:drawable/arrow_up_float"
+                app:tabIndicatorAnimationDuration="@android:integer/status_bar_notification_info_maxnum"
+                app:tabIndicatorColor="@android:color/holo_orange_light"
+                app:tabSelectedTextColor="@android:color/holo_orange_dark"
+                app:tabTextColor="@color/white"
+                tools:ignore="MissingConstraints">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/systemsConfigurationTabItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/darker_gray"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:text="Configuration" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/systemsUsersTabItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/darker_gray"
+                    android:text="Users" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/systemsDiagnosticsTabItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:text="Diagnostics"
+                    android:tint="@color/white"
+                    app:tint="@color/teal_200" />
+            </com.google.android.material.tabs.TabLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/systemsConfigurationPage"
+        layout="@layout/system_configuration_view" />
+
+    <include
+        android:id="@+id/systemsActiveUsersPage"
+        layout="@layout/system_active_users_view" />
+
+    <include
+        android:id="@+id/systemsCreateUserPage"
+        layout="@layout/system_create_user_view" />
+
+    <include
+        android:id="@+id/systemsDiagnosticsPage"
+        layout="@layout/system_diagnostics_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>

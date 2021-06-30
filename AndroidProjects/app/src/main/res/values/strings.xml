@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MauiViewControl</string>
+    <string name="ping_button">Ping</string>
+    <string name="image_desc">Ultrasound Image</string>
+    <string name="look_up_patient_fragment" />
+    <string name="new_patient_fragment" />
+    <string name="first" />
+    <string name="last" />
+    <string name="hello_world" />
+    <string name="delete_nuser">Delete\nUser</string>
+    <string name="exit">EXIT</string>
+    <string name="back">-> Back</string>
+    <string name="general">General</string>
+    <string name="element_masking">Element Masking</string>
+    <string name="configure_presets">Configure Presets</string>
+    <string name="imaging">Imaging</string>
+</resources>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/mauiLogoImageView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/splash" />
+
+        <TextView
+            android:id="@+id/connectionStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:onClick="showSelectMauiServerDialog"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/disconnectServerButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="Disconnect"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/buildModeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="9sp" />
+
+        <Button
+            android:id="@+id/patientButton"
+            android:layout_width="86dp"
+            android:layout_height="60dp"
+            android:background="#FF5722"
+            android:backgroundTint="#0D47A1"
+            android:onClick="showPatientsDialog"
+            android:text="Patient"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/probeButton"
+            android:layout_width="86dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="0dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#0D47A1"
+            android:onClick="showProbeDialog"
+            android:text="Probe"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/measureButton"
+            android:layout_width="86dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#0D47A1"
+            android:onClick="showMeasurementDialog"
+            android:text="Measure"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/presetsButton"
+            android:layout_width="86dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#0D47A1"
+            android:onClick="showPresetsDialog"
+            android:text="Preset"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/saveLoadButton"
+            android:layout_width="86dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="#0D47A1"
+            android:onClick="showSaveLoadDialog"
+            android:text="Save\nLoad"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/beamformerParameterValueTextView"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/beamformerParameterValueLowerTextView"
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/imagePositionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Image\nPosition"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/imagePositionHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="imagePositionHome"
+            android:text="HOME"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/imagePositionCenterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="imagePositionCenter"
+            android:text="CENTER"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/currentTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/currentDateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
