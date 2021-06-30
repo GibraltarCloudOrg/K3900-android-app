@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="@color/black"
+    android:foregroundTint="@color/white"
+    android:outlineAmbientShadowColor="@color/white"
+    android:outlineSpotShadowColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="760dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/cleanScreenInMeasureImagingButton"
+            android:layout_width="122dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="Clean Screen"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/logInInMeasureImagingButton"
+            android:layout_width="74dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="showLogInLogOutDialog"
+            android:text="Log In"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/SystemMenuInMeasureImagingButton"
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="showSystemPopupMenu"
+            android:text="System"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/systemStatusInMeasureImagingButton"
+            android:layout_width="78dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:onClick="showSystemStatusDialog"
+            android:text="Status"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/powerInMeasureImagingImageView"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/power" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView10111"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/splash" />
+
+            <Button
+                android:id="@+id/patientInMeasureImagingButton"
+                android:layout_width="86dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="50dp"
+                android:background="#FF5722"
+                android:backgroundTint="#0D47A1"
+                android:onClick="showPatientsDialog"
+                android:text="Patient"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/probeInMeasureImagingButton"
+                android:layout_width="86dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:background="#FFFFFF"
+                android:backgroundTint="#0D47A1"
+                android:onClick="showProbeDialog"
+                android:text="Probe"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/measureInMeasureImagingButton"
+                android:layout_width="86dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="#0D47A1"
+                android:onClick="showMeasurementDialog"
+                android:text="Measure"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/presetsInMeasureImagingButton"
+                android:layout_width="86dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="#0D47A1"
+                android:onClick="showPresetsDialog"
+                android:text="Preset"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/saveLoadInMeasureImagingButton"
+                android:layout_width="86dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="#0D47A1"
+                android:onClick="showSaveLoadDialog"
+                android:text="Save\nLoad"
+                android:textSize="10sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="70dp" />
+
+            <TextView
+                android:id="@+id/textView2911InMeasureImaging"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Image\nPosition"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/imagePositionHomeInMeasureImagingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/darker_gray"
+                android:onClick="imagePositionHome"
+                android:text="HOME"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/imagePositionCenterInMeasureImagingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/darker_gray"
+                android:onClick="imagePositionCenter"
+                android:text="CENTER"
+                android:textSize="12sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/currentTimeInMeasureImagingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/currentDateInMeasureImagingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/verticalUnitMeasurementNumberLabelsInMeasureImagingTextView"
+                    android:layout_width="18dp"
+                    android:layout_height="614dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp" />
+
+                    <ImageView
+                        android:id="@+id/verticalRulerInMeasureImagingImageView"
+                        android:layout_width="14dp"
+                        android:layout_height="614dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView811InMeasureImaging"
+                    android:layout_width="618dp"
+                    android:layout_height="618dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/text_minus_image_background" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="210dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="89dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/unitNameInMeasureImagingTextView"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_green_light" />
+
+        <Space
+            android:layout_width="2dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/horizontalUnitMeasurementNumberLabelsInMeasureImagingTextView"
+                android:layout_width="614dp"
+                android:layout_height="18dp"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/horizontalRulerInMeasureImagingImageView"
+                android:layout_width="614dp"
+                android:layout_height="12dp"
+                android:scaleType="fitXY" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <ImageView
+                android:id="@+id/measureImagingImageView"
+                android:layout_width="614dp"
+                android:layout_height="614dp"
+                android:background="@color/black"
+                android:backgroundTint="@color/black" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <SeekBar
+                android:id="@+id/cineLoopInMeasureImagingSeekBar"
+                android:layout_width="616dp"
+                android:layout_height="12dp"
+                android:max="10"
+                android:progress="7"
+                android:progressDrawable="@layout/progress_seekbar"
+                android:thumb="@drawable/black_thumb" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="592dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="760dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <include
+                android:id="@+id/measurementPage"
+                layout="@layout/measurement_view"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

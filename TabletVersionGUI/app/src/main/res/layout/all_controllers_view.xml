@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="@color/black"
+    android:foregroundTint="@color/white"
+    android:outlineAmbientShadowColor="@color/white"
+    android:outlineSpotShadowColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <ImageView
+                android:id="@+id/imageView59"
+                android:layout_width="184dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/image_control" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="34dp" />
+
+            <ImageView
+                android:id="@+id/imageView4aaa"
+                android:layout_width="184dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/image_control" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+            <ImageView
+                android:id="@+id/imageView212"
+                android:layout_width="184dp"
+                android:layout_height="160dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/image_control" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="79dp" />
+
+            <Button
+                android:id="@+id/livePlaybackButton"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/white"
+                android:onClick="onLivePlayback"
+                android:text="Live"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="210dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="178dp"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView7ss"
+                android:layout_width="182dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/image_control" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/textView3213"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="VGA Gain"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/masterGainSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/textView3911"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Acoustic Power"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/acousticPowerSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/textView4011"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gaussian"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/gaussianSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/textView4111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edge"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/edgeSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/textView4211"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Grayscale Adjust"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/autoGrayscaleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:text="AUTO"
+                    android:textColor="@color/black"
+                    android:textSize="11sp" />
+
+                <Button
+                    android:id="@+id/manualGrayscaleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:text="MANUAL"
+                    android:textColor="@color/black"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/grayscale1stTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dark Enhance"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/grayscaleAdjust1stSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/grayscale2ndTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Light Enhance"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/grayscaleAdjust2ndSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/grayscale3rdTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gamma"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/grayscaleAdjustGammaSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/textView5011"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CINEplus"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/stepBackwardImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onStepBackward"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/double_left_arrow" />
+
+                <ImageButton
+                    android:id="@+id/playPauseImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onPlayPause"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/right_arrow" />
+
+                <ImageButton
+                    android:id="@+id/stepForwardImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onStepForward"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/right_double_arrow" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <Button
+                android:id="@+id/runFreezeButton"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:onClick="onRunFreeze"
+                android:text="FREEZE"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/tgcDlcLinearLayout"
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4611"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TGC"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tgcCenterTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onTgcCenter"
+                android:text="CENTER"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+
+            <TextView
+                android:id="@+id/textView471"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DLC"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/dlcCenterTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onDlcCenter"
+                android:text="CENTER"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/dlcSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:progressBackgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:id="@+id/speedOfSoundTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onSpeedOfSound"
+                android:text="Speed of Sound"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/speedOfSoundValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/decreaseFocusFloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/text_minus_image_foreground" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/toggleSosFloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/increaseFocusFloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/ic_input_add" />
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/exitAllControllersViewButton"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@android:color/holo_green_light"
+                    android:text="Exit" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

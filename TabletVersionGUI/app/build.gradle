@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.example.MauiImaging1"
+        minSdkVersion 29
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.11.4'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.34.0'
+        }
+        /*javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }*/
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { }
+            }
+
+            task.plugins {
+                grpc {
+                    // Options added to --grpc_out
+                    //option 'lite'
+                }
+            }
+        }
+    }
+}
+/*protobuf {
+    protoc { artifact = 'com.google.protobuf:protoc:3.8.0-rc-1' }
+    plugins {
+        javalite { artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0" }
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.34.0' // CURRENT_GRPC_VERSION
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+                grpc { // Options added to --grpc_out
+                    option 'lite'
+                }
+            }
+        }
+    }
+}*/
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+  //  implementation "io.grpc:grpc-protobuf-lite:${grpcVersion}"
+  //  implementation "io.grpc:grpc-stub:${grpcVersion}"
+  //  implementation 'javax.annotation:javax.annotation-api:1.3.2'
+//    implementation 'com.google.protobuf:protobuf-lite:3.0.1'
+    implementation 'com.google.protobuf:protobuf-java:3.10.0'
+//    implementation 'com.google.protobuf:protobuf-lite:3.0.1'
+    implementation 'io.grpc:grpc-okhttp:1.34.0' // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-protobuf:1.34.0' // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-stub:1.34.0' // CURRENT_GRPC_VERSION
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'com.appyvet:materialrangebar:1.4.8'
+}

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:id="@+id/mainTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/connectToServerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="showMainWindowPage"
+                android:text="Connect" />
+
+            <Button
+                android:id="@+id/selectWiFiDirectDeviceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:onClick="showWiFiDirectDeviceList"
+                android:text="Select WiFi Direct Device" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/unitTestingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    android:onClick="showMainWindowWithUnitTestingMode"
+                    android:text="Unit Test Mode" />
+
+                <Button
+                    android:id="@+id/batchModeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Batch Mode" />
+
+                <Button
+                    android:id="@+id/resetAllButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/design_default_color_error"
+                    android:backgroundTint="@color/design_default_color_error"
+                    android:onClick="resetAll"
+                    android:text="Log Out &amp; Reset ALL" />
+
+                <Button
+                    android:id="@+id/automatedTestingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="showAutomatedTestingDialog"
+                    android:text="Automated Testing" />
+
+                <Button
+                    android:id="@+id/stopAutomatedTestingButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#B71C1C"
+                    android:text="Stop Automated Testing" />
+
+                <Button
+                    android:id="@+id/pinch2ZoomButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onPinch2Zoom"
+                    android:text="Pinch 2 Zoom" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/enableDisplayWidgetsCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="enableDisplayWidgets"
+                    android:text="Enable Display Widgets" />
+
+                <CheckBox
+                    android:id="@+id/activateGetImageCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="activateGetImage"
+                    android:text="Activate GetImage()" />
+
+                <TextView
+                    android:id="@+id/ttt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Duration Between Get Images"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/frameRatesSpinner"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/purple_700" />
+
+                <RelativeLayout
+                    android:id="@+id/drawLineSampleRelativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:context=".MainActivity">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+
+                    <Button
+                        android:id="@+id/drawLineButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="70dp"
+                        android:text="Draw Line" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/activateGetSystemStateCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="activateGetSystemState"
+                    android:text="Activate GetSystemState()" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Duration Between Check System State"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/durationBetweenCheckSystemStateSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/purple_700" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Blocking Stub Deadline After"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/blockingStubDeadlineSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/purple_700" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Batch Mode Deadline After"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/batchModeDeadlineSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/purple_700" />
+
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/wifiDirectStatusRelativeLayout"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                tools:context=".MainActivity">
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/alphaVersionGuiGutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="showAlphaVersionGui"
+                    android:text="Alpha Version Gui" />
+
+                <Button
+                    android:id="@+id/showElementMaskingButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_green_light"
+                    android:onClick="showElementMaskingDialog"
+                    android:text="Element Masking" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="showFloatingActionButtonsImagingDialog"
+                    android:text="Imaging w/ Floating Action Buttons to Control Beamformer Parameters" />
+
+                <Button
+                    android:id="@+id/betaVersionGuiGutton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="showBetaVersionGuiWithUnitTestMode"
+                    android:text="Unit Test Mode w/ Beta Version" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/getImageDeadlineLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Get Image Deadline in Milliseconds"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/getImageDeadlineEditTextNumberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="setSaveButtonHidden"
+                    android:text="Element Masking Save Button" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="showImagePositionDialog"
+                    android:text="Zoom Dialog" />
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/pingButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="#9C27B0"
+                android:text="@string/ping_button" />
+
+            <Button
+                android:id="@+id/testCommunicationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTestCommunication"
+                android:text="Test Communication" />
+
+            <ImageView
+                android:id="@+id/bfImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:contentDescription="@string/image_desc"
+                android:visibility="visible"
+                app:srcCompat="@android:color/background_dark"
+                tools:srcCompat="@android:color/background_dark"
+                tools:visibility="visible" />
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

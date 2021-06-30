@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/engineeringViewTopConstraintLayout"
+    android:layout_width="1000dp"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/patientsTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/teal_700"
+        app:tabIndicatorColor="#F57F17"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/newPatientTabItem"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
+            android:foregroundTint="@color/purple_500"
+            android:text="New" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/lookUpPatientTabItem"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:outlineAmbientShadowColor="@color/purple_700"
+            android:outlineSpotShadowColor="@color/teal_700"
+            android:text="Look Up"
+            android:tint="@color/purple_200"
+            app:tint="@color/teal_700" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <include
+        android:id="@+id/newPatientViewPage"
+        layout="@layout/new_patient_view" />
+
+    <include
+        android:id="@+id/lookUpPatientViewPage"
+        layout="@layout/look_up_patient_view" />
+
+    <include
+        android:id="@+id/startExamFromPatientListPage"
+        layout="@layout/start_exam_from_patient_list" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

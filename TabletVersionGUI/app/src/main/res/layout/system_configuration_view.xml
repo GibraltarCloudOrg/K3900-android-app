@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <LinearLayout
+            android:id="@+id/systemConfigurationLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="998dp"
+                android:layout_height="529dp"
+                android:background="@color/black"
+                android:backgroundTint="@color/black"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp" />
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Log Out (min)"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/userLogOutMinSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp" />
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Timeout (min)"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/timeoutSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/exitConfigurationButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            android:text="EXIT" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Drive Type"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                            android:id="@+id/driveTypeSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@android:color/darker_gray"
+                            android:backgroundTint="@android:color/darker_gray" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/networkUserNameTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="User Name"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/networkUserNameEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@android:color/darker_gray"
+                                android:ems="10"
+                                android:inputType="textPersonName" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp" />
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Unit of Measure"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                            <Spinner
+                                android:id="@+id/unitOfMeasureSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@android:color/darker_gray" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+
+                    <TextView
+                        android:id="@+id/networkPathTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Network Path"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/networkPathEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@android:color/darker_gray"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp" />
+
+                    <TextView
+                        android:id="@+id/networkPasswordTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Password"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/networkPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@android:color/darker_gray"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Space
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/mountNetworkButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            android:text="Disconnect" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="24dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <LinearLayout
+        android:layout_width="1000dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="890dp"
+            android:layout_height="556dp"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Left"
+                        android:textColor="@color/white" />
+
+                    <Space
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingLeftTxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#573D3D"
+                        android:text="TX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                    <Space
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingLeftRxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="RX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/leftElementMaskingTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView3331"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Center"
+                        android:textColor="@color/white" />
+
+                    <Space
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingCenterTxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                    <Space
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingCenterRxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="RX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/centerElementMaskingTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Right"
+                        android:textColor="@color/white" />
+
+                    <Space
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingRightTxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/teal_200"
+                        android:text="TX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                    <Space
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/elementMaskingRightRxSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="RX"
+                        android:textColor="@color/white"
+                        android:trackTint="@android:color/darker_gray" />
+
+                </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/rightElementMaskingTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="104dp"
+            android:layout_height="556dp"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/saveInEngineeringElementMaskingButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:backgroundTint="@android:color/holo_green_light"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/exitInEngineeringElementMaskingButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:backgroundTint="@android:color/holo_green_light"
+                android:text="Exit" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

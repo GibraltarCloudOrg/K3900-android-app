@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:backgroundTint="@android:color/holo_green_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="It is now safe to clean the screen" />
+
+        <Button
+            android:id="@+id/reactivateInCleanScreenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:backgroundTint="@android:color/background_light"
+            android:text="Hold here to reactivate"
+            android:textAllCaps="false"
+            android:textColor="@color/teal_700" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

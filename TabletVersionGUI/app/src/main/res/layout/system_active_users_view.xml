@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/systemConfigurationUsersListLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="998dp"
+                    android:layout_height="420dp"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView45"
+                            android:layout_width="700dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/darker_gray"
+                            android:text="User Name                    Password                  User Type"
+                            android:textSize="20sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+
+                        <ListView
+                            android:id="@+id/activeUsersListView"
+                            android:layout_width="700dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:choiceMode="singleChoice"
+                            android:clickable="true">
+
+                        </ListView>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/deleteUserButton"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/holo_green_light"
+                        android:text="@string/delete_nuser" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="998dp"
+                    android:layout_height="109dp"
+                    android:background="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="600dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/exitUsersListButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/holo_green_light"
+                        android:text="@string/exit" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>

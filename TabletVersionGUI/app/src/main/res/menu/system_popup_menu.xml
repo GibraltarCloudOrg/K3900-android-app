@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_about"
+        android:iconTint="@android:color/darker_gray"
+        android:title="About" />
+    <item
+        android:id="@+id/action_configuration"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="Configuration" />
+    <item
+        android:id="@+id/action_users"
+        android:title="Users" />
+    <item
+        android:id="@+id/action_diagnostics"
+        android:title="Diagnostics" />
+    <item
+        android:id="@+id/action_engineering"
+        android:title="Engineering" />
+</menu>
