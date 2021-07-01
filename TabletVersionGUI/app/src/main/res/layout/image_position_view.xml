@@ -57,7 +57,7 @@
 
     <SeekBar
         android:id="@+id/zoomSeekBar"
-        android:layout_width="400dp"
+        android:layout_width="375dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:progress="50"
