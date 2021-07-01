@@ -86,7 +86,12 @@ public class WidgetUtility {
                     builder.setMessage(dialogMessage).setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
                 }
                 else {
-                    MauiToastMessage.displayToastMessage(context, element.accept(visitor), toastMessage + element.getRuntimeSubText(), Toast.LENGTH_LONG);
+                    if(showToast) {
+                        MauiToastMessage.displayToastMessage(context, element.accept(visitor), toastMessage + element.getRuntimeSubText(), Toast.LENGTH_LONG);
+                    }
+                    else{
+                        element.accept(visitor);
+                    }
                     if (dismissDialog && dialog!=null)
                         dialog.dismiss();
                 }
@@ -126,7 +131,12 @@ public class WidgetUtility {
                     builder.setMessage(dialogMessage).setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
                 }
                 else {
-                    MauiToastMessage.displayToastMessage(context, element.accept(visitor), toastMessage + element.getRuntimeSubText(), Toast.LENGTH_LONG);
+                    if(showToast) {
+                        MauiToastMessage.displayToastMessage(context, element.accept(visitor), toastMessage + element.getRuntimeSubText(), Toast.LENGTH_LONG);
+                    }
+                    else{
+                        element.accept(visitor);
+                    }
                     if(switchGroup==1){
                         for(int i=0;i<64;i++){
                             setElementMaskingArrayList.get(i).setMask(switchInput.isChecked());

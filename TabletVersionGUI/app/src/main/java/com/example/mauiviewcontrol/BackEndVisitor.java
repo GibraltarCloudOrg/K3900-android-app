@@ -43,6 +43,7 @@ interface BackEndElementVisitor {
     boolean visit(SetTxSwitchListener element);
     boolean visit(SetRxSwitchListener element);
     boolean visit(SetZoomButtonListener element);
+    boolean visit(SetPanButtonListener element);
 }
 
 class StartMeasurement implements BackEndElement {
@@ -625,6 +626,37 @@ class SetZoomButtonListener implements BackEndElement{
     }
 }
 
+class SetPanButtonListener implements BackEndElement{
+    private float mX;
+    private float mY;
+
+    @Override
+    public boolean accept(BackEndElementVisitor visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String getRuntimeSubText() {
+        return "";
+    }
+
+    public void setX(float x){
+        mX=x;
+    }
+
+    public void setY(float y){
+        mY=y;
+    }
+
+    public float getX(){
+        return mX;
+    }
+
+    public float getY(){
+        return mY;
+    }
+}
+
 class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
     SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
 
@@ -788,6 +820,10 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
 
     public boolean visit(SetZoomButtonListener element){
         return mBackend.onZoom(element.getValue());
+    }
+
+    public boolean visit(SetPanButtonListener element){
+        return mBackend.onPan(element.getX(), element.getY());
     }
 }
 

@@ -30,6 +30,7 @@ public class EngineeringSettingsDialog extends Dialog{
         mDialog=new Dialog(context);
         mDialog.setContentView(R.layout.engineering_settings_tab_layout);
         mDialog.getWindow().setLayout(2300, 1500);
+        ElementMaskingSetup.setTextView(mDialog.findViewById(R.id.LoadingText));
         addTabListener();
         setUpProbeList();
         setUpFilterList();
@@ -68,6 +69,8 @@ public class EngineeringSettingsDialog extends Dialog{
     private static final String TAG = "Engineering Settings Dialog";
     private boolean mReadyForCheckRealtimeStates = false;
     private boolean mUpdateLockNumberOfTxElements = true;
+    private Timer mTimer=null;
+    private TimerTask mCheckElementStatusTimerTask=null;
 
 
     public void showDialog(Context context, int firstTab){
@@ -115,6 +118,10 @@ public class EngineeringSettingsDialog extends Dialog{
             public void onClick(View v){
                 txSetup.printTxData();
                 mDialog.dismiss();
+                if(ElementMaskingSetup.sSaveButtonHidden){
+                    mTimer.cancel();
+                    mCheckElementStatusTimerTask.cancel();
+                }
             }
         });
 
@@ -181,9 +188,9 @@ public class EngineeringSettingsDialog extends Dialog{
     }
 
     private void startTimer(TxElementMaskingSetup txSetup, RxElementMaskingSetup rxSetup){
-        Timer timer=new Timer();
-        TimerTask checkElementStatusTimerTask=new CheckElementStatusTimerTask(mContext, txSetup, rxSetup);
-        timer.scheduleAtFixedRate(checkElementStatusTimerTask, 0, 1*1000);
+        mTimer=new Timer();
+        mCheckElementStatusTimerTask=new CheckElementStatusTimerTask(mContext, txSetup, rxSetup);
+        mTimer.scheduleAtFixedRate(mCheckElementStatusTimerTask, 0, 1*1000);
     }
 
     private void showFirstTab(int tabNumber){

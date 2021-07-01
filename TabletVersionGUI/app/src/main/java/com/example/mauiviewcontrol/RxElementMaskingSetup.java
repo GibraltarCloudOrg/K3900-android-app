@@ -2,6 +2,7 @@ package com.example.mauiviewcontrol;
 
 import android.content.Context;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
@@ -59,7 +60,8 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
     @Override
     public void setData(){
         isRunning=true;
-        final ArrayList<Boolean> rx=mBackend.onGetRxMask();
+        try {
+            final ArrayList<Boolean> rx = mBackend.onGetRxMask();
         ArrayList <Boolean> rxButtonStatus=rx;
 
         while(mBackend.isRxRunning() || !mInitializationCompleted){
@@ -77,7 +79,12 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
                 elementButtonList3.get(column + (row * 16)).setEnabled(rxButtonStatus.get(group3));
             }
         }
-        isRunning=false;
+        mLoadingTextView.setVisibility(View.INVISIBLE);
+        }catch(Exception e){
+            Log.d(TAG, "Error in rx set data");
+        }finally {
+            isRunning = false;
+        }
     }
 
     @Override

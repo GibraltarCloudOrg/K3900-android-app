@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public  class ElementMaskingSetup implements Runnable {
     protected Switch mLeftSwitch;
     protected Switch mCenterSwitch;
     protected Switch mRightSwitch;
+    protected static TextView mLoadingTextView;
 
 
     public ElementMaskingSetup(String name, View view, Context context, Switch leftSwitch, Switch centerSwitch, Switch rightSwitch){
@@ -261,5 +263,9 @@ public  class ElementMaskingSetup implements Runnable {
 
     public static void setSaveButtonHidden(boolean saveButtonHidden){
         sSaveButtonHidden=saveButtonHidden;
+    }
+
+    public static void setTextView(TextView loadingTextView){
+        mLoadingTextView=loadingTextView;
     }
 }

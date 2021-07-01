@@ -17,6 +17,7 @@ public class ImagePositionDialog {
         mDialog.setContentView(R.layout.image_position_view);
         setExitButtonListener();
         setSliderListener();
+        setZoomButtonListeners();
     }
 
     public void showDialog(){
@@ -45,7 +46,7 @@ public class ImagePositionDialog {
         SetZoomButtonListener setZoomOutListener=new SetZoomButtonListener();
         setZoomInListener.setValue(.1f);
         setZoomOutListener.setValue(-.1f);
-        WidgetUtility.setUpListener(mContext, mDialog.findViewById(R.id.zoomInButton), mDialog, setZoomInListener, backEndElementSendingMessageVisitor, false, "", true, "zoomed in", false);
-        WidgetUtility.setUpListener(mContext, mDialog.findViewById(R.id.zoomOutButton), mDialog, setZoomOutListener, backEndElementSendingMessageVisitor, false, "", true, "zoomed out", false);
+        MauiFloatingButton.setUpFloatingButtonListener(mContext, mDialog.findViewById(R.id.zoomInButton), mDialog, setZoomInListener, backEndElementSendingMessageVisitor, false, "", true, "zoomed in", false);
+        MauiFloatingButton.setUpFloatingButtonListener(mContext, mDialog.findViewById(R.id.zoomOutButton), mDialog, setZoomOutListener, backEndElementSendingMessageVisitor, false, "", true, "zoomed out", false);
     }
 }

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
@@ -61,26 +62,30 @@ public class TxElementMaskingSetup extends ElementMaskingSetup{
     @Override
     public void setData(){
         isRunning=true;
-        final ArrayList<Boolean> tx=mBackend.onGetTxMask();
-        ArrayList <Boolean> txButtonStatus=tx;
+        try {
+            final ArrayList<Boolean> tx = mBackend.onGetTxMask();
+            ArrayList<Boolean> txButtonStatus = tx;
 
-        while(mBackend.isTxRunning() || !mInitializationCompleted){
+            while (mBackend.isTxRunning() || !mInitializationCompleted) {
 
-        }
-
-        for (int row = 0; row < 4; row++) {
-            for (int column = 0; column < 16; column++) {
-                int group1 = column + (row * 16 + ((0) * 64));
-                int group2 = column + (row * 16 + ((1) * 64));
-                int group3 = column + (row * 16 + ((2) * 64));
-                //ElementButton elementButton = elementButtonList1.get(column + (row * 16));
-                elementButtonList1.get(column + (row * 16)).setEnabled(txButtonStatus.get(group1));
-                elementButtonList2.get(column + (row * 16)).setEnabled(txButtonStatus.get(group2));
-                elementButtonList3.get(column + (row * 16)).setEnabled(txButtonStatus.get(group3));
             }
-        }
 
-        isRunning=false;
+            for (int row = 0; row < 4; row++) {
+                for (int column = 0; column < 16; column++) {
+                    int group1 = column + (row * 16 + ((0) * 64));
+                    int group2 = column + (row * 16 + ((1) * 64));
+                    int group3 = column + (row * 16 + ((2) * 64));
+                    //ElementButton elementButton = elementButtonList1.get(column + (row * 16));
+                    elementButtonList1.get(column + (row * 16)).setEnabled(txButtonStatus.get(group1));
+                    elementButtonList2.get(column + (row * 16)).setEnabled(txButtonStatus.get(group2));
+                    elementButtonList3.get(column + (row * 16)).setEnabled(txButtonStatus.get(group3));
+                }
+            }
+        }catch(Exception e){
+            Log.d(TAG, "Error in tx set data");
+        }finally {
+            isRunning = false;
+        }
     }
 
     @Override

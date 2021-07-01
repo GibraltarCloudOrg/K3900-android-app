@@ -37,7 +37,7 @@ public class EngineeringMenuDialog {
         setUpListeners();
         mDialog.getWindow().setGravity(Gravity.RIGHT);
         mDialog.show();
-        mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
+        //mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
     }
 
     private void setUpWidgets() {
@@ -51,7 +51,7 @@ public class EngineeringMenuDialog {
                 String selectedString = engineeringMenuListView.getAdapter().getItem(position).toString();
                 //if (null == mEngineeringDialog)
                     //mEngineeringDialog = new EngineeringDialog(mContext);
-                    //mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
+                    mEngineeringSettingsDialog=new EngineeringSettingsDialog(mContext);
                 //String test = mContext.getResources().getString(R.string.general);
                 if (selectedString.equals(mContext.getResources().getString(R.string.general)))
                     //mEngineeringDialog.showGeneralPage();
