@@ -898,7 +898,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void onSpeedOfSound(View view) {
-        mSpeedOfSoundView = new SpeedOfSoundView(this);
+        mSpeedOfSoundView = new SpeedOfSoundView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
     }
 
     public void onGain(View view) {
@@ -906,11 +906,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void onFilters(View view) {
-        mFiltersView = new FiltersView(this);
+        mFiltersView = new FiltersView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
     }
 
     public void onContrast(View view) {
-        mContrastView = new ContrastView(this);
+        mContrastView = new ContrastView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
     }
 
     public void onPinch2Zoom(View view) {

@@ -43,7 +43,7 @@ public class TgcView {
         setUpWidgets();
         setUpListeners();
         mDialog.show();
-        //mDialog.setCancelable(false);
+        mDialog.setCancelable(true);
         mReadyForCheckRealtimeStates = true;
     }
 

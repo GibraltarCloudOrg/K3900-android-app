@@ -22,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FiltersView {
 
-    public FiltersView(Context parent) {
+    public FiltersView(Context parent, TextView beamformerParameterValueLowerTextView, TextView beamformerParameterValueTextView) {
         mContext = parent;
         mDialog = new Dialog(mContext);
         mDialog.setContentView(R.layout.filters_view);
@@ -31,6 +31,8 @@ public class FiltersView {
         wlp.gravity = Gravity.TOP | Gravity.RIGHT;
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
+        mBeamformerParameterValueLowerTextView = beamformerParameterValueLowerTextView;
+        mBeamformerParameterValueTextView = beamformerParameterValueTextView;
         setUpWidgets();
         setUpListeners();
         mDialog.show();
@@ -60,8 +62,8 @@ public class FiltersView {
     }
 
     private void setUpListeners() {
-        MauiSlider.setUpSliderListener(mContext, null, mDialog, new Gaussian(), new BackEndSliderElementSendingMessageVisitor(), true, "Gaussian", ParameterLimits.MinGaussianFilter, ParameterLimits.MaxGaussianFilter, ParameterLimits.FloatValueStep, mGaussianSlider);
-        MauiSlider.setUpSliderListener(mContext, null, mDialog, new Edge(), new BackEndSliderElementSendingMessageVisitor(), true, "Edge", ParameterLimits.MinEdgeFilter, ParameterLimits.MaxEdgeFilter, ParameterLimits.FloatValueStep, mEdgeSlider);
+        MauiSlider.setUpSliderListener(mContext, mBeamformerParameterValueTextView, new Gaussian(), new BackEndSliderElementSendingMessageVisitor(), true, "Gaussian", ParameterLimits.MinGaussianFilter, ParameterLimits.MaxGaussianFilter, ParameterLimits.FloatValueStep, mGaussianSlider);
+        MauiSlider.setUpSliderListener(mContext, mBeamformerParameterValueTextView, new Edge(), new BackEndSliderElementSendingMessageVisitor(), true, "Edge", ParameterLimits.MinEdgeFilter, ParameterLimits.MaxEdgeFilter, ParameterLimits.FloatValueStep, mEdgeSlider);
         Button exitSpeedOfSoundDialogButton = mDialog.findViewById(R.id.exitFiltersDialogButton);
         exitSpeedOfSoundDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +94,8 @@ public class FiltersView {
     private static final String TAG = "Filters View";
     private final Context mContext;
     private Dialog mDialog = null;
+    TextView mBeamformerParameterValueLowerTextView;
+    TextView mBeamformerParameterValueTextView;
     //private SeekBar mSpeedOfSoundSlider = null;
     //private MauiSlider mSpeedOfSoundSlider = null;
     private SeekBar mGaussianSlider = null;
