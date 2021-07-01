@@ -802,10 +802,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         engineeringSettingsDialog.showDialog(getApplicationContext(), 0);
     }
 
-    public void showImagePositionDialog(View view){
+    /*public void showImagePositionDialog(View view){
         ImagePositionDialog imagePositionDialog=new ImagePositionDialog(this);
         imagePositionDialog.showDialog();
-    }
+    }*/
 
     public void showMainWindowWithUnitTestingMode(View view) {
         mBackend.setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);

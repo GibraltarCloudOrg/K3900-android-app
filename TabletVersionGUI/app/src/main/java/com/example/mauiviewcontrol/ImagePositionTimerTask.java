@@ -5,13 +5,13 @@ import android.os.Handler;
 
 import java.util.TimerTask;
 
-public class ZoomTimerTask extends TimerTask {
+public class ImagePositionTimerTask extends TimerTask {
     private Context mContext;
     private Handler mHandler = new Handler();
     private BackEndElement mElement;
     BackEndElementSendingMessageVisitor mVisitor;
-    
-    public ZoomTimerTask(Context con, BackEndElement element, BackEndElementSendingMessageVisitor visitor) {
+
+    public ImagePositionTimerTask(Context con, BackEndElement element, BackEndElementSendingMessageVisitor visitor) {
         mContext = con;
         mElement=element;
         mVisitor=visitor;
