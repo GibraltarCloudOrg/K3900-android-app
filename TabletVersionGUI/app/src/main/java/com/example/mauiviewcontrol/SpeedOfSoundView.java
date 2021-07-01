@@ -22,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SpeedOfSoundView {
 
-    public SpeedOfSoundView(Context parent) {
+    public SpeedOfSoundView(Context parent, TextView beamformerParameterValueLowerTextView, TextView beamformerParameterValueTextView) {
         mContext = parent;
         mDialog = new Dialog(mContext);
         mDialog.setContentView(R.layout.speed_of_sound_view);
@@ -31,6 +31,8 @@ public class SpeedOfSoundView {
         wlp.gravity = Gravity.TOP | Gravity.RIGHT;
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
+        mBeamformerParameterValueLowerTextView = beamformerParameterValueLowerTextView;
+        mBeamformerParameterValueTextView = beamformerParameterValueTextView;
         setUpWidgets();
         setUpListeners();
         mDialog.show();
@@ -58,7 +60,7 @@ public class SpeedOfSoundView {
     }
 
     private void setUpListeners() {
-        MauiSlider.setUpSliderListener(mContext, null, mDialog, new SpeedOfSound(), new BackEndSliderElementSendingMessageVisitor(), true, "Speed of Sound", ParameterLimits.MinSpeedOfSound, ParameterLimits.MaxSpeedOfSound, 100/*ParameterLimits.FloatValueStep*/, mSpeedOfSoundSlider);
+        MauiSlider.setUpSliderListener(mContext, mBeamformerParameterValueTextView, new SpeedOfSound(), new BackEndSliderElementSendingMessageVisitor(), true, "Speed of Sound", ParameterLimits.MinSpeedOfSound, ParameterLimits.MaxSpeedOfSound, 100/*ParameterLimits.FloatValueStep*/, mSpeedOfSoundSlider);
         SpeedOfSoundView.setUpDecreaseFocusButtonListener(mDialog, mContext, mDialog.findViewById(R.id.decreaseSpeedOfSoundFloatingActionButton));
         SpeedOfSoundView.setUpIncreaseFocusButtonListener(mDialog, mContext, mDialog.findViewById(R.id.increaseSpeedOfSoundFloatingActionButton));
         SpeedOfSoundView.setUpToggleSosButtonListener(mDialog, mContext, mDialog.findViewById(R.id.toggleSpeedOfSoundFloatingActionButton));
@@ -141,6 +143,8 @@ public class SpeedOfSoundView {
     private static final String TAG = "Speed of Sound Dialog";
     private final Context mContext;
     private Dialog mDialog = null;
+    TextView mBeamformerParameterValueLowerTextView;
+    TextView mBeamformerParameterValueTextView;
     private SeekBar mSpeedOfSoundSlider = null;
     //private MauiSlider mSpeedOfSoundSlider = null;
     private boolean mReadyForCheckRealtimeStates = false;
