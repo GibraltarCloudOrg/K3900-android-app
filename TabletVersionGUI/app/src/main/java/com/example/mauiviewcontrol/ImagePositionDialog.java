@@ -61,8 +61,9 @@ public class ImagePositionDialog {
         Zoom zoom=new Zoom();
         BackEndSliderElementSendingMessageVisitor backEndSliderElementSendingMessageVisitor=new BackEndSliderElementSendingMessageVisitor();
         MauiSlider.setUpSliderListener(mContext, null, mDialog, zoom, backEndSliderElementSendingMessageVisitor, false, "zoom", ParameterLimits.MinZoom, ParameterLimits.MaxZoom, ParameterLimits.FloatValueStep, mDialog.findViewById(R.id.zoomSeekBar));
-        //SeekBar seekBar=mDialog.findViewById(R.id.zoomSeekBar);
+        SeekBar seekBar=mDialog.findViewById(R.id.zoomSeekBar);
         //seekBar.setProgress(seekBar.getMax()/2);
+        seekBar.setVisibility(View.INVISIBLE);
     }
 
     private void setZoomButtonListeners(){
