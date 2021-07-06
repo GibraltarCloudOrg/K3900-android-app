@@ -839,11 +839,7 @@ void BeamformerClient::ClearErrors()
     }
 
     public boolean onZoom(float delta) {
-        startParameterBatch();
-        addToBeamformerParameterList("zoom", delta, false);
-        boolean result = sendBeamformerParameterListInBatchMode();
-        endParameterBatch();
-        return result;
+        return onZoom(delta, false);
         /*K3900.FloatParam.Builder paramBuilder = K3900.FloatParam.newBuilder();
         paramBuilder.setValue(delta);
         paramBuilder.setAbsolute(false);
@@ -863,6 +859,14 @@ void BeamformerClient::ClearErrors()
             //return "Communication error";
             return false;
         }*/
+    }
+
+    public boolean onZoom(float delta, boolean absolute) {
+        startParameterBatch();
+        addToBeamformerParameterList("zoom", delta, absolute);
+        boolean result = sendBeamformerParameterListInBatchMode();
+        endParameterBatch();
+        return result;
     }
 
     public boolean onStepBackward() {
@@ -897,6 +901,8 @@ void BeamformerClient::ClearErrors()
     public float getPixelSizeX() { return -getSystemState().getImage().getXSpacing(); }
 
     public float getPixelSizeY() { return getSystemState().getImage().getYSpacing(); }
+
+    public float getZoom(){return getSystemState().getZoom();}
 
     public float getUpperLeftX() {
         return getSystemState().getImage().getXPosition() - getPixelSizeX() * getSystemState().getImage().getWidth()/2 + getPixelSizeX() / 2;

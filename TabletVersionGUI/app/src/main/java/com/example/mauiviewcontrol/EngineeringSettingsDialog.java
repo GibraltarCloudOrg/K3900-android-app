@@ -212,6 +212,13 @@ public class EngineeringSettingsDialog extends Dialog{
 
                 break;
             case 2:
+                if(!ElementMaskingSetup.sSaveButtonHidden){
+                    mDialog.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
+                }
+                fl.addView(mFragmentRxView);
+                tabLayout.getTabAt(2).select();
+                break;
+            case 3:
                 mDialog.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
                 fl.addView(mFragmentPresets);
                 tabLayout.getTabAt(3).select();

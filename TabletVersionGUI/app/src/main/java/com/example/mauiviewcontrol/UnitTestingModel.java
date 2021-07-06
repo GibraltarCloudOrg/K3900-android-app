@@ -306,7 +306,17 @@ public class UnitTestingModel {
     }
 
     public boolean onZoom(float delta) {
-        System.out.println("UnitTestingModel.onZoom() called.");
+        return onZoom(delta, false);
+    }
+
+    public boolean onZoom(float value, boolean absolute) {
+        System.out.println("UnitTestingModel.onZoom() called."+value+absolute);
+        if(absolute) {
+            mZoom = value;
+        }
+        else{
+            mZoom=mZoom+value;
+        }
         return true;
     }
 
@@ -932,6 +942,14 @@ public class UnitTestingModel {
         }
     }
 
+    public float getZoom(){
+        return mZoom;
+    }
+
+    public void setZoom(float zoom){
+        mZoom=zoom;
+    }
+
     private static final String TAG = "UnitTestingModel";
     private boolean mConnected = true;
     private boolean mLoggedIn = false;
@@ -959,4 +977,5 @@ public class UnitTestingModel {
     private boolean mPlaybackState = false;
     private boolean mPaused = false;
     private boolean mAutoContrast = false;
+    private float mZoom=0.78f;
 }

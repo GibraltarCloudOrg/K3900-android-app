@@ -641,6 +641,19 @@ public class SwitchBackEndModel {
         return -1;
     }
 
+    public float getZoom() {
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                return mBeamformerClient.getZoom();
+            case UnitTesting:
+                return mUnitTestingModel.getZoom();
+            default:
+                break;
+        }
+        return -1;
+    }
+
     public float getMasterGainValue() {
         switch(mMessageTo) {
             case BeamformerClient:
@@ -778,6 +791,19 @@ public class SwitchBackEndModel {
                 return mBeamformerClient.onZoom(delta);
             case UnitTesting:
                 return mUnitTestingModel.onZoom(delta);
+            default:
+                break;
+        }
+        return false;
+    }
+
+    public boolean onZoom(float delta, boolean absolute) {
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                return mBeamformerClient.onZoom(delta, absolute);
+            case UnitTesting:
+                return mUnitTestingModel.onZoom(delta, absolute);
             default:
                 break;
         }

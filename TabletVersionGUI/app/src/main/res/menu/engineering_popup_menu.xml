@@ -5,9 +5,13 @@
         android:iconTint="@android:color/darker_gray"
         android:title="General" />
     <item
-        android:id="@+id/action_engineering_element_masking"
+        android:id="@+id/action_engineering_tx_element_masking"
         android:icon="@drawable/ic_assignment_black_24dp"
-        android:title="Element Masking" />
+        android:title="TX Element Masking" />
+    <item
+        android:id="@+id/action_engineering_rx_element_masking"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="RX Element Masking" />
     <item
         android:id="@+id/action_engineering_configure_presets"
         android:title="Configure Presets" />
