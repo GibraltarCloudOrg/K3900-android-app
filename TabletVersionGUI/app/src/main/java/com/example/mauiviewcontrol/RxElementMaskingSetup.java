@@ -64,7 +64,7 @@ public class RxElementMaskingSetup extends ElementMaskingSetup{
             final ArrayList<Boolean> rx = mBackend.onGetRxMask();
         ArrayList <Boolean> rxButtonStatus=rx;
 
-        while(mBackend.isRxRunning() || !mInitializationCompleted){
+        while(/*mBackend.isRxRunning() ||*/ !mInitializationCompleted){
 
         }
 

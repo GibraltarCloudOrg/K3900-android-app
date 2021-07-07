@@ -1744,6 +1744,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                                 mFiltersView.checkRealtimeStates();
                             if (null != mContrastView)
                                 mContrastView.checkRealtimeStates();
+                            if(mBackend.connected()) {
+                                mBackend.updateTxMask();
+                                mBackend.updateRxMask();
+                            }
                             //updateDisplayWidgets();
                             ImageStreamer imageStreamer = ImageStreamer.getImageStreamerSingletonInstance();
                             //if (null == mEngineeringMenuDialog || null == imageStreamer.getImageView() || !mEngineeringMenuDialog.isEngineeringImagingDialogVisible())

@@ -64,6 +64,30 @@ public class SwitchBackEndModel {
         return null;
     }
 
+    public final void updateRxMask(){
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                mBeamformerClient.updateRxMask();
+            case UnitTesting:
+                mUnitTestingModel.onGetRxMask();
+            default:
+                break;
+        }
+    }
+
+    public final void updateTxMask(){
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                mBeamformerClient.updateTxMask();
+            case UnitTesting:
+                mUnitTestingModel.onGetTxMask();
+            default:
+                break;
+        }
+    }
+
     public GetMaskMsgStreamObserver getTxElementStreamer() {
         switch(mMessageTo) {
             case BeamformerClient:

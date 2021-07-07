@@ -437,6 +437,8 @@ public class EngineeringSettingsDialog extends Dialog{
             mUpdateLockNumberOfTxElements = false;
             //((Spinner)mDialog.findViewById(R.id.selectNumberOfTxElementsInEngineeringGeneralSpinner)).setSelection(mTxSizeList.indexOf(String.valueOf(mBackend.getTransmitSize())), false);
             mUpdateLockNumberOfTxElements = true;
+            //mBackend.updateRxMask();
+            //mBackend.updateTxMask();
         } catch (LostCommunicationException le) {
             if (mDebugMode)
                 Toast.makeText(mContext, TAG + "Lost Communication Error at checkRealtimeStates(): " + le.getMessage(), Toast.LENGTH_SHORT).show();

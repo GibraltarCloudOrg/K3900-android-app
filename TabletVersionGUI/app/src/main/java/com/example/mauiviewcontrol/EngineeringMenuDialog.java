@@ -130,8 +130,10 @@ public class EngineeringMenuDialog {
     public void checkRealtimeStates() {
         if (null != mEngineeringImagingDialog)
             mEngineeringImagingDialog.checkRealtimeStates();
-        if (null != mEngineeringDialog)
+        if (null != mEngineeringDialog) {
             mEngineeringDialog.checkRealtimeStates();
+            //mEngineeringSettingsDialog.checkRealtimeStates();
+        }
         if(null!=mEngineeringSettingsDialog){
             mEngineeringSettingsDialog.checkRealtimeStates();
         }
