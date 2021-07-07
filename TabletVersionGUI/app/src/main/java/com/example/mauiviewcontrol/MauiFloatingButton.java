@@ -25,7 +25,7 @@ public class MauiFloatingButton {
                     MauiToastMessage.displayToastMessage(context, true, "Action Down Detected, Decrease Focus:", Toast.LENGTH_LONG);
                     System.out.println("Pixel size X "+SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().getPixelSizeX());
                     System.out.println("Pixel size Y " +SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().getPixelSizeY());
-                    System.out.println("Scale "+SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().getPixelSi());
+                    //System.out.println("Scale "+SwitchBackEndModel.getSwitchBackEndModelSingletonInstance().getPixel());
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //speedOfSoundModel.decrease();
                     //speedOfSoundModel.reset();

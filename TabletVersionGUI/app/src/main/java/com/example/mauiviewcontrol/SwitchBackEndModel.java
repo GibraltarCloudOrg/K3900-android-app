@@ -64,6 +64,30 @@ public class SwitchBackEndModel {
         return null;
     }
 
+    public final void updateRxMask(){
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                mBeamformerClient.updateRxMask();
+            case UnitTesting:
+                mUnitTestingModel.onGetRxMask();
+            default:
+                break;
+        }
+    }
+
+    public final void updateTxMask(){
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                mBeamformerClient.updateTxMask();
+            case UnitTesting:
+                mUnitTestingModel.onGetTxMask();
+            default:
+                break;
+        }
+    }
+
     public GetMaskMsgStreamObserver getTxElementStreamer() {
         switch(mMessageTo) {
             case BeamformerClient:
@@ -641,6 +665,19 @@ public class SwitchBackEndModel {
         return -1;
     }
 
+    public float getZoom() {
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                return mBeamformerClient.getZoom();
+            case UnitTesting:
+                return mUnitTestingModel.getZoom();
+            default:
+                break;
+        }
+        return -1;
+    }
+
     public float getMasterGainValue() {
         switch(mMessageTo) {
             case BeamformerClient:
@@ -778,6 +815,19 @@ public class SwitchBackEndModel {
                 return mBeamformerClient.onZoom(delta);
             case UnitTesting:
                 return mUnitTestingModel.onZoom(delta);
+            default:
+                break;
+        }
+        return false;
+    }
+
+    public boolean onZoom(float delta, boolean absolute) {
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                return mBeamformerClient.onZoom(delta, absolute);
+            case UnitTesting:
+                return mUnitTestingModel.onZoom(delta, absolute);
             default:
                 break;
         }

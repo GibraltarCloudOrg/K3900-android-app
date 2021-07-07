@@ -12,6 +12,8 @@
     <string name="back">-> Back</string>
     <string name="general">General</string>
     <string name="element_masking">Element Masking</string>
+    <string name="tx_element_masking">TX Element Masking</string>
+    <string name="rx_element_masking">RX Element Masking</string>
     <string name="configure_presets">Configure Presets</string>
     <string name="imaging">Imaging</string>
 </resources>

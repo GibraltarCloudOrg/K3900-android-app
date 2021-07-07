@@ -57,18 +57,24 @@ public class EngineeringMenuDialog {
                     //mEngineeringDialog.showGeneralPage();
                     mEngineeringSettingsDialog.showDialog(mContext,0);
                 //mEngineeringSettingsDialog.show(mContext,0);
-                else if (selectedString.equals(mContext.getResources().getString(R.string.element_masking))) {
+               /* else if (selectedString.equals(mContext.getResources().getString(R.string.element_masking))) {
                     //mEngineeringDialog.showElementMaskingPage();
                     //mEngineeringDialog.close();
-                    /*
+
                     Toast.makeText(mContext, "Loading... please wait", Toast.LENGTH_SHORT).show();
                     ViewDialog alert = new ViewDialog(mContext);
-                    alert.showDialog(mContext);*/
+                    alert.showDialog(mContext);
                     mEngineeringSettingsDialog.showDialog(mContext, 1);
+                }*/
+                else if(selectedString.equals(mContext.getResources().getString(R.string.tx_element_masking))){
+                    mEngineeringSettingsDialog.showDialog(mContext, 1);
+                }
+                else if(selectedString.equals(mContext.getResources().getString(R.string.rx_element_masking))){
+                    mEngineeringSettingsDialog.showDialog(mContext, 2);
                 }
                 else if (selectedString.equals(mContext.getResources().getString(R.string.configure_presets)))
                     //mEngineeringDialog.showPresetsPage();
-                    mEngineeringSettingsDialog.showDialog(mContext,2);
+                    mEngineeringSettingsDialog.showDialog(mContext,3);
                 //mEngineering.show(mContext, 2);
                 else if (selectedString.equals(mContext.getResources().getString(R.string.imaging))) {
                     mEngineeringDialog.close();
@@ -107,7 +113,9 @@ public class EngineeringMenuDialog {
         final ArrayList<String> menuList = new ArrayList<String>();
         //menuList.add(mContext.getResources().getString(R.string.back));
         menuList.add(mContext.getResources().getString(R.string.general));
-        menuList.add(mContext.getResources().getString(R.string.element_masking));
+        //menuList.add(mContext.getResources().getString(R.string.element_masking));
+        menuList.add(mContext.getResources().getString(R.string.tx_element_masking));
+        menuList.add(mContext.getResources().getString(R.string.rx_element_masking));
         menuList.add(mContext.getResources().getString(R.string.configure_presets));
         menuList.add(mContext.getResources().getString(R.string.imaging));
         return menuList;
@@ -122,8 +130,10 @@ public class EngineeringMenuDialog {
     public void checkRealtimeStates() {
         if (null != mEngineeringImagingDialog)
             mEngineeringImagingDialog.checkRealtimeStates();
-        if (null != mEngineeringDialog)
+        if (null != mEngineeringDialog) {
             mEngineeringDialog.checkRealtimeStates();
+            //mEngineeringSettingsDialog.checkRealtimeStates();
+        }
         if(null!=mEngineeringSettingsDialog){
             mEngineeringSettingsDialog.checkRealtimeStates();
         }

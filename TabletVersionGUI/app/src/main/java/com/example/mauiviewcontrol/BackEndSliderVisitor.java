@@ -392,6 +392,6 @@ class BackEndSliderElementSendingMessageVisitor implements BackEndSliderElementV
 
     @Override
     public boolean visit(Zoom element){
-        return mBackend.onZoom(element.getValue());
+        return mBackend.onZoom(element.getValue(), true);
     }
 }

@@ -212,6 +212,13 @@ public class EngineeringSettingsDialog extends Dialog{
 
                 break;
             case 2:
+                if(!ElementMaskingSetup.sSaveButtonHidden){
+                    mDialog.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
+                }
+                fl.addView(mFragmentRxView);
+                tabLayout.getTabAt(2).select();
+                break;
+            case 3:
                 mDialog.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
                 fl.addView(mFragmentPresets);
                 tabLayout.getTabAt(3).select();
@@ -430,6 +437,8 @@ public class EngineeringSettingsDialog extends Dialog{
             mUpdateLockNumberOfTxElements = false;
             //((Spinner)mDialog.findViewById(R.id.selectNumberOfTxElementsInEngineeringGeneralSpinner)).setSelection(mTxSizeList.indexOf(String.valueOf(mBackend.getTransmitSize())), false);
             mUpdateLockNumberOfTxElements = true;
+            //mBackend.updateRxMask();
+            //mBackend.updateTxMask();
         } catch (LostCommunicationException le) {
             if (mDebugMode)
                 Toast.makeText(mContext, TAG + "Lost Communication Error at checkRealtimeStates(): " + le.getMessage(), Toast.LENGTH_SHORT).show();

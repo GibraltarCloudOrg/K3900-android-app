@@ -79,6 +79,8 @@ public class BeamformerClient {
     private boolean mDiagnosticTestRunning = false;
     K3900.BeamformerParametersRequest.Builder mRequestBuilder = K3900.BeamformerParametersRequest.newBuilder();
     public static final float kCenterZoom=.75f;
+    private ArrayList<Boolean>mRxMask;
+    private ArrayList<Boolean>mTxMask;
 
     public boolean connected() { return null != mBlockingStub; }
     //public boolean connected() { return connected; }
@@ -128,23 +130,31 @@ public class BeamformerClient {
     }
 
     public final ArrayList<Boolean> onGetTxMask(){
+        return mTxMask;
+    }
+
+    public void updateTxMask(){
         K3900.BlankRequest request=K3900.BlankRequest.getDefaultInstance();;
         mTxStreamObserver=new GetMaskMsgStreamObserver();
         mStub.getTxMask(request, mTxStreamObserver);
-        while(!mTxStreamObserver.getCompleted()){
+        /*while(!mTxStreamObserver.getCompleted()){
 
-        }
-        return mTxStreamObserver.getElementBooleans();
+        }*/
+        mTxMask=mTxStreamObserver.getElementBooleans();
     }
 
     public final ArrayList<Boolean>onGetRxMask(){
+        return mRxMask;
+    }
+
+    public final void updateRxMask(){
         K3900.BlankRequest request=K3900.BlankRequest.getDefaultInstance();;
         mRxStreamObserver=new GetMaskMsgStreamObserver();
         mStub.getRxMask(request, mRxStreamObserver);
-        while(!mRxStreamObserver.getCompleted()){
+        /*while(!mRxStreamObserver.getCompleted()){
 
-        }
-        return mRxStreamObserver.getElementBooleans();
+        }*/
+        mRxMask=mRxStreamObserver.getElementBooleans();
     }
 
     public GetMaskMsgStreamObserver getTxElementStreamer() {
@@ -173,6 +183,7 @@ public class BeamformerClient {
             K3900.ResponseMsg responseMsg;
             responseMsg=mBlockingStub.withDeadlineAfter(3000,TimeUnit.MILLISECONDS).changeRxMask(maskMsgBuilder.build());
             //result=responseMsg.getMsg();
+            updateRxMask();
             return true;
 
         }catch(Exception e){
@@ -190,6 +201,7 @@ public class BeamformerClient {
             K3900.ResponseMsg responseMsg;
             responseMsg=mBlockingStub.withDeadlineAfter(3000,TimeUnit.MILLISECONDS).changeTxMask(maskMsgBuilder.build());
             //result=responseMsg.getMsg();
+            updateTxMask();
             return true;
 
         }catch(Exception e){
@@ -839,11 +851,7 @@ void BeamformerClient::ClearErrors()
     }
 
     public boolean onZoom(float delta) {
-        startParameterBatch();
-        addToBeamformerParameterList("zoom", delta, false);
-        boolean result = sendBeamformerParameterListInBatchMode();
-        endParameterBatch();
-        return result;
+        return onZoom(delta, false);
         /*K3900.FloatParam.Builder paramBuilder = K3900.FloatParam.newBuilder();
         paramBuilder.setValue(delta);
         paramBuilder.setAbsolute(false);
@@ -863,6 +871,14 @@ void BeamformerClient::ClearErrors()
             //return "Communication error";
             return false;
         }*/
+    }
+
+    public boolean onZoom(float delta, boolean absolute) {
+        startParameterBatch();
+        addToBeamformerParameterList("zoom", delta, absolute);
+        boolean result = sendBeamformerParameterListInBatchMode();
+        endParameterBatch();
+        return result;
     }
 
     public boolean onStepBackward() {
@@ -897,6 +913,8 @@ void BeamformerClient::ClearErrors()
     public float getPixelSizeX() { return -getSystemState().getImage().getXSpacing(); }
 
     public float getPixelSizeY() { return getSystemState().getImage().getYSpacing(); }
+
+    public float getZoom(){return getSystemState().getZoom();}
 
     public float getUpperLeftX() {
         return getSystemState().getImage().getXPosition() - getPixelSizeX() * getSystemState().getImage().getWidth()/2 + getPixelSizeX() / 2;

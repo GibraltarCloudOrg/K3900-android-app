@@ -66,7 +66,7 @@ public class TxElementMaskingSetup extends ElementMaskingSetup{
             final ArrayList<Boolean> tx = mBackend.onGetTxMask();
             ArrayList<Boolean> txButtonStatus = tx;
 
-            while (mBackend.isTxRunning() || !mInitializationCompleted) {
+            while (/*mBackend.isTxRunning() || */!mInitializationCompleted) {
 
             }
 

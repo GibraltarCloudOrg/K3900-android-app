@@ -106,23 +106,25 @@ public class MauiSlider extends SeekBar {
     }
 
     static public void setCurrentSliderPosition(SeekBar seekBar, float value, float min, float max, float step) {
-        float floatValue = (max - min) * (value - min) / (step * (max - min));
-        int intValue = (int)floatValue;
+        //float floatValue = (max - min) * (value - min) / (step * (max - min));
+        //int intValue = (int)floatValue;
         if (seekBar.isEnabled()) {
-            float x = (max - min) * (value - min) / (step * (max - min));
-            seekBar.setProgress((int) ((max - min) * (value - min) / (step * (max - min))));
+            //float x = (max - min) * (value - min) / (step * (max - min));
+            //seekBar.setProgress((int) ((max - min) * (value - min) / (step * (max - min))));
+            seekBar.setProgress((int)((value-min)/step));
         }
     }
 
-    static public void setCurrentSliderPosition(SeekBar seekBar, float value, float min, float max, float step, Context context) {
-        float floatValue = (max - min) * (value - min) / (step * (max - min));
-        int intValue = (int)floatValue;
+    /*static public void setCurrentSliderPosition(SeekBar seekBar, float value, float min, float max, float step, Context context) {
+        //float floatValue = (max - min) * (value - min) / (step * (max - min));
+        //int intValue = (int)floatValue;
         if (seekBar.isEnabled()) {
-            float x = (max - min) * (value - min) / (step * (max - min));
+            //float x = (max - min) * (value - min) / (step * (max - min));
             //Toast.makeText(context, "" + x , Toast.LENGTH_SHORT).show();
-            seekBar.setProgress((int) ((max - min) * (value - min) / (step * (max - min))));
+            //seekBar.setProgress((int) ((max - min) * (value - min) / (step * (max - min))));
+            seekBar.setProgress((int)((value-min)/step));
         }
-    }
+    }*/
 
     static public void setCurrentMauiSliderPosition(MauiSlider seekBar, float value, float min, float max, float step) {
         if (seekBar.isEnabled())

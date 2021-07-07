@@ -61,8 +61,9 @@ public class ImagePositionDialog {
         Zoom zoom=new Zoom();
         BackEndSliderElementSendingMessageVisitor backEndSliderElementSendingMessageVisitor=new BackEndSliderElementSendingMessageVisitor();
         MauiSlider.setUpSliderListener(mContext, null, mDialog, zoom, backEndSliderElementSendingMessageVisitor, false, "zoom", ParameterLimits.MinZoom, ParameterLimits.MaxZoom, ParameterLimits.FloatValueStep, mDialog.findViewById(R.id.zoomSeekBar));
-        //SeekBar seekBar=mDialog.findViewById(R.id.zoomSeekBar);
+        SeekBar seekBar=mDialog.findViewById(R.id.zoomSeekBar);
         //seekBar.setProgress(seekBar.getMax()/2);
+        //seekBar.setVisibility(View.INVISIBLE);
     }
 
     private void setZoomButtonListeners(){
@@ -96,12 +97,16 @@ public class ImagePositionDialog {
     }
 
     public void updateSliderPosition(){
-        MauiSlider.setCurrentSliderPosition(mDialog.findViewById(R.id.zoomSeekBar), (mBackend.getPixelSizeX()), ParameterLimits.MinZoom, ParameterLimits.MaxZoom, ParameterLimits.FloatValueStep, mContext);
+        if(!mDialog.isShowing()){
+            mTimer.cancel();
+            mCheckScaleTimerTask.cancel();
+        }
+        MauiSlider.setCurrentSliderPosition(mDialog.findViewById(R.id.zoomSeekBar), (mBackend.getZoom()), ParameterLimits.MinZoom, ParameterLimits.MaxZoom, ParameterLimits.FloatValueStep);
     }
 
     private void startTimer(){
         mTimer=new Timer();
         mCheckScaleTimerTask=new CheckScaleTimerTask(mContext);
-        mTimer.scheduleAtFixedRate(mCheckScaleTimerTask, 3000, 10000);
+        mTimer.scheduleAtFixedRate(mCheckScaleTimerTask, 1000, 1000);
     }
 }
