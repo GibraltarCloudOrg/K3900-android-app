@@ -119,7 +119,7 @@ public class MauiSlider extends SeekBar {
         int intValue = (int)floatValue;
         if (seekBar.isEnabled()) {
             float x = (max - min) * (value - min) / (step * (max - min));
-            Toast.makeText(context, "" + x , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "" + x , Toast.LENGTH_SHORT).show();
             seekBar.setProgress((int) ((max - min) * (value - min) / (step * (max - min))));
         }
     }
