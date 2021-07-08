@@ -20,7 +20,7 @@ public class AboutDialog {
     SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
     final Context mContext;
     /*final*/ Dialog mDialog = null;
-    final String kGuiVersion = "GUI Tablet Beta2 Build Number: 2040\nBuilt on: July 2nd, 2021" + "\n\n\n";
+    final String kGuiVersion = "GUI Tablet Beta2 Build Number: 2041\nBuilt on: July 7th, 2021" + "\n\n\n";
 
     public AboutDialog(Context context) {
         mContext = context;

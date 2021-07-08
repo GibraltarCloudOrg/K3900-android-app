@@ -74,6 +74,7 @@ import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_DISCOVERY_STOPPED;
 public class MainActivity extends AppCompatActivity implements AutomatedTestingElement {
 
     public static final String EXTRA_MESSAGE = "com.example.mauiviewcontrol.MESSAGE";
+    private ConnectionStatusLoggingModel mConnectionStatusLoggingModel = ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance();
     IntentFilter mIntentFilter;
     WifiP2pManager mP2pManager;
     WifiP2pManager.Channel mP2pChannel;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     Boolean mConnectionInProgress = false;
     Boolean mDiscovery = false;
     MainActivity mTheOne = this;
-    Boolean mAvailableOccurred = false;
+    //Boolean mAvailableOccurred = false;
     Boolean mDiscoverRequestComplete = false;
     Boolean mDiscoverPeersComplete = false;
     Boolean mConnectionStartRequest = false;
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate called");
         setContentView(R.layout.activity_main);
+        mConnectionStatusLoggingModel.setContext(this);
         if (mBackend.connectToStaticIp())
             mBackend.connect("192.168.10.236", 50051);
             //mBackend.connect("192.168.222.112", 50051);
@@ -147,8 +149,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
         if (mP2pManager != null) {
             mP2pChannel = mP2pManager.initialize(this, getMainLooper(), null);
+            mConnectionStatusLoggingModel.log("initializing P2P channel....");
         } else {
             Log.d(TAG, "null p2p pointer");
+            mConnectionStatusLoggingModel.log("ERROR: null P2P pointer.");
         }
 
         mP2pReceiver = new WifiDirectBroadcastReceiver(mP2pManager,mP2pChannel,this);
@@ -898,7 +902,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void onSpeedOfSound(View view) {
-        mSpeedOfSoundView = new SpeedOfSoundView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
+        if (null == mActionButtonsImagingDialog)
+            mSpeedOfSoundView = new SpeedOfSoundView(this, mMainImagingDialog.getBeamformerParameterValueLowerTextView(), mMainImagingDialog.getBeamformerParameterValueTextView());
+        else
+            mSpeedOfSoundView = new SpeedOfSoundView(this, mActionButtonsImagingDialog.getBeamformerParameterValueLowerTextView(), mActionButtonsImagingDialog.getBeamformerParameterValueTextView());
     }
 
     public void onGain(View view) {
@@ -1165,7 +1172,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         for (WifiP2pDevice device : peers) {
 
             //final WifiP2pDevice device = d;
-            mWifiDirectDeviceList.add(device);
+            WifiDirectDevice wifiDirectDevice = mWifiDirectDeviceList.add(device);
             Log.d(TAG, "p2p device: " + device.deviceName + ", heap address: " + device);
             //if (!device.deviceName.startsWith("DIRECT-K3900"))
             if (!device.deviceName.startsWith("MAUI"))
@@ -1185,7 +1192,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     break;
                 case WifiP2pDevice.AVAILABLE:
                     msg += "mAvailable";
-                    mAvailableOccurred = true;
+                    //mAvailableOccurred = true;
+                    wifiDirectDevice.setAvailableOccurred(true);
                     break;
                 case WifiP2pDevice.UNAVAILABLE:
                     msg += "mUnavailable";
@@ -1194,18 +1202,22 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     break;
             }
             Log.d(TAG, msg);
+            mConnectionStatusLoggingModel.log(msg);
 
             //connect();
 
             //if (device.deviceName.compareTo("DIRECT-K3900") == 0) {
             if (0 == device.deviceName.compareTo(mWifiDirectDeviceList.getSelectedDeviceName())) {
                 device_found = true;
+                mConnectionStatusLoggingModel.log(device.deviceName + " found, status: " + device.status);
                 if (device.status ==  WifiP2pDevice.AVAILABLE && !mConnected) {
                     if (!mConnectionInProgress) {
                         WifiP2pConfig config = new WifiP2pConfig();
                         config.deviceAddress = device.deviceAddress;
                         config.groupOwnerIntent = 0;
-                        Log.d(TAG, "Trying to connect to " + device.deviceAddress + " " + device.deviceName + " Owner: " + device.isGroupOwner());
+                        String message = "Trying to connect to " + device.deviceAddress + " " + device.deviceName + " Owner: " + device.isGroupOwner();
+                        mConnectionStatusLoggingModel.log(message);
+                        Log.d(TAG, message);
                         mConnectionStartRequest = false;
                         mP2pManager.connect(mP2pChannel, config, actionConnectListener);
                         while (!mConnectionStartRequest) {
@@ -1213,17 +1225,20 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                         }
                     }
                 }
-                else if (device.status ==  WifiP2pDevice.CONNECTED && !mAvailableOccurred) {
+                else if (device.status ==  WifiP2pDevice.CONNECTED && /*!mAvailableOccurred*/!wifiDirectDevice.getAvailableOccurred()) {
                     if (!mConnectionInProgress) {
                         this.mP2pManager.requestConnectionInfo(this.mP2pChannel, this.connectionInfoListener);
+                        mConnectionStatusLoggingModel.log("Requesting connection info.");
                         while(!this.mConnectionInfoRequest)
                             SystemClock.sleep(500);
-                        mAvailableOccurred = true;
+                        //mAvailableOccurred = true;
+                        wifiDirectDevice.setAvailableOccurred(true);
                     }
                 }
             }
             else if (0 == device.deviceName.length()) {
                 mP2pManager.removeGroup(mP2pChannel, null);
+                mConnectionStatusLoggingModel.log("Device not found, removed from group: " + mP2pChannel.toString());
                 mConnected = false;  // ToDo: do we need this line?  Maybe not???
             }
         }
@@ -1278,6 +1293,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     WifiP2pManager.ActionListener actionPeerListener = new WifiP2pManager.ActionListener() {
         @Override
         public void onSuccess() {
+            mConnectionStatusLoggingModel.log("Started discovery");
             Log.d(TAG, "Started discovery");
             mDiscoverPeersComplete = true;
         }
@@ -1285,9 +1301,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         @Override
         public void onFailure(int i) {
             if (i == BUSY) {
+                mConnectionStatusLoggingModel.log("Discovery Busy");
                 Log.d(TAG, "Discovery Busy");
             }
             else {
+                mConnectionStatusLoggingModel.log("Discovery Error");
                 Log.d(TAG, "Discovery Error");
             }
             mDiscoverPeersComplete = true;
@@ -1297,15 +1315,18 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     WifiP2pManager.ActionListener actionDiscoverStop = new WifiP2pManager.ActionListener() {
         @Override
         public void onSuccess() {
+            mConnectionStatusLoggingModel.log("Discovery should be stopped.");
             Log.d(TAG, "DISCOVERY SHOULD BE STOPPED");
         }
 
         @Override
         public void onFailure(int i) {
             if (i == BUSY) {
+                mConnectionStatusLoggingModel.log("Discovery Busy");
                 Log.d(TAG, "Discovery Busy");
             }
             else {
+                mConnectionStatusLoggingModel.log("Discovery Error");
                 Log.d(TAG, "Discovery Error");
             }
         }
@@ -1316,9 +1337,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         public void onDiscoveryStateAvailable(int state) {
 
             if (state == WIFI_P2P_DISCOVERY_STARTED) {
+                mConnectionStatusLoggingModel.log("Discovery started");
                 Log.d(TAG, "Discovery started");
                 mDiscovery = true;
             } else if (state == WIFI_P2P_DISCOVERY_STOPPED) {
+                mConnectionStatusLoggingModel.log("Discovery stopped");
                 Log.d(TAG, "Discovery stopped");
                 mDiscovery = false;
             }
@@ -1340,10 +1363,13 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     mRelativeLayout.setBackgroundColor(Color.GREEN);
                     Button openGuiButton = findViewById(R.id.connectToServerButton);
                     openGuiButton.setBackgroundColor(Color.GREEN);
-                    Log.d(TAG, "groupOwnerAddress.getHostAddress(): " + groupOwnerAddress.getHostAddress());
+                    String message = "groupOwnerAddress.getHostAddress(): " + groupOwnerAddress.getHostAddress();
+                    mConnectionStatusLoggingModel.log(message);
+                    Log.d(TAG, message);
                     mBackend.connect(groupOwnerAddress.getHostAddress(), 50051);
                     //mGrpcChannel = ManagedChannelBuilder.forAddress(groupOwnerAddress.getHostAddress(), 50051).usePlaintext().build();
                     //mBlockingStub = BeamformerGrpc.newBlockingStub(mGrpcChannel);
+                    mConnectionStatusLoggingModel.log("Group Formed, Stub created");
                     Log.d(TAG, "Group Formed, Stub created");
                     BeamformerClient.setWifiDirectListChanged(false);
                     //if (null != mMainImagingDialog)
@@ -1351,14 +1377,17 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                 }
             }
             else {
-                if (mConnected)
+                if (mConnected) {
                     disconnect();
+                    mConnectionStatusLoggingModel.log("Disconnected from the server");
+                }
             }
             mConnectionInfoRequest = true;
         }
     };
 
     private void disconnect() {
+        mConnectionStatusLoggingModel.log("Lost Connection");
         Log.d(TAG, "Lost Connection");
         mConnected = false;
         mRelativeLayout.setBackgroundColor(Color.RED);
@@ -1376,6 +1405,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     @Override
     protected void onResume() {
         super.onResume();
+        mConnectionStatusLoggingModel.log("Resume");
         Log.d(TAG, "Resume");
         registerReceiver(mP2pReceiver, mIntentFilter);
         //mP2pManager.cancelConnect(mP2pChannel, actionConnectListener);
@@ -1384,6 +1414,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     @Override
     protected void onPause() {
         super.onPause();
+        mConnectionStatusLoggingModel.log("Puase");
         Log.d(TAG, "Pause");
         unregisterReceiver(mP2pReceiver);
     }
@@ -1609,10 +1640,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
                 if (!activity.mConnected && !activity.mConnectionInProgress) {
 
-                    if (activity.mConnected)
+                    if (activity.mConnected) {
+                        mConnectionStatusLoggingModel.log("connected!");
                         Log.d(TAG, "Connected so check discovery");
-                    else
+                    }
+                    else {
+                        mConnectionStatusLoggingModel.log("Not connected!");
                         Log.d(TAG, "NOT Connected so check discovery");
+                    }
 
                     activity.mDiscoverRequestComplete = false;
                     activity.mP2pManager.requestDiscoveryState(activity.mP2pChannel, activity.discoveryStateListener);
