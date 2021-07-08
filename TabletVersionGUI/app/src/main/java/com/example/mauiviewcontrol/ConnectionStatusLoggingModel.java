@@ -22,12 +22,17 @@ public class ConnectionStatusLoggingModel {
             return;
         //sLogData = sLogData + "\n" + message + "at: " + LocalDateTime.now();
         mLogData = LocalDateTime.now() + ": " + message + "\n";
+        mLogHistory = mLogData + "\n" + mLogHistory;
         writeLogsToFileToInternalStorage();
         //Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
     public String getLogData() {
         return mLogData;
+    }
+
+    public String getLogHistory() {
+        return mLogHistory;
     }
 
     public void writeLogsToFileToInternalStorage() {
@@ -56,6 +61,7 @@ public class ConnectionStatusLoggingModel {
     }
 
     private String mLogData = new String("");
+    private String mLogHistory;
     private final String TAG = "Connection Status Logging Model";
     private Context mContext = null;
     private boolean mCollectData = true;

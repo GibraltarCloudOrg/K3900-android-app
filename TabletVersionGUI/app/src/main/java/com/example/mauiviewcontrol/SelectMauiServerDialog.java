@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -105,6 +107,11 @@ public class SelectMauiServerDialog {
             Toast.makeText(mContext, "No Maui K3900 reachable....", Toast.LENGTH_SHORT).show();
     }
 
+    private void updateStatusLogs() {
+        ((TextView)mDialog.findViewById(R.id.connectionStatusLogsTextView)).setText(ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().getLogHistory());
+        ((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setProgress(100);
+    }
+
     private void checkConnection() {
         ListView mauiDeviceListView = mDialog.findViewById(R.id.mauiDeviceListView);
         if (mWifiDirectDeviceList.connected())
@@ -132,6 +139,7 @@ public class SelectMauiServerDialog {
                         @Override
                         public void run() {
                             updateDeviceList();
+                            updateStatusLogs();
                             checkConnection();
                         }
                     });

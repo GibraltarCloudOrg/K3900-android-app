@@ -43,6 +43,7 @@ public class WifiDirectDeviceList {
     {
         mSelectedDeviceName = deviceName;
         //mSelectedDeviceName = mDeviceMap.get(deviceName).getName();
+        ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().log(mSelectedDeviceName + " selected.");
     }
 
     public ArrayList<String> getStringList() {
