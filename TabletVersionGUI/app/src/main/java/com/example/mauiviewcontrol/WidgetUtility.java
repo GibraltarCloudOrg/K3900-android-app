@@ -60,6 +60,15 @@ public class WidgetUtility {
     }
 
     static public void setUpListener(Context context, Button button, Dialog dialog, BackEndElement element, BackEndElementSendingMessageVisitor visitor, boolean confirmationDialog, String dialogMessage, boolean showToast, String toastMessage, boolean dismissDialog) {
+        setUpListener(context, button, dialog, element, visitor, confirmationDialog, dialogMessage, showToast, toastMessage, dismissDialog, false);
+    }
+
+    static public void setUpListener(Context context, Dialog dialog, int buttonId, BackEndElement element, BackEndElementSendingMessageVisitor visitor, boolean confirmationDialog, String dialogMessage, boolean showToast, String toastMessage, boolean dismissDialog, boolean refreshDialog) {
+        Button button=dialog.findViewById(buttonId);
+        setUpListener(context, button, dialog, element, visitor, confirmationDialog, dialogMessage, showToast, toastMessage, dismissDialog, refreshDialog);
+    }
+
+    static public void setUpListener(Context context, Button button, Dialog dialog, BackEndElement element, BackEndElementSendingMessageVisitor visitor, boolean confirmationDialog, String dialogMessage, boolean showToast, String toastMessage, boolean dismissDialog, boolean refreshDialog) {
         //Button button = dialog.findViewById(buttonId);
         //Dialog dialog=null;
         button.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +82,10 @@ public class WidgetUtility {
                                 boolean result = (showToast ? (MauiToastMessage.displayToastMessage(context, element.accept(visitor), toastMessage + element.getRuntimeSubText(), Toast.LENGTH_LONG)) : element.accept(visitor));
                                 if (dismissDialog && dialog!=null)
                                     dialog.dismiss();
+                                if(refreshDialog){
+                                    dialog.dismiss();
+                                    dialog.show();
+                                }
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -95,6 +108,10 @@ public class WidgetUtility {
                     if (dismissDialog && dialog!=null)
                         dialog.dismiss();
                 }
+                /*if((element instanceof ClearMeasurements)){
+                    dialog.dismiss();
+                    dialog.show();
+                }*/
             }
         });
     }

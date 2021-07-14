@@ -408,7 +408,7 @@ public class MainWindowActivity extends AppCompatActivity implements AutomatedTe
     public void showMeasurementDialog(View view) {
         /*MeasurementDialog dialog =*/ //new MeasurementDialog(this);
         //dialog.process();
-        new MeasureImagingDialog(this, true);
+        MeasureImagingDialog.getSingletonInstance(this, true);
     }
 
     public void showPresetsDialog(View view) {

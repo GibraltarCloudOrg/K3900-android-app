@@ -147,7 +147,9 @@ public class ImageStreamer {
     public void setStopImaging(boolean stopImaging) { mStopImaging = stopImaging; }
     public boolean getStopTimer() { return mStopTimer; }
     public void setStopTimer(boolean stopTimer) { mStopTimer = stopTimer; }
-    public ImageView getImageView() { return mImageView; }
+    public ImageView getImageView() {
+        return mImageView;
+    }
     public void setImageView(ImageView imageView) {
         mImageView = imageView;
     }

@@ -8,7 +8,8 @@
     android:backgroundTint="@color/black"
     android:foregroundTint="@color/white"
     android:outlineAmbientShadowColor="@color/white"
-    android:outlineSpotShadowColor="@color/white">
+    android:outlineSpotShadowColor="@color/white"
+    android:visibility="visible">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -145,4 +146,19 @@
             android:backgroundTint="@color/white"
             android:backgroundTintMode="multiply"></RelativeLayout>
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.mauiviewcontrol.MeasureCustomView
+            android:id="@+id/measure_custom_view"
+            android:layout_width="618dp"
+            android:layout_height="618dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:visibility="visible" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

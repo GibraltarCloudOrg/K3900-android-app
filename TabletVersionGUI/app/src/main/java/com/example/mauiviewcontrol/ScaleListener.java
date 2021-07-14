@@ -33,8 +33,12 @@ public class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureList
         else
             scaleFactor = -1 / (mScaleFactor * rateAdjustment);
         //final float rate = 0.25f;
-        ImagePositionDialog imagePositionDialog=ImagePositionDialog.getSingletonInstance(mContext);
-        imagePositionDialog.showDialog();
+        if(ImagePositionDialog.getZoomDialogOnPinch()) {
+            ImagePositionDialog imagePositionDialog = ImagePositionDialog.getSingletonInstance(mContext);
+            imagePositionDialog.showDialog();
+            imagePositionDialog.setImageView();
+            //imagePositionDialog.setExitButtonListener();
+        }
         boolean result = mBackend.onZoom(scaleFactor/* * rate*/);
         //mImageView.setScaleX(mScaleFactor);
         //mImageView.setScaleY(mScaleFactor);

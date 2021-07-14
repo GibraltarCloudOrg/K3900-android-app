@@ -1901,6 +1901,19 @@ public class SwitchBackEndModel {
         return false;
     }
 
+    public boolean onClearMeasurements() {
+        switch(mMessageTo) {
+            case BeamformerClient:
+            case BatchMode:
+                return mBeamformerClient.onClearMeasurements();
+            case UnitTesting:
+                return mUnitTestingModel.onClearMeasurements();
+            default:
+                break;
+        }
+        return false;
+    }
+
     public boolean onDeleteMeasurement(int index) {
         switch(mMessageTo) {
             case BeamformerClient:

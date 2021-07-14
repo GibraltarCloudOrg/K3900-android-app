@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -43,7 +42,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     Boolean mDiscoverPeersComplete = false;
     Boolean mConnectionStartRequest = false;
     Boolean mConnectionInfoRequest = false;
-    BlockingQueue<List<WifiP2pDevice>> mPeerUpdateQueue = new LinkedBlockingQueue<>(10);
+    BlockingQueue<List<WifiP2pDevice>>  mPeerUpdateQueue = new LinkedBlockingQueue<>(10);
     SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
     WifiDirectDeviceList mWifiDirectDeviceList = WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance();
     AutomatedTestingModel mAutomatedTestingModel = AutomatedTestingModel.getAutomatedTestingModelSingletonInstance();
@@ -126,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     private GainView mGainView = null;
     private FiltersView mFiltersView = null;
     private ContrastView mContrastView = null;
-    //private List<WifiP2pDevice> mPeers = null;
-    //private GrpcExecutor mGrpcExecutor = null;
     private boolean mDebugMode = false;
     //private MauiSlider mMauiSlider1 = null;
 
@@ -139,19 +135,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         mConnectionStatusLoggingModel.setContext(this);
         if (mBackend.connectToStaticIp())
             mBackend.connect("192.168.10.236", 50051);
-        //mBackend.connect("192.168.222.112", 50051);
-        //mBackend.connect("192.168.10.238", 50051);
+            //mBackend.connect("192.168.222.112", 50051);
+            //mBackend.connect("192.168.10.238", 50051);
         setUpProbePage();
-        Intent intent = getIntent();
-        boolean showServerListDialog = true;
-        if (null != intent) {
-            try {
-                showServerListDialog = (boolean) intent.getSerializableExtra("ShowServerListDialog");
-                mWifiDirectDeviceList.setSelected((String) intent.getSerializableExtra("ServerName"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         mP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         /*mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (mWifiManager != null) {
@@ -163,17 +149,13 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
         if (mP2pManager != null) {
             mP2pChannel = mP2pManager.initialize(this, getMainLooper(), null);
-            //mP2pManager.cancelConnect(mP2pChannel, null);
-            //mP2pChannel.close();
-            //mP2pManager.clearLocalServices(mP2pChannel, null);
-            //mP2pManager.clearServiceRequests(mP2pChannel, null);
             mConnectionStatusLoggingModel.log("initializing P2P channel....");
         } else {
             Log.d(TAG, "null p2p pointer");
             mConnectionStatusLoggingModel.log("ERROR: null P2P pointer.");
         }
 
-        mP2pReceiver = new WifiDirectBroadcastReceiver(mP2pManager, mP2pChannel, this);
+        mP2pReceiver = new WifiDirectBroadcastReceiver(mP2pManager,mP2pChannel,this);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -216,10 +198,12 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     //Log.d(TAG, state.getProbeName());
                     //String probeName = "Probe Name: " + state.getProbeName();
                     Toast.makeText(MainActivity.this, "Probe Name: " + probeName, Toast.LENGTH_LONG).show();
-                } catch (LostCommunicationException le) {
+                }
+                catch (LostCommunicationException le) {
                     Toast.makeText(MainActivity.this, "Ping failed, Lost Communication Exception, le: " + le.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, le.getMessage());
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Ping failed, e: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, e.getMessage());
                 }
@@ -236,14 +220,13 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
             }
         });
 
-        //startGrpcExecutor();
         new GrpcExecutor().execute(new GrpcRunnable(mTheOne));
         mRelativeLayout = findViewById(R.id.wifiDirectStatusRelativeLayout);
         mRelativeLayout.setBackgroundColor(Color.YELLOW);
         Button openGuiButton = findViewById(R.id.connectToServerButton);
         openGuiButton.setBackgroundColor(Color.YELLOW);
         //if (null != mMainImagingDialog)
-        //mMainImagingDialog.setConnectionStatus(false);
+            //mMainImagingDialog.setConnectionStatus(false);
 
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         //        WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -283,9 +266,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                 imageView.setImageBitmap(bitmap);
             }
         });
-        ((CheckBox) findViewById(R.id.activateGetSystemStateCheckBox)).setChecked(mActivateCheckSystemStates);
-        ((CheckBox) findViewById(R.id.activateGetImageCheckBox)).setChecked(mActivateGetImage);
-        ((CheckBox) findViewById(R.id.enableDisplayWidgetsCheckBox)).setChecked(mEnableDisplay);
+        ((CheckBox)findViewById(R.id.activateGetSystemStateCheckBox)).setChecked(mActivateCheckSystemStates);
+        ((CheckBox)findViewById(R.id.activateGetImageCheckBox)).setChecked(mActivateGetImage);
+        ((CheckBox)findViewById(R.id.enableDisplayWidgetsCheckBox)).setChecked(mEnableDisplay);
         startTimers();
         ImageStreamer.getImageStreamerSingletonInstance().setStopImaging(false);
         setUpGetImageDeadlineListener();
@@ -298,25 +281,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         }
         setDebuggingWidgetsEnabled(debugMode);
         setUpDebugModeButton();
-        mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
-        if (showServerListDialog)
-            showMainWindowPage(null);
-        else
-            mMainImagingDialog = new MainImagingDialog(this, mEnableDisplay, mDebugMode);
+        showMainWindowPage(null);
         //mMainImagingDialog.start();
         //SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
         //if (1 < WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().getNumberOfMauiDevices())
         //new SelectMauiServerDialog(this);
-    }
-
-    void processPeer() throws InterruptedException {
-        //this.processPeer(this.mPeerUpdateQueue.take());
-        //mPeerUpdateQueue.clear();
-        /*if (null != mGrpcExecutor)
-            mGrpcExecutor.stop();
-
-        mGrpcExecutor = new GrpcExecutor();
-        mGrpcExecutor.execute(new GrpcRunnable(mTheOne));*/
     }
 
     /*private void setUpTgcMauiSliders() {
@@ -339,17 +308,18 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         }
     }*/
 
-    public void displayTxValue(View view) {
-        String maskStatus = "";
+    public void displayTxValue(View view){
+        String maskStatus="";
         ArrayList<Boolean> maskMsgs = mBackend.onGetTxMask();
-        maskStatus = Integer.toString(maskMsgs.size());
-        for (int i = 0; i < 10; i++) {
+        maskStatus=Integer.toString(maskMsgs.size());
+        for(int i=0;i<10;i++) {
             try {
-                boolean status = maskMsgs.get(i);
-                if (status) {
-                    maskStatus = maskStatus + "On, ";
-                } else {
-                    maskStatus = maskStatus + "Off, ";
+                boolean status=maskMsgs.get(i);
+                if(status){
+                    maskStatus=maskStatus+ "On, ";
+                }
+                else{
+                    maskStatus=maskStatus+ "Off, ";
                 }
                 //maskStatus = maskStatus+ ", " + String.valueOf(status);
             } catch (Exception e) {
@@ -369,8 +339,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (appInfo != null) {
-            if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0)
+        if(appInfo != null) {
+            if( (appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0)
                 mDebugMode = true;
             else
                 mDebugMode = false;
@@ -378,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         int visible = enabled ? View.VISIBLE : View.INVISIBLE;
         //findViewById(R.id.batchModeButton).setVisibility(visible);
         //findViewById(R.id.resetAllButton).setVisibility(visible);
-        if (!enabled) {
+        if(!enabled) {
             TableLayout t = findViewById(R.id.mainTableLayout);
             t.removeViewAt(3);
             t.removeViewAt(2);
@@ -391,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         connectToServerButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MauiToastMessage.displayToastMessage((Context) MainActivity.this, true, "Activating Debug Mode.", Toast.LENGTH_LONG);
+                MauiToastMessage.displayToastMessage((Context)MainActivity.this, true, "Activating Debug Mode.", Toast.LENGTH_LONG);
                 showDebugModeMain();
                 return true;
             }
@@ -410,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     private void setUpGetImageDeadlineListener() {
-        EditText getImageDeadlineEditTextNumberDecimal = (EditText) findViewById(R.id.getImageDeadlineEditTextNumberDecimal);
+        EditText getImageDeadlineEditTextNumberDecimal = (EditText)findViewById(R.id.getImageDeadlineEditTextNumberDecimal);
 
         TextWatcher textWatcher = new TextWatcher() {
 
@@ -439,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
     public void enableDisplayWidgets(View view) {
         mEnableDisplay = !mEnableDisplay;
-        ((CheckBox) (findViewById(R.id.enableDisplayWidgetsCheckBox))).setChecked(mEnableDisplay);
+        ((CheckBox)(findViewById(R.id.enableDisplayWidgetsCheckBox))).setChecked(mEnableDisplay);
     }
 
     public void writeFileExternalStorage(View v) {
@@ -472,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                switch (which) {
+                switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         break;
 
@@ -491,12 +461,12 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
     public void activateGetImage(View view) {
         mActivateGetImage = !mActivateGetImage;
-        ((CheckBox) (findViewById(R.id.activateGetImageCheckBox))).setChecked(mActivateGetImage);
+        ((CheckBox)(findViewById(R.id.activateGetImageCheckBox))).setChecked(mActivateGetImage);
     }
 
     public void activateGetSystemState(View view) {
         mActivateCheckSystemStates = !mActivateCheckSystemStates;
-        ((CheckBox) (findViewById(R.id.activateGetSystemStateCheckBox))).setChecked(mActivateCheckSystemStates);
+        ((CheckBox)(findViewById(R.id.activateGetSystemStateCheckBox))).setChecked(mActivateCheckSystemStates);
     }
 
     private void startTimer() {
@@ -551,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
             setUpDurationSpinner(findViewById(R.id.frameRatesSpinner), "between get images", BeamformerClient.getMonitoringDurationMilliSecondsDefaultIndexForImaging());
         }*/
 
-    private void setUpDurationSpinner(Spinner spinner, String text, int defaultIndex) {
+        private void setUpDurationSpinner(Spinner spinner, String text, int defaultIndex) {
         ArrayList<String> list = new ArrayList<>();
         //String secondsUnitString = " milliseconds per frame";
         String secondsUnitString = " milliseconds " + text;
@@ -595,13 +565,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     private void setUpFrameRatesSpinnerListener() {
         Spinner frameRatesSpinner = findViewById(R.id.frameRatesSpinner);
         frameRatesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 BeamformerClient.setMonitoringDurationMilliSecondsForImaging(BeamformerClient.getMonitoringDurationMilliSecondsList()[position]);
                 Toast.makeText(MainActivity.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
-
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
@@ -610,13 +581,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     private void setUpDurationBetweenCheckSystemStateSpinnerListener() {
         Spinner durationBetweenCheckSystemStateSpinner = findViewById(R.id.durationBetweenCheckSystemStateSpinner);
         durationBetweenCheckSystemStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 BeamformerClient.setMonitoringDurationMilliSecondsForWidgets(BeamformerClient.getMonitoringDurationMilliSecondsList()[position]);
                 Toast.makeText(MainActivity.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
-
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
@@ -625,20 +597,31 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     private void setUpBlockingStubDeadlineSpinnerListener() {
         Spinner blockingStubDeadlineSpinner = findViewById(R.id.blockingStubDeadlineSpinner);
         blockingStubDeadlineSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 BeamformerClient.setMonitoringDurationMilliSecondsForWidgets(BeamformerClient.getMonitoringDurationMilliSecondsList()[position]);
                 Toast.makeText(MainActivity.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
-
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
     }
 
-    public void setSaveButtonHidden(View view) {
+    public void setSaveButtonHidden(View view){
         ElementMaskingSetup.setSaveButtonHidden(!ElementMaskingSetup.sSaveButtonHidden);
+    }
+
+    public void showImagePositionDialog(View view){
+        ImagePositionDialog imagePositionDialog = ImagePositionDialog.getSingletonInstance(this);
+        imagePositionDialog.showDialog();
+        imagePositionDialog.setImageView();
+    }
+
+    public void setZoomDialogOnPinch(View view){
+            ImagePositionDialog.setZoomDialogOnPinch(!(ImagePositionDialog.getZoomDialogOnPinch()));
     }
 
     private void setUpProbePage() {
@@ -793,14 +776,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void showMainWindowPage(View view) {
-        //mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
+        mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         //mFullMenuImagingDialog = new FullMenuImagingDialog(this, mEnableDisplay);
         mMainImagingDialog = new MainImagingDialog(this, mEnableDisplay, mDebugMode);
-        //SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
+        SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
         //if (1 == mWifiDirectDeviceList.getNumberOfMauiDevices())
-        //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getDeviceName(0));
+            //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getDeviceName(0));
         //else
-        showSelectMauiServerDialog(null);
+            showSelectMauiServerDialog(null);
         /*try {
             mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
             Intent intent = new Intent(this, com.example.mauiviewcontrol.MainWindowActivity.class);
@@ -827,10 +810,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         new SelectMauiServerDialog(this);
     }
 
-    public void showElementMaskingDialog(View view) {
+    public void showElementMaskingDialog(View view){
         //Toast.makeText(getApplicationContext(),"Loading... please wait", Toast.LENGTH_SHORT).show();
-        EngineeringSettingsDialog engineeringSettingsDialog = new EngineeringSettingsDialog(getApplicationContext());
-        engineeringSettingsDialog.showDialog(getApplicationContext(), 0);
+        EngineeringSettingsDialog engineeringSettingsDialog=new EngineeringSettingsDialog(getApplicationContext());
+        engineeringSettingsDialog.showEngineeringTabPage(getApplicationContext());
     }
 
     /*public void showImagePositionDialog(View view){
@@ -868,14 +851,20 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     }
 
     public void showSaveLoadDialog(View view) {
-        /*SaveLoadDialog dialog =*/
-        new SaveLoadDialog(this);
+        /*SaveLoadDialog dialog =*/ new SaveLoadDialog(this);
     }
 
     public void showMeasurementDialog(View view) {
         /*MeasurementDialog dialog =*/ //new MeasurementDialog(this);
         //dialog.process();
-        mMeasureImagingDialog = new MeasureImagingDialog(this, mEnableDisplay);
+        //mMeasureImagingDialog = new MeasureImagingDialog(this, mEnableDisplay);
+        if(MeasureImagingDialog.getMeasurementEnabled()) {
+            mMeasureImagingDialog = MeasureImagingDialog.getSingletonInstance(this, mEnableDisplay);
+        }
+    }
+    
+    public void setMeasurementEnabled(View view){
+        MeasureImagingDialog.setMeasurementEnabled(!MeasureImagingDialog.getMeasurementEnabled());
     }
 
     public void showPresetsDialog(View view) {
@@ -896,7 +885,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         mAutomatedTestingModel.setInProcess(true);
         //if (mAutomatedTestingDialog.isAutomatedLogInTestingTurnedOn())
-        //startAutomatedLogIn();
+            //startAutomatedLogIn();
         executeAutomatedTesting();
         //stopAutomatedTesting();
     }
@@ -918,7 +907,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         boolean result = mBackend.onTgcCenter();
         MauiToastMessage.displayToastMessage(this, result, "TGC Center: ", Toast.LENGTH_LONG);
         //for (int index = 0; index < 9; ++index)
-        //mBackend.onTgcChanged(index, 0);
+            //mBackend.onTgcChanged(index, 0);
     }
 
     public void onDlcCenter(View view) {
@@ -955,9 +944,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
     private void startAutomatedLogIn() {
         //if (!mBackend.automatedTestingInProcess())
-        //return;
+            //return;
 
-        runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Inputting username: 'usernameTest'", 10));
+        runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context)this, "Inputting username: 'usernameTest'", 10));
         /*++mCurrentAutomatedTestingStep;
         //showMainWindowPage(null);
         runOnUiThread(new Toaster(this, (Context)this, "Inputting password: 'passwordTest'", Toast.LENGTH_LONG));
@@ -988,98 +977,112 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                 if (mAutomatedTestingModel.getMainWindowOn()) {
                     showMainWindowForAutomatedTesting(TestCase.MainWindow);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for MainWindow", 30));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 1:
                 if (mAutomatedTestingModel.getLogInOn()) {
                     showMainWindowForAutomatedTesting(TestCase.LogIn);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Log In", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 2:
                 if (mAutomatedTestingModel.getImagingOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Imaging);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Imaging", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 3:
                 if (mAutomatedTestingModel.getStatusOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Status);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Status", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 4:
                 if (mAutomatedTestingModel.getPatientOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Patient);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Patient", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 5:
                 if (mAutomatedTestingModel.getProbeOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Probe);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Probe", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 6:
                 if (mAutomatedTestingModel.getMeasurementOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Measurement);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Measurement", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 7:
                 if (mAutomatedTestingModel.getPresetOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Preset);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Preset", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 8:
                 if (mAutomatedTestingModel.getSaveOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Save);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Save", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 9:
                 if (mAutomatedTestingModel.getLoadOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Load);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Load", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 10:
                 if (mAutomatedTestingModel.getModifyOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Modify);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Modify", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 11:
                 if (mAutomatedTestingModel.getVersionOn()) {
                     showMainWindowForAutomatedTesting(TestCase.Version);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Version", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 12:
                 if (mAutomatedTestingModel.getCleanScreenOn()) {
                     showMainWindowForAutomatedTesting(TestCase.CleanScreen);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Clean Screen", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             case 13:
                 if (mAutomatedTestingModel.getLogOutOn()) {
                     showMainWindowForAutomatedTesting(TestCase.LogOut);
                     runOnUiThread(new ThreadedToasterForAutomatedTesting(this, (Context) this, "Automated Testing for Log Out", 20));
-                } else
+                }
+                else
                     executeAutomatedTesting();
                 break;
             default:
@@ -1131,7 +1134,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                                            @Nonnull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION) {
             //case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION:
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            if  (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Log.e(TAG, "Fine location permission is not granted!");
                 finish();
             }
@@ -1171,24 +1174,18 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     };
 
     void processPeer(List<WifiP2pDevice> peers) {
-        /*if (null == peers)
-            peers = mPeers;
-        else
-            mPeers = peers;
-        if (null == peers)
-            return;*/
 
         //BeamformerClient.setWifiDirectListChanged(true);
         //Toast.makeText(MainActivity.this, "processPeer() called.", Toast.LENGTH_LONG).show();
         boolean device_found = false;
         //ArrayList<String> list = new ArrayList<String>();
 
-        //disconnect();se
+        //disconnect();
         //WifiDirectDeviceList wifiDirectDeviceList = WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance();
         mWifiDirectDeviceList.clearAll();
 
         //if (wifiDirectDeviceList.getCurrentIndex() >= peers.size())
-        //wifiDirectDeviceList.setCurrentIndex(-1);
+            //wifiDirectDeviceList.setCurrentIndex(-1);
         for (WifiP2pDevice device : peers) {
 
             //final WifiP2pDevice device = d;
@@ -1230,7 +1227,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
             if (0 == device.deviceName.compareTo(mWifiDirectDeviceList.getSelectedDeviceName())) {
                 device_found = true;
                 mConnectionStatusLoggingModel.log(device.deviceName + " found, status: " + device.status);
-                if (device.status == WifiP2pDevice.AVAILABLE && !mConnected) {
+                if (device.status ==  WifiP2pDevice.AVAILABLE && !mConnected) {
                     if (!mConnectionInProgress) {
                         WifiP2pConfig config = new WifiP2pConfig();
                         config.deviceAddress = device.deviceAddress;
@@ -1239,32 +1236,24 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                         mConnectionStatusLoggingModel.log(message);
                         Log.d(TAG, message);
                         mConnectionStartRequest = false;
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
-                        }
                         mP2pManager.connect(mP2pChannel, config, actionConnectListener);
                         while (!mConnectionStartRequest) {
                             SystemClock.sleep(1000);
                         }
                     }
-                } else if (device.status == WifiP2pDevice.CONNECTED && /*!mAvailableOccurred*/!wifiDirectDevice.getAvailableOccurred()) {
+                }
+                else if (device.status ==  WifiP2pDevice.CONNECTED && /*!mAvailableOccurred*/!wifiDirectDevice.getAvailableOccurred()) {
                     if (!mConnectionInProgress) {
                         this.mP2pManager.requestConnectionInfo(this.mP2pChannel, this.connectionInfoListener);
                         mConnectionStatusLoggingModel.log("Requesting connection info.");
-                        while (!this.mConnectionInfoRequest)
+                        while(!this.mConnectionInfoRequest)
                             SystemClock.sleep(500);
                         //mAvailableOccurred = true;
                         wifiDirectDevice.setAvailableOccurred(true);
                     }
                 }
-            } else if (0 == device.deviceName.length()) {
+            }
+            else if (0 == device.deviceName.length()) {
                 mP2pManager.removeGroup(mP2pChannel, null);
                 mConnectionStatusLoggingModel.log("Device not found, removed from group: " + mP2pChannel.toString());
                 mConnected = false;  // ToDo: do we need this line?  Maybe not???
@@ -1331,7 +1320,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
             if (i == BUSY) {
                 mConnectionStatusLoggingModel.log("Discovery Busy");
                 Log.d(TAG, "Discovery Busy");
-            } else {
+            }
+            else {
                 mConnectionStatusLoggingModel.log("Discovery Error");
                 Log.d(TAG, "Discovery Error");
             }
@@ -1351,7 +1341,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
             if (i == BUSY) {
                 mConnectionStatusLoggingModel.log("Discovery Busy");
                 Log.d(TAG, "Discovery Busy");
-            } else {
+            }
+            else {
                 mConnectionStatusLoggingModel.log("Discovery Error");
                 Log.d(TAG, "Discovery Error");
             }
@@ -1376,13 +1367,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     };
 
 
+
     WifiP2pManager.ConnectionInfoListener connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
 
             final InetAddress groupOwnerAddress = info.groupOwnerAddress;
 
-            if (info.groupFormed) {
+            if (info.groupFormed){
                 if (!mConnected) {
                     mConnected = true;
                     mRelativeLayout.setBackgroundColor(Color.GREEN);
@@ -1398,9 +1390,10 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     Log.d(TAG, "Group Formed, Stub created");
                     BeamformerClient.setWifiDirectListChanged(false);
                     //if (null != mMainImagingDialog)
-                    //mMainImagingDialog.setConnectionStatus(true);
+                        //mMainImagingDialog.setConnectionStatus(true);
                 }
-            } else {
+            }
+            else {
                 if (mConnected) {
                     disconnect();
                     mConnectionStatusLoggingModel.log("Disconnected from the server");
@@ -1421,9 +1414,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         //mDeviceFound = false;
         //mAvailableOccurred = false;
         //if (mBackend.connected())
-        mBackend.disconnect();
+            mBackend.disconnect();
         //if (null != mMainImagingDialog)
-        //mMainImagingDialog.setConnectionStatus(false);
+            //mMainImagingDialog.setConnectionStatus(false);
     }
 
     @Override
@@ -1506,17 +1499,17 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
     public void onLivePlayback(View view) {
         boolean result = mBackend.onToggleLivePlayback();
-        MauiToastMessage.displayToastMessage((Context) this, result, "Toggle Live Playback:", Toast.LENGTH_SHORT);
+        MauiToastMessage.displayToastMessage((Context)this, result, "Toggle Live Playback:", Toast.LENGTH_SHORT);
         //hideMauiLogo();
         //findViewById(R.id.runFreezeInMainWindowButton).setVisibility(View.VISIBLE);
         //findViewById(R.id.livePlaybackInMainWindowButton).setVisibility(View.INVISIBLE);
     }
 
     public void showLogInLogOutDialog(View view) {
-        if (mBackend.loggedIn())
-            new LogOutDialog((Context) this);
+        if(mBackend.loggedIn())
+            new LogOutDialog((Context)this);
         else
-            new LogInDialog((Context) this);
+            new LogInDialog((Context)this);
     }
 
     public void showSystemPopupMenu(View view) {
@@ -1566,24 +1559,24 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                 //SystemConfigurationDialog systemConfigurationDialog = new SystemConfigurationDialog(MainWindowActivity.this);
                 switch (menuItem.getItemId()) {
                     case R.id.action_about:
-                        new AboutDialog((Context) MainActivity.this);
-                        Toast.makeText((Context) MainActivity.this, "System > About clicked", Toast.LENGTH_SHORT).show();
+                        new AboutDialog((Context)MainActivity.this);
+                        Toast.makeText((Context)MainActivity.this, "System > About clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_configuration:
-                        (mSystemsDialog = new SystemsDialog((Context) MainActivity.this)).showConfigurationPage();
-                        Toast.makeText((Context) MainActivity.this, "System > Configuration clicked", Toast.LENGTH_SHORT).show();
+                        (mSystemsDialog = new SystemsDialog((Context)MainActivity.this)).showConfigurationPage();
+                        Toast.makeText((Context)MainActivity.this, "System > Configuration clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_users:
-                        (mSystemsDialog = new SystemsDialog((Context) MainActivity.this)).showCreateUserPage();
-                        Toast.makeText((Context) MainActivity.this, "System > Users clicked", Toast.LENGTH_SHORT).show();
+                        (mSystemsDialog = new SystemsDialog((Context)MainActivity.this)).showCreateUserPage();
+                        Toast.makeText((Context)MainActivity.this, "System > Users clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_diagnostics:
-                        (mSystemsDialog = new SystemsDialog((Context) MainActivity.this)).showDiagnosticsPage();
-                        Toast.makeText((Context) MainActivity.this, "System > Diagnostics clicked", Toast.LENGTH_SHORT).show();
+                        (mSystemsDialog = new SystemsDialog((Context)MainActivity.this)).showDiagnosticsPage();
+                        Toast.makeText((Context)MainActivity.this, "System > Diagnostics clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_engineering:
-                        Toast.makeText((Context) MainActivity.this, "System Engineering clicked", Toast.LENGTH_SHORT).show();
-                        mEngineeringMenuDialog = new EngineeringMenuDialog((Context) MainActivity.this);
+                        Toast.makeText((Context)MainActivity.this, "System Engineering clicked", Toast.LENGTH_SHORT).show();
+                        mEngineeringMenuDialog = new EngineeringMenuDialog((Context)MainActivity.this);
                         break;
                 }
                 return true;
@@ -1637,12 +1630,13 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
         @RequiresApi(api = Build.VERSION_CODES.Q)
         public void run() {
-            if (CommunicationModel.getCommunicationModelSingletonInstance().getDisconnectWiFiDirect() || !mActivateCheckSystemStates)
+            if (!mActivateCheckSystemStates)
                 return;
 
             MainActivity activity = activityReference.get();
             long nextTime = 0;
             //K3900.ImageRequest.Builder imageRequest;
+
 
 
             //Log.d(TAG, "Stop peer discovery");
@@ -1651,17 +1645,9 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
 
             while (true) {
 
-                if (CommunicationModel.getCommunicationModelSingletonInstance().getDisconnectWiFiDirect())
-                    return;
-
                 if (!mPeerUpdateQueue.isEmpty())
                     Log.d(TAG, "got " + activity.mPeerUpdateQueue.size() + " peer updates");
-
-                while (!mPeerUpdateQueue.isEmpty()) {
-
-                    if (CommunicationModel.getCommunicationModelSingletonInstance().getDisconnectWiFiDirect())
-                        return;
-
+                while(!mPeerUpdateQueue.isEmpty()) {
                     try {
                         activity.processPeer(activity.mPeerUpdateQueue.take());
                     } catch (InterruptedException e) {
@@ -1674,30 +1660,21 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
                     if (activity.mConnected) {
                         mConnectionStatusLoggingModel.log("connected!");
                         Log.d(TAG, "Connected so check discovery");
-                    } else {
+                    }
+                    else {
                         mConnectionStatusLoggingModel.log("Not connected!");
                         Log.d(TAG, "NOT Connected so check discovery");
                     }
 
                     activity.mDiscoverRequestComplete = false;
                     activity.mP2pManager.requestDiscoveryState(activity.mP2pChannel, activity.discoveryStateListener);
-                    while (!activity.mDiscoverRequestComplete)
+                    while(!activity.mDiscoverRequestComplete)
                         SystemClock.sleep(500);
 
                     if (!activity.mDiscovery || !mConnected) {
                         //mDiscoveryInProgress = true;
                         activity.mDiscoverPeersComplete = false;
                         Log.d(TAG, "activate PEER Listener");
-                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
-                        }
                         activity.mP2pManager.discoverPeers(mP2pChannel, actionPeerListener);
                         while(!activity.mDiscoverPeersComplete)
                             SystemClock.sleep(500);

@@ -73,7 +73,7 @@ public class EngineeringSettingsDialog extends Dialog{
     private TimerTask mCheckElementStatusTimerTask=null;
 
 
-    public void showDialog(Context context, int firstTab){
+    private void showDialog(Context context, int firstTab){
         /*mDialog=new Dialog(context);
         mDialog.setContentView(R.layout.tab_layout);
         mDialog.getWindow().setLayout(2300, 1500);*/
@@ -134,6 +134,22 @@ public class EngineeringSettingsDialog extends Dialog{
         if(txSetup.getSaveButtonHidden()) {
             startTimer(txSetup, rxSetup);
         }
+    }
+
+    public void showEngineeringTabPage(Context context){
+        showDialog(context, 0);
+    }
+
+    public void showTxElementMaskingTabPage(Context context){
+        showDialog(context, 1);
+    }
+
+    public void showRxElementMaskingTabPage(Context context){
+        showDialog(context, 2);
+    }
+
+    public void showPresetsTabPage(Context context){
+        showDialog(context, 3);
     }
 
     public void addTabListener(){

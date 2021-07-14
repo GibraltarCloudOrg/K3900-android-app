@@ -55,7 +55,7 @@ public class EngineeringMenuDialog {
                 //String test = mContext.getResources().getString(R.string.general);
                 if (selectedString.equals(mContext.getResources().getString(R.string.general)))
                     //mEngineeringDialog.showGeneralPage();
-                    mEngineeringSettingsDialog.showDialog(mContext,0);
+                    mEngineeringSettingsDialog.showEngineeringTabPage(mContext);
                 //mEngineeringSettingsDialog.show(mContext,0);
                /* else if (selectedString.equals(mContext.getResources().getString(R.string.element_masking))) {
                     //mEngineeringDialog.showElementMaskingPage();
@@ -67,14 +67,14 @@ public class EngineeringMenuDialog {
                     mEngineeringSettingsDialog.showDialog(mContext, 1);
                 }*/
                 else if(selectedString.equals(mContext.getResources().getString(R.string.tx_element_masking))){
-                    mEngineeringSettingsDialog.showDialog(mContext, 1);
+                    mEngineeringSettingsDialog.showTxElementMaskingTabPage(mContext);
                 }
                 else if(selectedString.equals(mContext.getResources().getString(R.string.rx_element_masking))){
-                    mEngineeringSettingsDialog.showDialog(mContext, 2);
+                    mEngineeringSettingsDialog.showRxElementMaskingTabPage(mContext);
                 }
                 else if (selectedString.equals(mContext.getResources().getString(R.string.configure_presets)))
                     //mEngineeringDialog.showPresetsPage();
-                    mEngineeringSettingsDialog.showDialog(mContext,3);
+                    mEngineeringSettingsDialog.showPresetsTabPage(mContext);
                 //mEngineering.show(mContext, 2);
                 else if (selectedString.equals(mContext.getResources().getString(R.string.imaging))) {
                     mEngineeringDialog.close();

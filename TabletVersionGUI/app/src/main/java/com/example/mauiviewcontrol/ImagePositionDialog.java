@@ -3,11 +3,16 @@ package com.example.mauiviewcontrol;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
+import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.util.Timer;
 
@@ -19,25 +24,53 @@ public class ImagePositionDialog {
     private SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
     private Timer mTimer;
     private CheckScaleTimerTask mCheckScaleTimerTask;
+    private static boolean sZoomDialogOnPinch=true;
+    private ImageView mPreviousImageView = null;
+    private boolean mImageSet=false;
 
     private ImagePositionDialog(Context context){
         mContext=context;
-        mDialog=new Dialog(mContext);
+
+        /*mDialog=new Dialog(mContext);
         mDialog.setContentView(R.layout.image_position_view);
         Window window = mDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.FILL_VERTICAL | Gravity.RIGHT;
-        window.setAttributes(wlp);
+        window.setAttributes(wlp);*/
+
+        //added
+        mDialog=new TouchDialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen, new ScaleGestureDetector(mContext, new ScaleListener(mContext)));
+        mDialog.setContentView(R.layout.main_imaging_view);
+        includeImagePositionView();
+        mDialog.getWindow().setGravity(Gravity.CENTER);
+
         setExitButtonListener();
         setSliderListener();
         setZoomButtonListeners();
         setPanButtonListeners();
     }
 
+    private void includeImagePositionView(){
+        LinearLayout mainImagingCustomPageLinearLayout = (LinearLayout)mDialog.findViewById(R.id.mainImagingCustomPageLinearLayout);
+        ViewGroup viewGroup = mDialog.findViewById(android.R.id.content);
+        //View dialogView = LayoutInflater.from(mContext).inflate(R.layout.measurement_view, viewGroup, false);
+        mainImagingCustomPageLinearLayout.removeAllViewsInLayout();
+        /*View itemInfo1 =*/ ((MainActivity)mContext).getLayoutInflater().inflate(R.layout.image_position_view, mainImagingCustomPageLinearLayout, true);
+    }
+
     public static ImagePositionDialog getSingletonInstance(Context context){
-        if (null == sSingletonInstance)
+        if (null == sSingletonInstance) {
             sSingletonInstance = new ImagePositionDialog(context);
+        }
         return sSingletonInstance;
+    }
+
+    public void setImageView(){
+        if(!mImageSet) {
+            mPreviousImageView = ImageStreamer.getImageStreamerSingletonInstance().getImageView();
+            ImageStreamer.getImageStreamerSingletonInstance().setImageView(mDialog.findViewById(R.id.imagingImageView));
+        }
+        mImageSet=true;
     }
 
     public void showDialog(){
@@ -53,6 +86,8 @@ public class ImagePositionDialog {
                 mTimer.cancel();
                 mCheckScaleTimerTask.cancel();
                 mDialog.dismiss();
+                ImageStreamer.getImageStreamerSingletonInstance().setImageView(mPreviousImageView);
+                mImageSet=false;
             }
         });
     }
@@ -108,5 +143,31 @@ public class ImagePositionDialog {
         mTimer=new Timer();
         mCheckScaleTimerTask=new CheckScaleTimerTask(mContext);
         mTimer.scheduleAtFixedRate(mCheckScaleTimerTask, 1000, 1000);
+    }
+
+    public static void setZoomDialogOnPinch(boolean zoomOnPinch){
+        sZoomDialogOnPinch=zoomOnPinch;
+    }
+
+    public static boolean getZoomDialogOnPinch(){
+        return sZoomDialogOnPinch;
+    }
+
+    public void updateDisplayWidgets() {
+        ConvertibleRuler.setUpHorizontalRuler(mDialog.findViewById(R.id.horizontalRulerImageView), mDialog.findViewById(R.id.horizontalMeasurementNumberLabelsTextView), true);
+        ConvertibleRuler.setUpVerticalRuler(mDialog.findViewById(R.id.verticalRulerImageView), mDialog.findViewById(R.id.verticalMeasurementNumberLabelsTextView), true);
+
+        CineLoop.update(mDialog.findViewById(R.id.cineLoopSeekBar));
+        ((TextView) mDialog.findViewById(R.id.unitNameOfRulersTextView)).setText(mBackend.getUnitName());
+
+        /*else {
+            if (View.VISIBLE == mDialog.findViewById(R.id.cineLoopSeekBar).getVisibility())
+                mDialog.findViewById(R.id.cineLoopSeekBar).setVisibility(View.INVISIBLE);
+            if (View.VISIBLE == mDialog.findViewById(R.id.unitNameOfRulersTextView).getVisibility())
+                mDialog.findViewById(R.id.unitNameOfRulersTextView).setVisibility(View.INVISIBLE);
+        }*/
+        //CineLoop.update(mDialog.findViewById(R.id.cineLoopInMeasureImagingSeekBar));
+        //ConvertibleRuler.setUpHorizontalRuler(mDialog.findViewById(R.id.horizontalRulerInMeasureImagingImageView), mDialog.findViewById(R.id.horizontalUnitMeasurementNumberLabelsInMeasureImagingTextView), mEnableDisplayWidgets);
+        //ConvertibleRuler.setUpVerticalRuler(mDialog.findViewById(R.id.verticalRulerInMeasureImagingImageView), mDialog.findViewById(R.id.verticalUnitMeasurementNumberLabelsInMeasureImagingTextView), mEnableDisplayWidgets);
     }
 }
