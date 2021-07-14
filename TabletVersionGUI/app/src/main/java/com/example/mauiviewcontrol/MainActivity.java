@@ -854,7 +854,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         message += "The following two Check Boxes need to be checked,\n";
         message += "Activate Wired Connection through Ethernet Cable.\n";
         message += "Disconnect P2P WiFi Direct (Recommended)\n";
-        message += "Finally, select one of the Maui Box, or type the IP address manually.\n";
+        message += "Finally, select one of the Maui Box, or type the Server (Maui Box)'s IP address manually.\n";
         builder.setMessage(message).setPositiveButton("Exit", null).show();
     }
 

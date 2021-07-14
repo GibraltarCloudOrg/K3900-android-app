@@ -4,6 +4,8 @@ package com.example.mauiviewcontrol;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -47,6 +50,8 @@ public class SelectWiFiDirectDeviceDialog {
     private void setUpListeners() {
         setUpActivateWiredConnectionViaEthernetCableCheckBoxListener();
         setUpMauiServersRadioGroupListener();
+        setUpServerIpAddressEditTextListener();
+        setUpConnectViaEthernetCableButton();
         setUpWifiDirectDevicesListViewListener();
         setUpConnectButtonListener();
         setUpExitButtonListener();
@@ -63,6 +68,7 @@ public class SelectWiFiDirectDeviceDialog {
                 mDialog.findViewById(R.id.mauiBox01RadioButton).setEnabled(activated);
                 mDialog.findViewById(R.id.mauiBox02RadioButton).setEnabled(activated);
                 mDialog.findViewById(R.id.mauiBox03RadioButton).setEnabled(activated);
+                ((CheckBox)mDialog.findViewById(R.id.disconnectP2pWifiDirectCheckBox)).setChecked(activated);
                 if (activated) {
                     mBackend.disconnect();
                     mBackend.connect(mIpAddress, 50051);
@@ -79,9 +85,9 @@ public class SelectWiFiDirectDeviceDialog {
                 RadioButton radioButton = group.findViewById(checkedId);
                 if (radioButton != null)
                     radioButton.setBackgroundColor(Color.YELLOW);
-                TextView serverIpAddressTextView = mDialog.findViewById(R.id.serverIpAddressTextView);
+                EditText serverIpAddressEditText = mDialog.findViewById(R.id.serverIpAddressEditText);
                 Button connectViaEthernetCableButton = mDialog.findViewById(R.id.connectViaEthernetCableButton);
-                serverIpAddressTextView.setEnabled(false);
+                serverIpAddressEditText.setEnabled(false);
                 connectViaEthernetCableButton.setEnabled(false);
                 switch (checkedId) {
                     case R.id.mauiBox01RadioButton:
@@ -94,13 +100,41 @@ public class SelectWiFiDirectDeviceDialog {
                         mIpAddress = "192.168.10.238";
                         break;
                     case R.id.manualIpAddressRadioButton:
-                        serverIpAddressTextView.setEnabled(true);
+                        serverIpAddressEditText.setEnabled(true);
                         connectViaEthernetCableButton.setEnabled(true);
                         return;
                     default:
                         throw new IllegalStateException("Unexpected value: " + checkedId);
                 }
-                ((TextView)mDialog.findViewById(R.id.serverIpAddressTextView)).setText(mIpAddress);
+                ((TextView)mDialog.findViewById(R.id.serverIpAddressEditText)).setText(mIpAddress);
+                mBackend.connect(mIpAddress, 50051);
+            }
+        });
+    }
+
+    private void setUpServerIpAddressEditTextListener() {
+        EditText serverIpAddressEditText = mDialog.findViewById(R.id.serverIpAddressEditText);
+        serverIpAddressEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mIpAddress = s.toString();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    private void setUpConnectViaEthernetCableButton() {
+        Button connectViaEthernetCableButton = mDialog.findViewById(R.id.connectViaEthernetCableButton);
+        connectViaEthernetCableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBackend.disconnect();
                 mBackend.connect(mIpAddress, 50051);
             }
         });
