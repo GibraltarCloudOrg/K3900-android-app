@@ -285,12 +285,22 @@
                     android:onClick="setSaveButtonHidden"
                     android:text="Element Masking Save Button" />
 
-                <Button
-                    android:id="@+id/button3"
+                <Switch
+                    android:id="@+id/switch1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="showImagePositionDialog"
-                    android:text="Zoom Dialog" />
+                    android:checked="true"
+                    android:onClick="setZoomDialogOnPinch"
+                    android:text="Zoom DIalog On Pinch" />
+
+                <Switch
+                    android:id="@+id/switch3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:onClick="setMeasurementEnabled"
+                    android:text="Enable Measurements" />
+
             </LinearLayout>
 
         </TableRow>
