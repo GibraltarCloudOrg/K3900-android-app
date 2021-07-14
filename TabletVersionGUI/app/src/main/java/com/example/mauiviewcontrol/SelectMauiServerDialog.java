@@ -92,12 +92,12 @@ public class SelectMauiServerDialog {
                 intent.putExtra("ServerName", mWifiDirectDeviceList.getSelectedDeviceName());
                 ((MainActivity)mContext).startActivity(intent);*/
                 //wifiManager.setWifiEnabled(true);
-                try {
+                /*try {
                     ((MainActivity)mContext).processPeer();
                     mDialog.dismiss();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 //if (position != mLastClickedWifiDevice) {
                     /*try {

@@ -133,8 +133,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         Log.d(TAG, "onCreate called");
         setContentView(R.layout.activity_main);
         mConnectionStatusLoggingModel.setContext(this);
-        if (mBackend.connectToStaticIp())
-            mBackend.connect("192.168.10.236", 50051);
+        //if (mBackend.connectToStaticIp())
+            //mBackend.connect("192.168.10.236", 50051);
             //mBackend.connect("192.168.222.112", 50051);
             //mBackend.connect("192.168.10.238", 50051);
         setUpProbePage();
@@ -778,8 +778,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     public void showMainWindowPage(View view) {
         mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         //mFullMenuImagingDialog = new FullMenuImagingDialog(this, mEnableDisplay);
-        mMainImagingDialog = new MainImagingDialog(this, mEnableDisplay, mDebugMode);
-        SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
+        //mMainImagingDialog = new MainImagingDialog(this, mEnableDisplay, mDebugMode);
+        //SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
         //if (1 == mWifiDirectDeviceList.getNumberOfMauiDevices())
             //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getDeviceName(0));
         //else
