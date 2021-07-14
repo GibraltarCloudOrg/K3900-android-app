@@ -1,5 +1,10 @@
 package com.example.mauiviewcontrol;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 
 import java.util.ArrayList;
@@ -44,6 +49,7 @@ interface BackEndElementVisitor {
     boolean visit(SetRxSwitchListener element);
     boolean visit(SetZoomButtonListener element);
     boolean visit(SetPanButtonListener element);
+    boolean visit(ClearMeasurements element);
 }
 
 class StartMeasurement implements BackEndElement {
@@ -657,6 +663,47 @@ class SetPanButtonListener implements BackEndElement{
     }
 }
 
+class ClearMeasurements implements BackEndElement{
+    @Override
+    public boolean accept(BackEndElementVisitor visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String getRuntimeSubText() {
+        return "";
+    }
+
+    private MeasureCustomView mMeasureCustomView;
+    private FrameLayout mFrameLayout;
+    private Dialog mDialog;
+
+    public void setDialog(Dialog dialog){
+        mDialog=dialog;
+    }
+
+    public void refreshDialog(){
+        mDialog.dismiss();
+        mDialog.show();
+    }
+
+    public void setMeasureCustomView(MeasureCustomView customView){
+        mMeasureCustomView=customView;
+    }
+
+    public MeasureCustomView getMeasureCustomView(){
+        return mMeasureCustomView;
+    }
+
+    public void setFrameLayout(FrameLayout frameLayout){
+        mFrameLayout=frameLayout;
+    }
+
+    public FrameLayout getFrameLayout(){
+        return mFrameLayout;
+    }
+}
+
 class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
     SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
 
@@ -677,12 +724,16 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
 
     @Override
     public boolean visit(CancelMeasurement element) {
+        MeasureCustomView.cancelMeasurement();
         return mBackend.onCancelMeasurement();
     }
 
     @Override
     public boolean visit(DeleteMeasurement element) {
-        return mBackend.onDeleteMeasurement(element.getIndex());
+        boolean backend=mBackend.onDeleteMeasurement(element.getIndex());
+        MeasureImagingDialog.getSingletonInstance(null, true).setMeasurementListView();
+        MeasureCustomView.deleteMeasurement(element.getIndex());
+        return backend;
     }
 
     @Override
@@ -824,6 +875,23 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
 
     public boolean visit(SetPanButtonListener element){
         return mBackend.onPan(element.getX(), element.getY());
+    }
+
+    public boolean visit(ClearMeasurements element){
+        MeasureCustomView.clearMeasurements();
+        //element.getMeasureCustomView().setBackgroundColor(Color.RED);
+        //ViewGroup.LayoutParams params=element.getMeasureCustomView().getLayoutParams();
+        //params.height=0;
+        //params.width=0;
+        //element.getMeasureCustomView().setLayoutParams(params);
+        //element.getMeasureCustomView().requestLayout();
+        //element.getMeasureCustomView().postInvalidate();
+        //element.getFrameLayout().removeAllViewsInLayout();
+        //element.getFrameLayout().addView(element.getMeasureCustomView(), params);
+        element.refreshDialog();
+        boolean backend=mBackend.onClearMeasurements();
+        MeasureImagingDialog.getSingletonInstance(null, true).setMeasurementListView();
+        return backend;
     }
 }
 

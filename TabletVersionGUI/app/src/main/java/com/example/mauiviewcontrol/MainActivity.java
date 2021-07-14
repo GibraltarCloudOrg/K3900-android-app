@@ -610,6 +610,16 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         ElementMaskingSetup.setSaveButtonHidden(!ElementMaskingSetup.sSaveButtonHidden);
     }
 
+    public void showImagePositionDialog(View view){
+        ImagePositionDialog imagePositionDialog = ImagePositionDialog.getSingletonInstance(this);
+        imagePositionDialog.showDialog();
+        imagePositionDialog.setImageView();
+    }
+
+    public void setZoomDialogOnPinch(View view){
+            ImagePositionDialog.setZoomDialogOnPinch(!(ImagePositionDialog.getZoomDialogOnPinch()));
+    }
+
     private void setUpProbePage() {
         /*TabLayout testTabLayout = findViewById(R.id.testTabLayout);
         testTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -843,7 +853,14 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     public void showMeasurementDialog(View view) {
         /*MeasurementDialog dialog =*/ //new MeasurementDialog(this);
         //dialog.process();
-        mMeasureImagingDialog = new MeasureImagingDialog(this, mEnableDisplay);
+        //mMeasureImagingDialog = new MeasureImagingDialog(this, mEnableDisplay);
+        if(MeasureImagingDialog.getMeasurementEnabled()) {
+            mMeasureImagingDialog = MeasureImagingDialog.getSingletonInstance(this, mEnableDisplay);
+        }
+    }
+    
+    public void setMeasurementEnabled(View view){
+        MeasureImagingDialog.setMeasurementEnabled(!MeasureImagingDialog.getMeasurementEnabled());
     }
 
     public void showPresetsDialog(View view) {

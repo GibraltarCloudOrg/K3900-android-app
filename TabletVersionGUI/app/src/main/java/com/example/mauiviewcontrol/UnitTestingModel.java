@@ -40,6 +40,7 @@ public class UnitTestingModel {
     public boolean networkMounted() { return mNetworkMounted; }
     public boolean examInProcess() { return mExamInProcess; }
     public boolean isDiagnosticTestRunning() { return mDiagnosticTestRunning; }
+    private ArrayList<Float>mMeasurements=new ArrayList<Float>();
 
     private ArrayList<Boolean> mTxList = null;
     private ArrayList<Boolean> mRxList = null;
@@ -846,7 +847,16 @@ public class UnitTestingModel {
 
     public boolean onDeleteMeasurement(int index) {
         System.out.println(TAG + ".onDeleteMeasurement() called, index: " + index);
+        mMeasurements.remove(index);
         return false;
+    }
+
+    public boolean onClearMeasurements(){
+        int numberOfMeasurements=onGetMeasurements().size();
+        for(int i=0;i<numberOfMeasurements;i++){
+            onDeleteMeasurement(0);
+        }
+        return true;
     }
 
     public boolean onEditMeasurement(int index) {
@@ -861,15 +871,19 @@ public class UnitTestingModel {
 
     public boolean onSendCursorMovement(int dx, int dy) {
         System.out.println(TAG + ".onHighlightMeasurement() called, dx: " + dx + ", dy: " + dy);
+        int xSquared=dx*dx;
+        int ySquared=dy*dy;
+        float distance=(float)Math.sqrt((float)xSquared+(float)ySquared);
+        mMeasurements.add(distance);
         return false;
     }
 
     public final ArrayList<Float> onGetMeasurements() {
         System.out.println(TAG + ".onGetMeasurements() called.");
-        final ArrayList<Float> measurements = new ArrayList<Float>();
+        /*final ArrayList<Float> measurements = new ArrayList<Float>();
         for (int index = 0; index < 5; ++index)
-            measurements.add((float) (index * 2 + index));
-        return measurements;
+            measurements.add((float) (index * 2 + index));*/
+        return mMeasurements;
     }
 
     public final ArrayList<Integer> onGetMeasurementFrames() {

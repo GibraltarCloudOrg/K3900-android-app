@@ -1550,6 +1550,14 @@ BeamformerClient
         }
     }
 
+    public boolean onClearMeasurements(){
+        int numberOfMeasurements=onGetMeasurements().size();
+        for(int i=0;i<numberOfMeasurements;i++){
+            onDeleteMeasurement(0);
+        }
+        return true;
+    }
+
     public boolean onEditMeasurement(int index) {
         System.out.println(TAG + ".onEditMeasurement() called.");
         try {

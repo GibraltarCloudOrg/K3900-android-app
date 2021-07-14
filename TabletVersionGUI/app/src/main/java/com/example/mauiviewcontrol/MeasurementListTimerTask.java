@@ -5,11 +5,11 @@ import android.os.Handler;
 
 import java.util.TimerTask;
 
-public class CheckScaleTimerTask extends TimerTask {
+public class MeasurementListTimerTask extends TimerTask {
     private Context mContext;
     private Handler mHandler=new Handler();
 
-    public CheckScaleTimerTask(Context context){
+    public MeasurementListTimerTask(Context context){
         mContext=context;
     }
 
@@ -21,8 +21,7 @@ public class CheckScaleTimerTask extends TimerTask {
                 mHandler.post(new Runnable(){
                     @Override
                     public void run(){
-                        ImagePositionDialog.getSingletonInstance(mContext).updateSliderPosition();
-                        ImagePositionDialog.getSingletonInstance(mContext).updateDisplayWidgets();
+                        MeasureImagingDialog.getSingletonInstance(mContext, true);
                     }
                 });
             }
