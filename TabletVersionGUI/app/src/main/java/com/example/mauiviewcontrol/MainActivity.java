@@ -813,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
     public void showElementMaskingDialog(View view){
         //Toast.makeText(getApplicationContext(),"Loading... please wait", Toast.LENGTH_SHORT).show();
         EngineeringSettingsDialog engineeringSettingsDialog=new EngineeringSettingsDialog(getApplicationContext());
-        engineeringSettingsDialog.showDialog(getApplicationContext(), 0);
+        engineeringSettingsDialog.showEngineeringTabPage(getApplicationContext());
     }
 
     /*public void showImagePositionDialog(View view){
