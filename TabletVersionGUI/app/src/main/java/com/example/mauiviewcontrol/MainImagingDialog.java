@@ -71,6 +71,14 @@ public class MainImagingDialog {
         readyForCheckRealtimeStates = true;
     }
 
+    public TextView getBeamformerParameterValueLowerTextView() {
+        return mDialog.findViewById(R.id.beamformerParameterValueLowerTextView);
+    }
+
+    public TextView getBeamformerParameterValueTextView() {
+        return mDialog.findViewById(R.id.beamformerParameterValueTextView);
+    }
+
     /*public void start() {
         SelectLogInDialog selectLogInDialog = new SelectLogInDialog(mContext);
         //if (1 < WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().getNumberOfMauiDevices())

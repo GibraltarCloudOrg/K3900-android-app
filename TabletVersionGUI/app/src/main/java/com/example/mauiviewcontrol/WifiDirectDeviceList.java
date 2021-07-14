@@ -14,13 +14,14 @@ public class WifiDirectDeviceList {
         return singletonInstance;
     }
 
-    public void add(WifiP2pDevice wifiP2pDevice) {
+    public WifiDirectDevice add(WifiP2pDevice wifiP2pDevice) {
         WifiDirectDevice wifiDirectDevice = new WifiDirectDevice(wifiP2pDevice);
         mWifiDirectDeviceList.add(wifiDirectDevice);
         mWifiDirectDeviceStringList.add(wifiDirectDevice.getString());
         mDeviceMap.put(wifiP2pDevice.deviceName, wifiDirectDevice);
         if (wifiDirectDevice.getName().startsWith(kMauiDeviceName))
             mMauiDeviceStringList.add(wifiDirectDevice.getName());
+        return wifiDirectDevice;
     }
 
     public WifiDirectDevice getSelectedDevice() {
@@ -42,6 +43,7 @@ public class WifiDirectDeviceList {
     {
         mSelectedDeviceName = deviceName;
         //mSelectedDeviceName = mDeviceMap.get(deviceName).getName();
+        ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().log(mSelectedDeviceName + " selected.");
     }
 
     public ArrayList<String> getStringList() {

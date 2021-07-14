@@ -82,7 +82,7 @@ public class ImageStreamer {
                 public void run() {
                     while (!mStopImaging) {
                         try {
-                            if (mBackend.isBatchMode() || mBackend.isTxRunning() || mBackend.isRxRunning())
+                            if (mBackend.isBatchMode() /*|| mBackend.isTxRunning() || mBackend.isRxRunning()*/)
                                 continue;
                             //Log.d(TAG, "updateImaging() BEFORE setUpForImaging.");
                             //setUpForImaging();

@@ -15,6 +15,8 @@ public class WifiDirectDevice {
         return mWifiP2pDevice;
     }
 
+    public boolean getAvailableOccurred() { return mAvailableOccurred; }
+    public void setAvailableOccurred(boolean availableOccurred) { mAvailableOccurred = availableOccurred; }
     public String getName() {
         return mName;
     }
@@ -26,5 +28,6 @@ public class WifiDirectDevice {
     private String mName;
     private String mItemString;
     private WifiP2pDevice mWifiP2pDevice;
+    private boolean mAvailableOccurred = false;
     private int mDeviceHashCode = -1;
 }
