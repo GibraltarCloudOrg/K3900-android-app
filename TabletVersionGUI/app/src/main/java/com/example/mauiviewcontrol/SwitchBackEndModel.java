@@ -2098,11 +2098,11 @@ public class SwitchBackEndModel {
         return false;
     }
 
-    public boolean wifiDeviceConnected() {
+    public boolean wifiDeviceOrEthernetCableConnected() {
         switch(mMessageTo) {
             case BeamformerClient:
             case BatchMode:
-                return WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().connected();
+                return WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().connected() | CommunicationModel.getCommunicationModelSingletonInstance().getActivateWiredConnectionViaEthernetCable();
             case UnitTesting:
                 return true;
             default:

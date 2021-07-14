@@ -100,6 +100,11 @@ public class MainImagingDialog {
             connectionStatusTextView.setTextColor(Color.BLACK);
             message = "Gui Unit Test Mode";
         }
+        else if (CommunicationModel.getCommunicationModelSingletonInstance().getActivateWiredConnectionViaEthernetCable()) {
+            connectionStatusTextView.setBackgroundColor(Color.GREEN);
+            connectionStatusTextView.setTextColor(Color.BLACK);
+            message = "   Wired via\n    Ethernet";
+        }
         else {
             connectionStatusTextView.setBackgroundColor(Color.YELLOW);
             connectionStatusTextView.setTextColor(Color.BLACK);
@@ -129,7 +134,7 @@ public class MainImagingDialog {
     public void checkRealTimeApplicationStates() {
         updateConnectionStatus();
         TextView connectionStatusTextView = mDialog.findViewById(R.id.connectionStatusTextView);
-        if (!mConnectionStatus)
+        if (!mConnectionStatus || CommunicationModel.getCommunicationModelSingletonInstance().getActivateWiredConnectionViaEthernetCable())
             blinkConnectionStatus();
         else if (View.INVISIBLE == connectionStatusTextView.getVisibility())
             connectionStatusTextView.setVisibility(View.VISIBLE);
@@ -370,11 +375,11 @@ public class MainImagingDialog {
     }
 
     private void checkBeamformerControllerStates() {
-        setSlidersEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        setSlidersEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         if (mBackend.connected())
             updateSlidersPositions();
 
-        setSpeedOfSoundEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        setSpeedOfSoundEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         ((TextView)mDialog.findViewById(R.id.speedOfSoundValueTextView)).setText(Float.toString(mBackend.getSpeedOfSoundValue()) + " m/s");
     }
 
@@ -433,34 +438,34 @@ public class MainImagingDialog {
     }
 
     private void checkTopMenuButtonsStates() {
-        mDialog.findViewById(R.id.logInButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.logInButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         String buttonText = !mBackend.loggedIn() ? "Log In" : "Log Out";
         ((Button)mDialog.findViewById(R.id.logInButton)).setText(buttonText);
-        mDialog.findViewById(R.id.powerImageView).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.powerImageView).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
     }
 
     private void checkFunctionButtonsStates() {
-        mDialog.findViewById(R.id.probeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.measureButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.presetsButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.patientButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.saveLoadButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.probeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.measureButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.presetsButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.patientButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.saveLoadButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         ((Button)mDialog.findViewById(R.id.probeButton)).setText("Probe: " + mBackend.getProbeName());
     }
 
     private void checkRequestMessageButtonsStates() {
-        mDialog.findViewById(R.id.imagePositionHomeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.imagePositionCenterButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.autoGrayscaleButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.manualGrayscaleButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.playPauseImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.stepBackwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.stepForwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.livePlaybackButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.runFreezeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.increaseFocusFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.decreaseFocusFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.toggleSosFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.imagePositionHomeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.imagePositionCenterButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.autoGrayscaleButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.manualGrayscaleButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.playPauseImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.stepBackwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.stepForwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.livePlaybackButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.runFreezeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.increaseFocusFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.decreaseFocusFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.toggleSosFloatingActionButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         //int livePlaybackButtonVisible = mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;
         //mDialog.findViewById(R.id.livePlaybackButton).setVisibility(livePlaybackButtonVisible);
         int livePlaybackButtonVisible = !mBackend.getRunState() ? View.VISIBLE : View.INVISIBLE;

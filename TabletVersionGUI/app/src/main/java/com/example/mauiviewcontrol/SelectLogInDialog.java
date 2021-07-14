@@ -4,6 +4,7 @@ package com.example.mauiviewcontrol;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,9 +18,11 @@ public class SelectLogInDialog implements AutomatedTestingElement {
     /*final*/ Dialog mDialog = null;
     //int mSelectedListItem = -1;//getIntent().getIntExtra("PositionInList", -1);
     int mCurrentAutomatedTestingStep = 0;
+    private String mSelectedDeviceName;
 
-    public SelectLogInDialog(Context context) {
+    public SelectLogInDialog(Context context, String selectedDeviceName) {
         mContext = context;
+        mSelectedDeviceName = selectedDeviceName;
         mDialog = new Dialog(mContext);
         mDialog.setContentView(R.layout.select_log_in_view);
         setUpWidgets();
@@ -35,6 +38,12 @@ public class SelectLogInDialog implements AutomatedTestingElement {
             public void onClick(View v) {
                 mDialog.dismiss();
                 Toast.makeText(mContext, "Guest Mode Selected.", Toast.LENGTH_LONG).show();
+                WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().setSelected(mSelectedDeviceName);
+                /*((MainActivity)mContext).finish();
+                Intent intent = new Intent(mContext, com.example.mauiviewcontrol.MainActivity.class);
+                intent.putExtra("ShowServerListDialog", false);
+                intent.putExtra("ServerName", mSelectedDeviceName);
+                ((MainActivity)mContext).startActivity(intent);*/
             }
         });
 
@@ -44,6 +53,12 @@ public class SelectLogInDialog implements AutomatedTestingElement {
             public void onClick(View v) {
                 new LogInDialog(mContext);
                 mDialog.dismiss();
+                WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance().setSelected(mSelectedDeviceName);
+                /*((MainActivity)mContext).finish();
+                Intent intent = new Intent(mContext, com.example.mauiviewcontrol.MainActivity.class);
+                intent.putExtra("ShowServerListDialog", false);
+                intent.putExtra("ServerName", mSelectedDeviceName);
+                ((MainActivity)mContext).startActivity(intent);*/
             }
         });
     }
