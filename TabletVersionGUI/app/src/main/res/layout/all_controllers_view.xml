@@ -466,8 +466,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:onClick="showFloatingActionButtonsImagingDialog"
-                    android:text="Next"
-                    android:visibility="invisible" />
+                    android:text="Next" />
 
                 <Button
                     android:id="@+id/exitAllControllersViewButton"
