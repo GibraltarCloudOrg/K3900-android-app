@@ -291,7 +291,7 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:onClick="setZoomDialogOnPinch"
-                    android:text="Zoom DIalog On Pinch" />
+                    android:text="Zoom Dialog On Pinch" />
 
                 <Switch
                     android:id="@+id/switch3"
@@ -300,6 +300,13 @@
                     android:checked="true"
                     android:onClick="setMeasurementEnabled"
                     android:text="Enable Measurements" />
+
+                <Switch
+                    android:id="@+id/switch4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="switchPanUnixStyle"
+                    android:text="Pan Unix Style" />
 
             </LinearLayout>
 
