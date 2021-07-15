@@ -14,11 +14,11 @@ import java.util.ArrayList;
 public class MeasureCustomView extends View {
     private Paint mPaint;
     private int mPaintColor= Color.GREEN;
-    private static ArrayList<Float> mXCoordinates=new ArrayList<Float>();
-    private static ArrayList<Float> mYCoordinates=new ArrayList<Float>();
+    private ArrayList<Float> mXCoordinates=new ArrayList<Float>();
+    private ArrayList<Float> mYCoordinates=new ArrayList<Float>();
     private ArrayList<Float>mMeasurements=new ArrayList<Float>();
-    private static Path path=new Path();
-    private static int mTouchNumber=0;
+    //private static Path path=new Path();
+    private int mTouchNumber=0;
     private static boolean sMeasurementShowing=false;
     private SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
     int mMeasurementNumber=0;
@@ -61,13 +61,18 @@ public class MeasureCustomView extends View {
             int measurementNumber = 1;
             for (int i = 0; i < mXCoordinates.size(); i++) {
                 //canvas.drawCircle(mXCoordinates.get(i), mYCoordinates.get(i),3,mPaint);
+                changeColor((measurementNumber-1)%5);
                 canvas.drawRect(mXCoordinates.get(i) - 10, mYCoordinates.get(i) + .5f, mXCoordinates.get(i) + 10, mYCoordinates.get(i) - .5f, mPaint);
                 canvas.drawRect(mXCoordinates.get(i) - .5f, mYCoordinates.get(i) + 10, mXCoordinates.get(i) + .5f, mYCoordinates.get(i) - 10, mPaint);
                 if(i%2!=0){
+                    //changeColor((measurementNumber-1)%4);
                     canvas.drawLine(mXCoordinates.get(i-1), mYCoordinates.get(i-1), mXCoordinates.get(i), mYCoordinates.get(i), mPaint);
+                    canvas.drawText(Integer.toString(measurementNumber), mXCoordinates.get(i) + 20f, mYCoordinates.get(i) - 20f, mPaint);
+                    measurementNumber++;
+                    //changeColor((measurementNumber-1)%4);
                 }else{
                     canvas.drawText(Integer.toString(measurementNumber), mXCoordinates.get(i) - 25f, mYCoordinates.get(i) - 20f, mPaint);
-                    measurementNumber++;
+                    //measurementNumber++;
                 }
             }
            /* for (int i = 0; i < mXCoordinates.size(); i = i + 2) {
@@ -151,6 +156,9 @@ public class MeasureCustomView extends View {
 
     private void changeColor(int measurementNumber){
         switch(measurementNumber){
+            case 0:
+                mPaint.setColor(Color.GREEN);
+                break;
             case 1:
                 mPaint.setColor(Color.RED);
                 break;
@@ -158,29 +166,33 @@ public class MeasureCustomView extends View {
                 mPaint.setColor(Color.BLUE);
                 break;
             case 3:
-                mPaint.setColor(Color.YELLOW);
+                //mPaint.setColor(Color.YELLOW);
+                mPaint.setColor(Color.CYAN);
                 break;
+            case 4:
+                mPaint.setColor(Color.MAGENTA);
         }
     }
 
-    public static void deleteMeasurement(int index){
+    public void deleteMeasurement(int index){
         mXCoordinates.remove(index*2);
         mXCoordinates.remove((index*2));
         mYCoordinates.remove(index*2);
         mYCoordinates.remove((index*2));
         mTouchNumber=mTouchNumber-2;
+        postInvalidate();
     }
 
-    public static void clearMeasurements(){
+    public void clearMeasurements(){
         mXCoordinates=new ArrayList<Float>();
         mYCoordinates=new ArrayList<Float>();
         mTouchNumber=0;
         //path.reset();
         MeasureImagingDialog.getSingletonInstance(null, true).setMeasurementListView();
-        //invalidate();
+        postInvalidate();
     }
 
-    public static void cancelMeasurement(){
+    public void cancelMeasurement(){
         mXCoordinates.remove(mXCoordinates.size()-1);
         mYCoordinates.remove(mYCoordinates.size()-1);
         mTouchNumber=mTouchNumber-1;

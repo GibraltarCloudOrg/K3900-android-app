@@ -1,6 +1,7 @@
 package com.example.mauiviewcontrol;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ScaleGestureDetector;
@@ -33,6 +34,7 @@ public class MeasureImagingDialog {
     private ListView mMeasurementsListView=null;
     private static MeasureImagingDialog sMeasureImagingDialog=null;
     private static boolean mMeasurementEnabled=true;
+    private MeasureCustomView mCustomView;
 
     private MeasureImagingDialog(Context parent, boolean enableDisplayWidgets) {
         mContext = parent;
@@ -110,7 +112,7 @@ public class MeasureImagingDialog {
             listWithNumbers.add("m" +(i+1)+ ": " +list.get(i));
         }
         mMeasurementsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mMeasurementsListView.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listWithNumbers));
+        mMeasurementsListView.setAdapter(new ListViewAdapter(mContext, android.R.layout.simple_list_item_1, listWithNumbers));
         //mMeasurementsListView.setAdapter(new ArrayAdapter<Float>(mContext, android.R.layout.simple_list_item_1, list));
     }
 
@@ -121,25 +123,43 @@ public class MeasureImagingDialog {
             listWithNumbers.add("m" +(i+1)+ ": " +list.get(i));
         }
        // mMeasurementsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mMeasurementsListView.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listWithNumbers));
+        mMeasurementsListView.setAdapter(new ListViewAdapter(mContext, android.R.layout.simple_list_item_1, listWithNumbers));
+        //TextView mTextView=(TextView)mMeasurementsListView.getAdapter();
+        //mTextView.setTextColor(Color.RED);
+        //setListViewTextColor(0);
        // mMeasurementsListView.setAdapter(new ArrayAdapter<Float>(mContext, android.R.layout.simple_list_item_1, mBackend.onGetMeasurements() ));
+    }
+
+    private ArrayList<TextView> stringsToTextViews(ArrayList<String> strings){
+        ArrayList<TextView>textViews=new ArrayList<TextView>();
+        for(int i=0;i<strings.size();i++){
+            TextView textView=new TextView(mContext);
+            textView.setText(strings.get(i));
+            textView.setTextColor(Color.RED);
+            textViews.add(textView);
+        }
+        return textViews;
     }
 
     private void setUpListeners() {
         WidgetUtility.setUpPowerImageView(mDialog.findViewById(R.id.powerImageView), mContext);
         WidgetUtility.setUpCleanScreenButton(mDialog.findViewById(R.id.cleanScreenButton), mContext);
         ClearMeasurements clearMeasurements=new ClearMeasurements();
-        View measureImagingView=((MainActivity)mContext).getLayoutInflater().inflate(R.layout.imaging_view, mDialog.findViewById(R.id.mainImagingCustomPageLinearLayout), false);
-        MeasureCustomView customView=measureImagingView.findViewById(R.id.measure_custom_view);
-        clearMeasurements.setMeasureCustomView(customView);
-        clearMeasurements.setDialog(mDialog);
-        clearMeasurements.setFrameLayout(measureImagingView.findViewById(R.id.frame_layout));
+        CancelMeasurement cancelMeasurement=new CancelMeasurement();
+        mDeleteMeasurement=new DeleteMeasurement();
+        //View measureImagingView=((MainActivity)mContext).getLayoutInflater().inflate(R.layout.imaging_view, mDialog.findViewById(R.id.mainImagingCustomPageLinearLayout), false);
+        mCustomView=mDialog.findViewById(R.id.measure_custom_view);
+        clearMeasurements.setMeasureCustomView(mCustomView);
+        mDeleteMeasurement.setMeasureCustomView(mCustomView);
+        cancelMeasurement.setMeasureCustomView(mCustomView);
+        //clearMeasurements.setDialog(mDialog);
+        //clearMeasurements.setFrameLayout(measureImagingView.findViewById(R.id.frame_layout));
         BackEndElementSendingMessageVisitor backEndElementSendingMessageVisitor = new BackEndElementSendingMessageVisitor();
         WidgetUtility.setUpListener(mContext, mDialog, R.id.startMeasurementButton, new StartMeasurement(), backEndElementSendingMessageVisitor, false, "", true, "Start Measurement", false);
         WidgetUtility.setUpListener(mContext, mDialog, R.id.stopMeasurementButton, new StopMeasurement(), backEndElementSendingMessageVisitor, true, "Are you sure?", true, "Stop Measurement", false);
         WidgetUtility.setUpListener(mContext, mDialog, R.id.swapMeasurementButton, new SwapMeasurement(), backEndElementSendingMessageVisitor, true, "Are you sure?", true, "Swap Measurement", false);
-        WidgetUtility.setUpListener(mContext, mDialog, R.id.cancelMeasurementButton, new CancelMeasurement(), backEndElementSendingMessageVisitor, true, "Cancel Measurement?", true, "Cancel Measurement", false);
-        WidgetUtility.setUpListener(mContext, mDialog, R.id.deleteMeasurementButton, mDeleteMeasurement = new DeleteMeasurement(), backEndElementSendingMessageVisitor, true, "Are you sure?", true, "Delete Measurement at index: ", false, true);
+        WidgetUtility.setUpListener(mContext, mDialog, R.id.cancelMeasurementButton, cancelMeasurement, backEndElementSendingMessageVisitor, true, "Cancel Measurement?", true, "Cancel Measurement", false);
+        WidgetUtility.setUpListener(mContext, mDialog, R.id.deleteMeasurementButton, mDeleteMeasurement, backEndElementSendingMessageVisitor, true, "Are you sure?", true, "Delete Measurement at index: ", false);
         WidgetUtility.setUpListener(mContext, mDialog, R.id.editMeasurementButton, mEditMeasurement = new EditMeasurement(), backEndElementSendingMessageVisitor, true, "Are you sure?", true, "Edit Measurement at index: ", false);
         WidgetUtility.setUpListener(mContext, mDialog, R.id.clearMeasurementButton, clearMeasurements, backEndElementSendingMessageVisitor, false, "", true, "Clear Measurement", false);
         //setUpDeleteMeasurementButtonListener();
@@ -150,9 +170,10 @@ public class MeasureImagingDialog {
         ((Button)mDialog.findViewById(R.id.exitMeasurementButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MeasureCustomView.setMeasurementShowing(false);
+                mCustomView.clearMeasurements();
                 mDialog.dismiss();
                 ImageStreamer.getImageStreamerSingletonInstance().setImageView(mPreviousImageView);
-                MeasureCustomView.setMeasurementShowing(false);
                 //MeasureCustomView.clearMeasurements();
                 mBackend.onClearMeasurements();
                 sMeasureImagingDialog=null;

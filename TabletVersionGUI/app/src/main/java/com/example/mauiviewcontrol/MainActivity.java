@@ -821,6 +821,11 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         imagePositionDialog.showDialog();
     }*/
 
+    public void switchPanUnixStyle(View view){
+        boolean currentStyle=GuiEngineeringParameters.getSingletonInstance().getPanUnixStyle();
+        GuiEngineeringParameters.getSingletonInstance().setPanUnixStyle(!currentStyle);
+    }
+
     public void showMainWindowWithUnitTestingMode(View view) {
         mBackend.setMessageTo(SwitchBackEndModel.MessageTo.UnitTesting);
         //mFullMenuImagingDialog = new FullMenuImagingDialog(this, mEnableDisplay);

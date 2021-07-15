@@ -117,6 +117,29 @@ public class ImagePositionDialog {
         SetPanButtonListener leftPan=new SetPanButtonListener();
         SetPanButtonListener upPan=new SetPanButtonListener();
         SetPanButtonListener downPan=new SetPanButtonListener();
+        if(GuiEngineeringParameters.getSingletonInstance().getPanUnixStyle()){
+            setPanUnix(rightPan, leftPan, upPan, downPan);
+        }else{
+            setPanNonUnix(rightPan, leftPan, upPan, downPan);
+        }
+        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanRightButton), mDialog, rightPan, backEndElementSendingMessageVisitor, false, "", true, "panned right", false);
+        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanLeftButton), mDialog, leftPan, backEndElementSendingMessageVisitor, false, "", true, "panned left", false);
+        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanUpButton), mDialog, upPan, backEndElementSendingMessageVisitor, false, "", true, "panned up", false);
+        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanDownButton), mDialog, downPan, backEndElementSendingMessageVisitor, false, "", true, "panned down", false);
+    }
+
+    private void setPanNonUnix(SetPanButtonListener rightPan, SetPanButtonListener leftPan, SetPanButtonListener upPan, SetPanButtonListener downPan){
+        rightPan.setX(.50f);
+        rightPan.setY(0f);
+        leftPan.setX(-.50f);
+        leftPan.setY(0f);
+        upPan.setX(0f);
+        upPan.setY(.50f);
+        downPan.setX(0f);
+        downPan.setY(-.50f);
+    }
+
+    private void setPanUnix(SetPanButtonListener rightPan, SetPanButtonListener leftPan, SetPanButtonListener upPan, SetPanButtonListener downPan){
         rightPan.setX(-.50f);
         rightPan.setY(0f);
         leftPan.setX(.50f);
@@ -125,10 +148,6 @@ public class ImagePositionDialog {
         upPan.setY(-.50f);
         downPan.setX(0f);
         downPan.setY(.50f);
-        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanRightButton), mDialog, rightPan, backEndElementSendingMessageVisitor, false, "", true, "panned right", false);
-        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanLeftButton), mDialog, leftPan, backEndElementSendingMessageVisitor, false, "", true, "panned left", false);
-        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanUpButton), mDialog, upPan, backEndElementSendingMessageVisitor, false, "", true, "panned up", false);
-        MauiImageButton.setUpListener(mContext, mDialog.findViewById(R.id.imagePositionPanDownButton), mDialog, downPan, backEndElementSendingMessageVisitor, false, "", true, "panned down", false);
     }
 
     public void updateSliderPosition(){

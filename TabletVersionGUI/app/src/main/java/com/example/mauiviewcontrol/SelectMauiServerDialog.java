@@ -108,8 +108,8 @@ public class SelectMauiServerDialog {
     }
 
     private void updateStatusLogs() {
-        ((TextView)mDialog.findViewById(R.id.connectionStatusLogsTextView)).setText(ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().getLogHistory());
-        ((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setProgress(100);
+        //((TextView)mDialog.findViewById(R.id.connectionStatusLogsTextView)).setText(ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().getLogHistory());
+        //((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setProgress(100);
     }
 
     private void checkConnection() {

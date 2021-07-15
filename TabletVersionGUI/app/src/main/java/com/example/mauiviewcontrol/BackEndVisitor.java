@@ -99,6 +99,8 @@ class SwapMeasurement implements BackEndElement {
 }
 
 class CancelMeasurement implements BackEndElement {
+    private MeasureCustomView mMeasureCustomView;
+
     @Override
     public boolean accept(BackEndElementVisitor visitor) {
         return visitor.visit(this);
@@ -108,12 +110,21 @@ class CancelMeasurement implements BackEndElement {
     public String getRuntimeSubText() {
         return "";
     }
+
+    public void setMeasureCustomView(MeasureCustomView customView){
+        mMeasureCustomView=customView;
+    }
+
+    public MeasureCustomView getMeasureCustomView(){
+        return mMeasureCustomView;
+    }
 }
 
 class DeleteMeasurement implements BackEndElement {
     int mIndex;
     public void setIndex(int index) { mIndex = index; }
     public int getIndex() { return mIndex; }
+    MeasureCustomView mMeasureCustomView;
 
     @Override
     public boolean accept(BackEndElementVisitor visitor) {
@@ -123,6 +134,14 @@ class DeleteMeasurement implements BackEndElement {
     @Override
     public String getRuntimeSubText() {
         return Integer.toString(mIndex);
+    }
+
+    public void setMeasureCustomView(MeasureCustomView customView){
+        mMeasureCustomView=customView;
+    }
+
+    public MeasureCustomView getMeasureCustomView(){
+        return mMeasureCustomView;
     }
 }
 
@@ -678,14 +697,14 @@ class ClearMeasurements implements BackEndElement{
     private FrameLayout mFrameLayout;
     private Dialog mDialog;
 
-    public void setDialog(Dialog dialog){
+    /*public void setDialog(Dialog dialog){
         mDialog=dialog;
     }
 
     public void refreshDialog(){
         mDialog.dismiss();
         mDialog.show();
-    }
+    }*/
 
     public void setMeasureCustomView(MeasureCustomView customView){
         mMeasureCustomView=customView;
@@ -695,13 +714,13 @@ class ClearMeasurements implements BackEndElement{
         return mMeasureCustomView;
     }
 
-    public void setFrameLayout(FrameLayout frameLayout){
+   /* public void setFrameLayout(FrameLayout frameLayout){
         mFrameLayout=frameLayout;
     }
 
     public FrameLayout getFrameLayout(){
         return mFrameLayout;
-    }
+    }*/
 }
 
 class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
@@ -724,7 +743,7 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
 
     @Override
     public boolean visit(CancelMeasurement element) {
-        MeasureCustomView.cancelMeasurement();
+        element.getMeasureCustomView().cancelMeasurement();
         return mBackend.onCancelMeasurement();
     }
 
@@ -732,7 +751,7 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
     public boolean visit(DeleteMeasurement element) {
         boolean backend=mBackend.onDeleteMeasurement(element.getIndex());
         MeasureImagingDialog.getSingletonInstance(null, true).setMeasurementListView();
-        MeasureCustomView.deleteMeasurement(element.getIndex());
+        element.getMeasureCustomView().deleteMeasurement(element.getIndex());
         return backend;
     }
 
@@ -878,7 +897,7 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
     }
 
     public boolean visit(ClearMeasurements element){
-        MeasureCustomView.clearMeasurements();
+        element.getMeasureCustomView().clearMeasurements();
         //element.getMeasureCustomView().setBackgroundColor(Color.RED);
         //ViewGroup.LayoutParams params=element.getMeasureCustomView().getLayoutParams();
         //params.height=0;
@@ -888,7 +907,7 @@ class BackEndElementSendingMessageVisitor implements BackEndElementVisitor {
         //element.getMeasureCustomView().postInvalidate();
         //element.getFrameLayout().removeAllViewsInLayout();
         //element.getFrameLayout().addView(element.getMeasureCustomView(), params);
-        element.refreshDialog();
+        //element.refreshDialog();
         boolean backend=mBackend.onClearMeasurements();
         MeasureImagingDialog.getSingletonInstance(null, true).setMeasurementListView();
         return backend;
