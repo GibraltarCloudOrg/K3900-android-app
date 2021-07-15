@@ -10,6 +10,86 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/readMeForEthernetConnectionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:onClick="showHelpDialogForEthernetConnection"
+            android:text="Read Me"
+            android:textColor="@color/black" />
+
+        <CheckBox
+            android:id="@+id/activateWiredConnectionThroughEthernetCableCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activate Wired Connection through Ethernet Cable" />
+
+        <RadioGroup
+            android:id="@+id/mauiServerListRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/mauiBox01RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maui Box 01" />
+
+            <RadioButton
+                android:id="@+id/mauiBox02RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maui Box 02" />
+
+            <RadioButton
+                android:id="@+id/mauiBox03RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maui Box 03" />
+
+            <RadioButton
+                android:id="@+id/manualIpAddressRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Manual" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/serverIpAddressEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name" />
+
+            <Button
+                android:id="@+id/connectViaEthernetCableButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connect" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/disconnectP2pWifiDirectCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Disconnect P2P WiFi Direct" />
+
+        <CheckBox
+            android:id="@+id/disableWifiCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Disable WiFi" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

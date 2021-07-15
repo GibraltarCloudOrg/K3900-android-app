@@ -3,6 +3,9 @@ package com.example.mauiviewcontrol;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +22,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.content.Context.WIFI_SERVICE;
+import static android.net.wifi.p2p.WifiP2pDevice.AVAILABLE;
+import static android.os.SystemClock.sleep;
 
 public class SelectMauiServerDialog {
     SwitchBackEndModel mBackend = SwitchBackEndModel.getSwitchBackEndModelSingletonInstance();
@@ -51,7 +58,19 @@ public class SelectMauiServerDialog {
     }
 
     private void setUpListeners() {
+        setUpServerListTitleTextViewListener();
         setUpWifiDirectDevicesListViewListener();
+    }
+
+    private void setUpServerListTitleTextViewListener() {
+        TextView serverListTitleTextView = mDialog.findViewById(R.id.serverListTitleTextView);
+        serverListTitleTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                new SelectWiFiDirectDeviceDialog(mContext);
+                return true;
+            }
+        });
     }
 
     private void setUpWifiDirectDevicesListViewListener() {
@@ -60,7 +79,28 @@ public class SelectMauiServerDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MauiListView.changeListViewSelectedItemColor(parent, view, position, mLastClickedWifiDevice);
-                if (position != mLastClickedWifiDevice) {
+                WifiManager wifiManager = (WifiManager) mContext.getSystemService(WIFI_SERVICE);
+                SelectLogInDialog selectLogInDialog = new SelectLogInDialog(mContext, mWifiDirectDeviceList.getMauiDeviceName(position));
+                //wifiManager.setWifiEnabled(false);
+                //sleep(1000);
+                //wifiManager.setWifiEnabled(true);
+                //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getMauiDeviceName(position));
+                mWifiDirectDeviceList.setSelected("");
+                /*((MainActivity)mContext).finish();
+                Intent intent = new Intent(mContext, com.example.mauiviewcontrol.MainActivity.class);
+                intent.putExtra("ShowServerListDialog", false);
+                intent.putExtra("ServerName", mWifiDirectDeviceList.getSelectedDeviceName());
+                ((MainActivity)mContext).startActivity(intent);*/
+                //wifiManager.setWifiEnabled(true);
+                mDialog.dismiss();
+                /*try {
+                    ((MainActivity)mContext).processPeer();
+                    mDialog.dismiss();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+                //if (position != mLastClickedWifiDevice) {
                     /*try {
                         disconnect();
                     } catch (NullPointerException le) {
@@ -71,8 +111,9 @@ public class SelectMauiServerDialog {
                     try {
                         mLastClickedWifiDevice = position;
                         ImageStreamer.getImageStreamerSingletonInstance().clear();
+                        //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getMauiDeviceName(position));
+
                         //WifiDirectDeviceList wifiDirectDeviceList = WifiDirectDeviceList.getWifiDirectDeviceListSingletonInstance();
-                        mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getMauiDeviceName(mLastClickedWifiDevice));
                         //String selected = mWifiDirectDeviceList.getString(mLastClickedWifiDevice);
                         String selected = mWifiDirectDeviceList.getMauiDeviceName(mLastClickedWifiDevice);
                         Toast.makeText(mContext, "Ready: " + selected, Toast.LENGTH_SHORT).show();
@@ -81,11 +122,20 @@ public class SelectMauiServerDialog {
                         //mConnected = false;
                         //mAvailableOccurred = false;
                         //connect();
+                        //((MainActivity)mContext).startGrpcExecutor();
+                        //((MainActivity)mContext).finish();
+                        //Intent intent = new Intent(mContext, com.example.mauiviewcontrol.MainActivity.class);
+                        //WidgetUtility.waitFor(1);
+                        //((MainActivity)mContext).startActivity(intent);
+                        //((MainActivity)mContext).finish();
+                        //sleep(2000);
+                        //((MainActivity)mContext).processPeer(null);
+                        //wifiManager.setWifiEnabled(true);
                     } catch (NullPointerException le) {
                         Toast.makeText(mContext, "NullPointerException: " + le.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d(TAG, "NullPointerException: " + le.getMessage());
                     }
-                }
+                //}
             }
         });
         mauiDeviceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -103,19 +153,21 @@ public class SelectMauiServerDialog {
         mauiDeviceListView.setAdapter(mWiFiDirectDeviceArrayAdapter);
         if (list.size() > mLastClickedWifiDevice)
             mauiDeviceListView.setSelection(mLastClickedWifiDevice);
-        if (0 == list.size())
+        if (0 == list.size() && CommunicationModel.getCommunicationModelSingletonInstance().getDisconnectWiFiDirect())
             Toast.makeText(mContext, "No Maui K3900 reachable....", Toast.LENGTH_SHORT).show();
     }
 
     private void updateStatusLogs() {
-        //((TextView)mDialog.findViewById(R.id.connectionStatusLogsTextView)).setText(ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().getLogHistory());
-        //((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setProgress(100);
+        ((TextView)mDialog.findViewById(R.id.connectionStatusLogsTextView)).setText(ConnectionStatusLoggingModel.getConnectionStatusLoggingModelSingletonInstance().getLogHistory());
+        //((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setIndeterminate(false);
+        ((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setMax(100);
+        ((ProgressBar)mDialog.findViewById(R.id.wifiDirectConnectionProgressBar)).setProgress(50, true);
     }
 
     private void checkConnection() {
         ListView mauiDeviceListView = mDialog.findViewById(R.id.mauiDeviceListView);
-        if (mWifiDirectDeviceList.connected())
-            mDialog.dismiss();
+        //if (mWifiDirectDeviceList.connected())
+            //mDialog.dismiss();
         /*if (1 == mWifiDirectDeviceList.getNumberOfMauiDevices() && 0 < mWifiDirectDeviceList.getSelectedDeviceName().length()) {
             mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getMauiDeviceName(0));
             ((ListView)mDialog.findViewById(R.id.mauiDeviceListView)).setBackgroundResource(android.R.color.holo_green_dark);

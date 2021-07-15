@@ -16,7 +16,9 @@ public class WifiDirectDevice {
     }
 
     public boolean getAvailableOccurred() { return mAvailableOccurred; }
-    public void setAvailableOccurred(boolean availableOccurred) { mAvailableOccurred = availableOccurred; }
+    public void setAvailableOccurred(boolean availableOccurred) {
+        mAvailableOccurred = availableOccurred;
+    }
     public String getName() {
         return mName;
     }

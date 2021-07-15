@@ -238,24 +238,24 @@ public class ActionButtonsImagingDialog {
     }
 
     private void checkTopMenuButtonsStates() {
-        mDialog.findViewById(R.id.logInButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.logInButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         String buttonText = !mBackend.loggedIn() ? "Log In" : "Log Out";
         ((Button)mDialog.findViewById(R.id.logInButton)).setText(buttonText);
-        mDialog.findViewById(R.id.powerImageView).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.powerImageView).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
     }
 
     private void checkFunctionButtonsStates() {
-        mDialog.findViewById(R.id.probeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.measureButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.presetsButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.patientButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.saveLoadButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.probeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.measureButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.presetsButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.patientButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.saveLoadButton).setEnabled(mBackend.loggedIn() & mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         ((Button)mDialog.findViewById(R.id.probeButton)).setText("Probe: " + mBackend.getProbeName());
     }
 
     private void checkRequestMessageButtonsStates() {
-        mDialog.findViewById(R.id.imagePositionHomeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
-        mDialog.findViewById(R.id.imagePositionCenterButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
+        mDialog.findViewById(R.id.imagePositionHomeButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
+        mDialog.findViewById(R.id.imagePositionCenterButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceOrEthernetCableConnected());
         //mDialog.findViewById(R.id.playPauseImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
         //mDialog.findViewById(R.id.stepBackwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());
         //mDialog.findViewById(R.id.stepForwardImageButton).setEnabled(mBackend.connected() & mBackend.wifiDeviceConnected());

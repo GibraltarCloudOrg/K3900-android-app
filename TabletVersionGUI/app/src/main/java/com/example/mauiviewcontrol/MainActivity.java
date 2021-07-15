@@ -7,6 +7,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -133,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         Log.d(TAG, "onCreate called");
         setContentView(R.layout.activity_main);
         mConnectionStatusLoggingModel.setContext(this);
-        if (mBackend.connectToStaticIp())
-            mBackend.connect("192.168.10.236", 50051);
+        //if (mBackend.connectToStaticIp())
+            //mBackend.connect("192.168.10.236", 50051);
             //mBackend.connect("192.168.222.112", 50051);
             //mBackend.connect("192.168.10.238", 50051);
         setUpProbePage();
@@ -779,7 +781,7 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         mBackend.setMessageTo(SwitchBackEndModel.MessageTo.BeamformerClient);
         //mFullMenuImagingDialog = new FullMenuImagingDialog(this, mEnableDisplay);
         mMainImagingDialog = new MainImagingDialog(this, mEnableDisplay, mDebugMode);
-        SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
+        //SelectLogInDialog selectLogInDialog = new SelectLogInDialog(this);
         //if (1 == mWifiDirectDeviceList.getNumberOfMauiDevices())
             //mWifiDirectDeviceList.setSelected(mWifiDirectDeviceList.getDeviceName(0));
         //else
@@ -840,6 +842,25 @@ public class MainActivity extends AppCompatActivity implements AutomatedTestingE
         Intent intent = new Intent(this, com.example.mauiviewcontrol.MainWindowActivity.class);
         intent.putExtra("TestCase", testCase);
         startActivity(intent);
+    }
+
+    public void showHelpDialogForEthernetConnection(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String message = "Check List for Wired Connection via Ethernet Cable:\n";
+        message += "Connect Ethernet Cable from this Tablet (via USB Type C plugin), directly to the Maui Server Box.\n";
+        message += "Turn Off WiFi Connection (Recommended)\n";
+        message += "Turn On Ethernet Connection in the Settings\n";
+        message += "To turn on Ethernet connection, the IP Address must be 'static' like the following (one-time setting per tablet):\n";
+        message += "Tablet:\n";
+        message += "Static IP Address: 192.168.10.250\n";
+        message += "mask: 255.255.255.10\n";
+        message += "DNS: 192.168.10.11\n";
+        message += "Gateway: 192.168.10.1\n";
+        message += "The following two Check Boxes need to be checked,\n";
+        message += "Activate Wired Connection through Ethernet Cable.\n";
+        message += "Disconnect P2P WiFi Direct (Recommended)\n";
+        message += "Finally, select one of the Maui Box, or type the Server (Maui Box)'s IP address manually.\n";
+        builder.setMessage(message).setPositiveButton("Exit", null).show();
     }
 
     public void showSystemStatusDialog(View view) {

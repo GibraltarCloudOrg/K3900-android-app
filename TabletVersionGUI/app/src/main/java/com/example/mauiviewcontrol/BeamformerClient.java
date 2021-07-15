@@ -217,6 +217,8 @@ public class BeamformerClient {
     }*/
 
     void connect(String address, int port) {
+        if (null == address)
+            return;
         m_address = address;
         m_port = port;
         mGrpcChannel = ManagedChannelBuilder.forAddress(address, port).usePlaintext().build();
@@ -225,12 +227,16 @@ public class BeamformerClient {
     }
 
     void disconnect() {
-        /*try {
+        try {
             Log.d(TAG, "Shutting down channel");
             mGrpcChannel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (NullPointerException npe) {
+            Log.d(TAG, npe.getMessage());
         } catch (InterruptedException e) {
             Log.d(TAG, "Failed to shutdown channel");
-        }*/
+        } catch (Exception e) {
+            Log.d(TAG, LocalDateTime.now() + " : " + "gRPC shutdown channel failed.");
+        }
     }
 
     public boolean isBatchMode() {
