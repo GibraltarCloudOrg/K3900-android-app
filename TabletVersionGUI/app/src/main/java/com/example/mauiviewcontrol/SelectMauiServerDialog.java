@@ -92,6 +92,7 @@ public class SelectMauiServerDialog {
                 intent.putExtra("ServerName", mWifiDirectDeviceList.getSelectedDeviceName());
                 ((MainActivity)mContext).startActivity(intent);*/
                 //wifiManager.setWifiEnabled(true);
+                mDialog.dismiss();
                 /*try {
                     ((MainActivity)mContext).processPeer();
                     mDialog.dismiss();
@@ -152,7 +153,7 @@ public class SelectMauiServerDialog {
         mauiDeviceListView.setAdapter(mWiFiDirectDeviceArrayAdapter);
         if (list.size() > mLastClickedWifiDevice)
             mauiDeviceListView.setSelection(mLastClickedWifiDevice);
-        if (0 == list.size())
+        if (0 == list.size() && CommunicationModel.getCommunicationModelSingletonInstance().getDisconnectWiFiDirect())
             Toast.makeText(mContext, "No Maui K3900 reachable....", Toast.LENGTH_SHORT).show();
     }
 
